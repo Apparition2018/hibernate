@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.ljh.entity.News" table="NEWS">
+        <id name="id" type="java.lang.Integer" column="ID">
+            <!-- 指定主键生成方式，native: 根据底层数据库自行判断采用 identity、hilo、sequence 其中一种作为主键生成方式 -->
+            <generator class="native"/>
+        </id>
+        <property name="title" column="TITLE" type="java.lang.String"/>
+        <property name="author" column="AUTHOR" type="java.lang.String"/>
+        <property name="date" column="Date" type="java.sql.Date"/>
+    </class>
+</hibernate-mapping>

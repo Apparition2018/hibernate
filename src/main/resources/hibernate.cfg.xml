@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- 配置连接数据库的基本信息 -->
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root</property>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <!-- localhost:3306 是默认的，所以可以省略 -->
+        <property name="hibernate.connection.url">jdbc:mysql:///hibernate?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=GMT%2B8</property>
+
+        <!-- 配置 Hibernate 基本信息 -->
+        <!-- Hibernate 使用的数据库方言 -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+        <!-- 执行操作时是否在控制台打印 SQL -->
+        <property name="hibernate.show_sql">true</property>
+        <!-- 是否对 SQL 进行格式化 -->
+        <property name="hibernate.format_sql">true</property>
+        <!--
+            hbm2ddl.auto: 可实现正向工程，即由 java 代码生成数据库脚本，进而生成具体的表结构。
+                create: 根据 .hbm.xml 文件来生成数据表，但是每次运行都会删除一次表，再重新生成
+                create-drop: 根据 .hbm.xml 文件来生成数据表，当 sessionFactory 关闭时，表会自动删除
+                update: 根据 .hbm.xml 文件来生成数据表，若文件和数据库表结构不同，将更新表结构
+                validate: 和数据库中的表进行比较，若文件中的列在数据表中不存在，则抛出异常
+        -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <!--
+            设置 Hibernate 的事务隔离级别：
+                1   Read Uncommitted
+                2   Read Committed
+                4   Repeatable Read
+                8   Serializable
+        -->
+        <property name="hibernate.connection.isolation">2</property>
+
+        <!-- 需要关联的 Hibernate 映射文件 .hbm.xml -->
+        <mapping resource="hbm/News.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>
