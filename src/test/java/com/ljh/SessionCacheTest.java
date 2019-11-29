@@ -15,12 +15,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * HibernateTest2
+ * Session 缓存操作
  *
  * @author ljh
  * created on 2019/11/22 17:18
  */
-public class SessionTest {
+public class SessionCacheTest {
 
     private SessionFactory sessionFactory;
     // 生产环境中 session 和 transaction 不能作为成员变量，会有并发的问题
@@ -89,7 +89,7 @@ public class SessionTest {
     }
 
     /**
-     * refresh() 会强制发送 SELECT 语句，以使 Session 缓存中对象的状态和数据表中的对应的记录保持一致！
+     * refresh() 会强制发送 SELECT 语句，使 Session 缓存中对象的状态和数据表中的对应的记录保持一致！
      */
     @Test
     public void testSessionRefresh() {
@@ -98,5 +98,17 @@ public class SessionTest {
 
         session.refresh(news);
         System.out.println("news = " + news);
+    }
+
+    /**
+     * clear() 清理缓存
+     */
+    @Test
+    public void testClear() {
+        News news1 = session.get(News.class, 1);
+        System.out.println("news1 = " + news1);
+        session.clear();
+        News news2 = session.get(News.class, 1);
+        System.out.println("news2 = " + news2);
     }
 }

@@ -11,6 +11,17 @@ Hibernate 是一个 Java 领域的持久化框架，是一个 ORM 框架
     4. 查询
     5. 加载：根据特定的OID(Object Identifier)，把一个对象从数据库加载到内存中
 ---
+>### 持久化对象的状态
+>站在持久化的角度，Hibernate 把对象分为4种状态：
+>
+>   |状态|英|OID|位于 Session 中|数据库对应记录|
+>   |:---:|:---:|:---:|:---:|:---:|
+>   |临时对象|Transient|×|×|×|
+>   |持久化对象|Persist|√|√|√|
+>   |游离对象|Detached|√|×|maybe|
+>   |删除对象|Removed|√|×|×|
+><img src="https://static.oschina.net/uploads/space/2017/0816/212113_Lbhn_3375733.png" width="600" alt="对象的状态转换"/>
+---
 ## ORM
 ORM (Object/Relation Mapping): 对象/关系 映射
 - ORM 主要解决对象-关系的映射
@@ -31,7 +42,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 4. 通过 Hibernate API 编写访问数据库的代码
 ---
 ## Configuration
-Configuration 负责管理 Hibernate 的配置信息：
+- Configuration 负责管理 Hibernate 的配置信息：
 ```
     1. 数据库的 URL、用户名、密码、JDBC 驱动类、数据库 Dialect、数据库连接池等
         hibernate.cfg.xml 文件
@@ -39,7 +50,7 @@ Configuration 负责管理 Hibernate 的配置信息：
     2. 持久化类雨数据表的映射关系 
         *.hbm.xml 文件
 ```
-创建 Configuration 的两种方式：
+- 创建 Configuration 的两种方式：
 ```
     1. 属性文件：hibernate.properties
         Configuration cfg = new Configuration();
@@ -73,25 +84,30 @@ Configuration 负责管理 Hibernate 的配置信息：
 >- Session 接口的实现中包含了一系列的 Java 集合，这些 Java 集合构成了 Session 缓存，只要 Session 实例没有结束生命周期，且没有清理缓存，则存放在它缓存中的对象也不会结束生命周期
 >- Session 缓存可以减少 Hibernate 应用程序访问数据库的频率
 >---
->## flush()
->- flush(): Session 按照缓存中对象的属性变化来同步更新数据库  
->- 默认情况下 Session 在以下时间点刷新缓存：
->```
->   1. 显示调用 Session 的 flush()
->   2. 当应用程序调用 Transaction 的 commit()，该方法先刷新缓存，然后再向数据库提交事务
->   3. 当应用程序执行了一些查询 (HQL, Criteria) 操作时，如果缓存中持久化对象的属性已经发生了改变，会先 flush 缓存，以保证查询结果能够持久化对象的最新状态
->```
->- flush 缓存的例外情况：如果对象使用 native 生成器生成 OID，且采用的主键生成方式需数据库生成 OID，那么当调用 Session 的 save() 保存对象时，会立即执行向数据库插入该实体的 INSERT 语句
->- 若希望改变 flush() 的默认时间点，可以通过 Session 的 setFlushMode() 显式设定 flush() 的时间点
->
->   |清理缓存的模式|各种查询方法|Transaction 的 commit()|Session 的 flush()|
->   |:----------:|:---------:|:--------------------:|:----------------:|
->   |FlushMode.AUTO|   清理   |         清理         |       清理       |
->   |FlushMode.COMMIT| 不清理 |         清理         |       清理       |
->   |FlushMode.NEVER| 不清理  |        不清理        |       清理       |
->---
->## refresh()
----
+>>### flush()
+>>- flush(): Session 按照缓存中对象的属性变化来同步更新数据库  
+>>- 默认情况下 Session 在以下时间点刷新缓存：
+>>```
+>>   1. 显示调用 Session 的 flush()
+>>   2. 当应用程序调用 Transaction 的 commit()，该方法先刷新缓存，然后再向数据库提交事务
+>>   3. 当应用程序执行了一些查询 (HQL, Criteria) 操作时，如果缓存中持久化对象的属性已经发生了改变，会先 flush 缓存，以保证查询结果能够持久化对象的最新状态
+>>```
+>>- flush 缓存的例外情况：如果对象使用 native 生成器生成 OID，且采用的主键生成方式需数据库生成 OID，那么当调用 Session 的 save() 保存对象时，会立即执行向数据库插入该实体的 INSERT 语句
+>>- 若希望改变 flush() 的默认时间点，可以通过 Session 的 setFlushMode() 显式设定 flush() 的时间点
+>>
+>>   |清理缓存的模式|各种查询方法|Transaction 的 commit()|Session 的 flush()|
+>>   |:----------:|:---------:|:--------------------:|:----------------:|
+>>   |FlushMode.AUTO|   清理   |         清理         |       清理       |
+>>   |FlushMode.COMMIT| 不清理 |         清理         |       清理       |
+>>   |FlushMode.NEVER| 不清理  |        不清理        |       清理       |
+>>---
+>>### refresh()
+>>- 强制发送 SELECT 语句，使 Session 缓存中对象的状态和数据表中的对应的记录保持一致。
+>>- 需要配置事务隔离级别为 Read Committed，在 hibernate.cfg.xml 中配置
+>>```
+>>   <property name="hibernate.connection.isolation">2</property>
+>>```
+>>---
 ## Transaction
 ```
     Transaction tx = session.beginTransaction();
