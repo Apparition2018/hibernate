@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * News
  *
- * @author ljh
+ * @author Arsenal
  * created on 2019/11/21 16:08
  */
 @ToString

@@ -21,7 +21,12 @@ Hibernate 是一个 Java 领域的持久化框架，是一个 ORM 框架
 >   |游离对象|Detached|√|×|maybe|
 >   |删除对象|Removed|√|×|×|
 ><img src="https://static.oschina.net/uploads/space/2017/0816/212113_Lbhn_3375733.png" width="600" alt="对象的状态转换"/>
----
+>
+>---
+>>#### 临时对象
+>>1. Java 对象的 OID 为 null
+>>2. 映射文件为 &lt;id&gt; 设置了 unsaved-value 属性，并且 Java 对象的 OID 取值与这个属性值相等
+>>---
 ## ORM
 ORM (Object/Relation Mapping): 对象/关系 映射
 - ORM 主要解决对象-关系的映射
@@ -80,11 +85,11 @@ ORM (Object/Relation Mapping): 对象/关系 映射
     4. 管理 Session：          isOpen() flush() clear() evict() close() 等
 ```
 ---
->## Session 缓存
+>### Session 缓存
 >- Session 接口的实现中包含了一系列的 Java 集合，这些 Java 集合构成了 Session 缓存，只要 Session 实例没有结束生命周期，且没有清理缓存，则存放在它缓存中的对象也不会结束生命周期
 >- Session 缓存可以减少 Hibernate 应用程序访问数据库的频率
 >---
->>### flush()
+>>#### flush()
 >>- flush(): Session 按照缓存中对象的属性变化来同步更新数据库  
 >>- 默认情况下 Session 在以下时间点刷新缓存：
 >>```
@@ -101,7 +106,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 >>   |FlushMode.COMMIT| 不清理 |         清理         |       清理       |
 >>   |FlushMode.NEVER| 不清理  |        不清理        |       清理       |
 >>---
->>### refresh()
+>>#### refresh()
 >>- 强制发送 SELECT 语句，使 Session 缓存中对象的状态和数据表中的对应的记录保持一致。
 >>- 需要配置事务隔离级别为 Read Committed，在 hibernate.cfg.xml 中配置
 >>```
