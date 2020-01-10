@@ -77,14 +77,28 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 - 生命周期很短
 - 有一个一级缓存，显式执行 flush 之前，所有的持久层操作的数据都缓存在 session 对象处
 - "相当于" JDBC 中的 Connection
-- Session 的方法：
-```
-    1. 获取：                   get() load()
-    2. 保存、更新、删除：        save() update() saveOrUpdate(), delete()
-    3. 事务：                  beginTransaction()
-    4. 管理 Session：          isOpen() flush() clear() evict() close() 等
-```
----
+>### Session 核心方法
+>- 获取
+>   - get(): 立即检索
+>   - load(): 延迟检索
+>- 保存/更新
+>   - save(): 临时 → 持久化，设置 id 无效
+>   - persist(): 临时 → 持久化，设置 id 会抛出异常
+>   - update(): 游离/持久化 → 持久化
+>   - saveOrUpdate()
+>- 删除
+>   - delete(): 游离/持久化 → 删除
+>- 事务
+>   - beginTransaction(): 开启一个事务
+>- 其它
+>   - isOpen(): 判断 Session 对象是否被打开
+>   - evict(): 持久化 → 游离
+>   - doWork(): 获取 Connection，执行 jdbc 操作
+>   - flush(): 将 session 缓存中的数据与数据库同步
+>   - clear(): 清除 session 中的缓存数据
+>   - close()
+>   - ......
+>---
 >### Session 缓存
 >- Session 接口的实现中包含了一系列的 Java 集合，这些 Java 集合构成了 Session 缓存，只要 Session 实例没有结束生命周期，且没有清理缓存，则存放在它缓存中的对象也不会结束生命周期
 >- Session 缓存可以减少 Hibernate 应用程序访问数据库的频率
@@ -113,6 +127,12 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 >>   <property name="hibernate.connection.isolation">2</property>
 >>```
 >>---
+>### Hibernate 与触发器协同工作
+>1. 触发器使 session 缓存中的持久化对象与数据库中对应的数据不一致
+>   - 解决：在执行完 session 的相关操作后，立即调用 flush() 和 refresh()，迫使 session 缓存与数据库同步
+>2. session 的 update() 无论游离对象的属性是否发生变化都会执行 UPDATE 语句，从而盲目触发触发器
+>   - 解决：在映射文件的 <class> 设置 select-before-update="true"，当更新一个游离对象时，会先执行 SELECT 语句，获得当前游离对象在数据库中的最新数据，只有在不一致的情况下才会执行 UPDATE 语句
+>---
 ## Transaction
 ```
     Transaction tx = session.beginTransaction();

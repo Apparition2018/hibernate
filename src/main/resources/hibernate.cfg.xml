@@ -33,6 +33,9 @@
                 8   Serializable
         -->
         <property name="hibernate.connection.isolation">2</property>
+        
+        <!-- 删除对象后，使其 OID 置为 null -->
+        <property name="use_identifier_rollback">true</property>
 
         <!-- 需要关联的 Hibernate 映射文件 .hbm.xml -->
         <mapping resource="hbm/News.hbm.xml"/>
