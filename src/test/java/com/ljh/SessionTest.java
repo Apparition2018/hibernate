@@ -1,12 +1,6 @@
 package com.ljh;
 
 import com.ljh.entity.News;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
@@ -17,25 +11,7 @@ import java.util.Date;
  * @author ljh
  * created on 2019/11/25 15:38
  */
-public class SessionTest {
-
-    private SessionFactory sessionFactory;
-    private Session session;
-    private Transaction transaction;
-
-    @Before
-    public void init() {
-        sessionFactory = new Configuration().configure().buildSessionFactory();
-        session = sessionFactory.openSession();
-        transaction = session.beginTransaction();
-    }
-
-    @After
-    public void destroy() {
-        transaction.commit();
-        session.close();
-        sessionFactory.close();
-    }
+public class SessionTest extends BaseTest {
 
     /**
      * save()

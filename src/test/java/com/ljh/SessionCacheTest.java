@@ -1,12 +1,6 @@
 package com.ljh;
 
 import com.ljh.entity.News;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -20,26 +14,7 @@ import java.util.List;
  * @author ljh
  * created on 2019/11/22 17:18
  */
-public class SessionCacheTest {
-
-    private SessionFactory sessionFactory;
-    // 生产环境中 session 和 transaction 不能作为成员变量，会有并发的问题
-    private Session session;
-    private Transaction transaction;
-
-    @Before
-    public void init() {
-        sessionFactory = new Configuration().configure().buildSessionFactory();
-        session = sessionFactory.openSession();
-        transaction = session.beginTransaction();
-    }
-
-    @After
-    public void destroy() {
-        transaction.commit();
-        session.close();
-        sessionFactory.close();
-    }
+public class SessionCacheTest extends BaseTest {
 
     /**
      * 测试 session 缓存 (一级缓存)

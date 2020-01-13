@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<hibernate-mapping>
-    <class name="com.ljh.entity.News" table="NEWS">
+<!-- hibernate-mapping:
+        package: 指定映射文档中用于非限定类名的包前缀 -->
+<hibernate-mapping package="com.ljh.entity">
+    <!-- class:
+            name: 持久化类或接口的完全限定 Java 类名。如果缺少此属性，则假定映射是针对非pojo实体的
+            dynamic-insert: 指定应在运行时生成 INSERT SQL，并且只能包含其值不为空的列。默认 false
+            dynamic-update: 指定应在运行时生成 UPDATE SQL，并且只能包含其值已更改的列。默认 false
+            select-before-update: 指定 Hibernate 不执行 SQL UPDATE，除非确定对象确实被修改了。
+                当使用 update() 将临时对象关联到新会话时，Hibernate 会执行额外的 SQL SELECT 来确定是否确实需要更新。默认 false -->
+    <class name="News" table="NEWS" dynamic-update="true">
         <id name="id" type="java.lang.Integer" column="ID">
-            <!-- 指定主键生成方式，native: 根据底层数据库自行判断采用 identity、hilo、sequence 其中一种作为主键生成方式 -->
+            <!-- generator: 指定主键生成方式，native: 根据底层数据库自行判断采用 identity、hilo、sequence 其中一种作为主键生成方式
+                    -->
             <generator class="native"/>
         </id>
         <property name="title" column="TITLE" type="java.lang.String"/>

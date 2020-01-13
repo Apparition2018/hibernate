@@ -42,7 +42,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 ---
 ## Hibernate 开发步骤
 1. 创建 Hibernate 配置文件
-2. 创建对象-关系映射文件
+2. 创建对象/关系映射文件
 3. 创建持久化类
 4. 通过 Hibernate API 编写访问数据库的代码
 ---
@@ -53,6 +53,31 @@ ORM (Object/Relation Mapping): 对象/关系 映射
     - hibernate.properties
     - hibernate.cfg.xml
 ---
+## [对象/关系映射文件](https://docs.jboss.org/hibernate/orm/3.5/reference/en/html/mapping.html#mapping-declaration-mapping)
+- POJO 类和关系数据库之间的映射可以用一个 XML 文档来定义
+- 通过 POJO 类的数据库映射文件，Hibernate 可以理解持久化类和数据表之间的对应关系，也可以理解持久化类属性与数据库表列之间的对应关系
+- 在运行时 Hibernate 将根据这个映射文件来生成各种 SQL 语句
+- 映射文件的扩展名为 .hbm.xml
+---
+>### 映射文件结构
+>- hibernate-mapping
+>   - 类：class
+>       - 主键：id
+>       - 基本属性：property
+>       - 实体引用类：many-to-one | one-to-many
+>       - 集合：set | list | map | array
+>           - one-to-many
+>           - many-to-one
+>       - 子类：subclass | joined-subclass
+>       - 其它：component | any | ...
+>   - 查询语句：query
+>---
+>### 映射对象标识符
+>- Hibernate 使用对象标识符(OID)来建立内存中的对象和数据库中记录的对应关系，对象的 OID 和数据表的主键对应。Hibernate 通过标识符生成器来为主键赋值
+>- Hibernate 推荐在数据表中使用代理主键，即不具备业务含义的字段，代理主键通常为整数类型，因为整数类型比字符串类型要节省更多的数据库空间
+>- 在对象/关系映射文件中，&lt;id&gt;元素用来设置对象标识符，&lt;generator&gt;子元素用来设定标识符生成器
+>- Hibernate 提供了标识符生成器接口：IdentifierGenerator，并提供了各种内置实现
+>---
 ## Configuration
 - Configuration 负责管理 Hibernate 的配置信息：
 ```
