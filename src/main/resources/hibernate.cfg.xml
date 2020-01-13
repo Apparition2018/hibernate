@@ -3,28 +3,17 @@
         "http://www.hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <!-- 配置连接数据库的基本信息 -->
+        <!-- 24.2. General configuration (基本配置) -->
+        <!-- Hibernate 使用的数据库方言 -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+        
+        
+        <!-- 24.4. Database connection properties (数据库连接属性) -->
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">root</property>
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <!-- localhost:3306 是默认的，所以可以省略 -->
         <property name="hibernate.connection.url">jdbc:mysql:///hibernate?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=GMT%2B8</property>
-
-        <!-- 配置 Hibernate 基本信息 -->
-        <!-- Hibernate 使用的数据库方言 -->
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
-        <!-- 执行操作时是否在控制台打印 SQL -->
-        <property name="hibernate.show_sql">true</property>
-        <!-- 是否对 SQL 进行格式化 -->
-        <property name="hibernate.format_sql">true</property>
-        <!--
-            hbm2ddl.auto: 可实现正向工程，即由 java 代码生成数据库脚本，进而生成具体的表结构。
-                create: 根据 .hbm.xml 文件来生成数据表，但是每次运行都会删除一次表，再重新生成
-                create-drop: 根据 .hbm.xml 文件来生成数据表，当 sessionFactory 关闭时，表会自动删除
-                update: 根据 .hbm.xml 文件来生成数据表，若文件和数据库表结构不同，将更新表结构
-                validate: 和数据库中的表进行比较，若文件中的列在数据表中不存在，则抛出异常
-        -->
-        <property name="hibernate.hbm2ddl.auto">update</property>
         <!--
             设置 Hibernate 的事务隔离级别：
                 1   Read Uncommitted
@@ -33,9 +22,54 @@
                 8   Serializable
         -->
         <property name="hibernate.connection.isolation">2</property>
+
         
+        <!-- 24.5. c3p0 properties (C3P0 属性) -->
+        <property name="hibernate.c3p0.max_size">10</property>
+        <property name="hibernate.c3p0.min_size">5</property>
+        <!-- 当数据库连接池中的连接耗尽时，同一时刻可获取多少个数据库连接 -->
+        <property name="hibernate.c3p0.acquire_increment">2</property>
+        <!-- 连接池检测线程多长时间检测一次池内的所有链接对象是否超时，连接本身不会把自己从连接池中移除，而是专门有一个线程按照一定的时间间隔来做这件事，
+            这个线程通过比较连接对象最后一次被使用时间和当前时间的时间差来和 timeout 做对比，进而决定是否销毁这个连接对象 -->
+        <property name="hibernate.c3p0.idle_test_period">2000</property>
+        <property name="hibernate.c3p0.timeout">2000</property>
+        <!-- 缓存 Statement 对象的数量 -->
+        <property name="hibernate.c3p0.max_statements">10</property>
+
+        
+        <!-- 24.6. Mapping Properties (映射属性) -->
+        <!-- 24.6.2. Identifier options (标识符选项) -->
         <!-- 删除对象后，使其 OID 置为 null -->
         <property name="use_identifier_rollback">true</property>
+        
+        
+        <!-- 24.9. Batching properties (批处理属性) -->
+        <!-- 设置对数据库进行批量删除、批量更新和批量插入时的批量大小，Oracle 有效 -->
+        <property name="hibernate.jdbc.batch_size">30</property>
+        <!-- 24.9.1. Fetching properties (获取属性) -->
+        <!-- 设置 JDBC 的 Statement 读取数据的时候每次从数据库中取出的记录条数
+            实质是调用 Statement.setFetchSize()，Oracle 有效 -->
+        <property name="hibernate.jdbc.fetch_size">100</property>
+        
+        
+        <!-- 24.10. Statement logging and statistics (语句日志记录和统计信息) -->
+        <!-- 24.10.1. SQL statement logging (SQL 语句日志) -->
+        <!-- 执行操作时是否在控制台打印 SQL -->
+        <property name="hibernate.show_sql">true</property>
+        <!-- 是否对 SQL 进行格式化 -->
+        <property name="hibernate.format_sql">true</property>
+        
+        
+        <!-- 24.15. Automatic schema generation (自动模式生成) -->
+        <!--
+            hbm2ddl.auto: 可实现正向工程，即由 java 代码生成数据库脚本，进而生成具体的表结构。
+                create: 根据 .hbm.xml 文件来生成数据表，但是每次运行都会删除一次表，再重新生成
+                create-drop: 根据 .hbm.xml 文件来生成数据表，当 sessionFactory 关闭时，表会自动删除
+                update: 根据 .hbm.xml 文件来生成数据表，若文件和数据库表结构不同，将更新表结构
+                validate: 和数据库中的表进行比较，若文件中的列在数据表中不存在，则抛出异常
+        -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        
 
         <!-- 需要关联的 Hibernate 映射文件 .hbm.xml -->
         <mapping resource="hbm/News.hbm.xml"/>

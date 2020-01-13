@@ -46,6 +46,13 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 3. 创建持久化类
 4. 通过 Hibernate API 编写访问数据库的代码
 ---
+## [Hibernate 配置文件](https://docs.jboss.org/hibernate/orm/5.4/userguide/html_single/Hibernate_User_Guide.html#configurations)
+- 用于配置数据库连接和 Hibernate 运行时所需的各种属性
+- 每个 Hibernate 配置文件对应一个 Configuration 对象
+- Hibernate 配置文件有两种格式：
+    - hibernate.properties
+    - hibernate.cfg.xml
+---
 ## Configuration
 - Configuration 负责管理 Hibernate 的配置信息：
 ```
