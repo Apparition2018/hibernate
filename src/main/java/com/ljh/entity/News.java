@@ -19,6 +19,8 @@ public class News {
     private String title;
     private String author;
     private Date date;
+    // 该属性值为，title：author
+    private String desc;
 
     public News(String title, String author, Date date) {
         this.title = title;
@@ -56,5 +58,13 @@ public class News {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }
