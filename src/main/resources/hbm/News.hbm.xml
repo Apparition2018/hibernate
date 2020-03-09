@@ -56,6 +56,9 @@
                     2) field，使用反射访问
                     3) 实现接口 PropertyAccessor，自定义访问策略
                 type: Hibernate 映射类型，如果没有设定，Hibernate 会通过反射识别出持久化类的 Java 类型，然后自动使用与之对应的默认 Hibernate 映射类型
+                    1) MySQL 不支持标准 SQL 的 CLOB 类型，用 TEXT/MEDIUMTEXT/LONGTEXT 来存储长度超过 255 的长文本数据
+                    2) 在持久化类中，二进制大对象可以声明为 byte[] 或 java.sql.Blob；字符串可以声明为 java.lang.String 或 java.sql.Clob
+                    3) Java 应用实际处理长度超过 255 的字符串，使用 java.lang.String 比 java.sql.Clob 更方便
                     Hibernate       Java                                SQL             Size
                     integer/int     java.lang.Integer/int               INTEGER         4字节
                     long            java.lang.Long/long                 BIGINT          8字节
@@ -69,24 +72,35 @@
                     character       java.lang.Character|String/char     CHAR(1)         定长字符
                     string          java.lang.String                    VARCHAR         变长字符
                     date            java.util.Date/java.sql.Date        DATE            日期
-                    time            java.util.Date/java.sql.Time        Time            日期    
+                    time            java.util.Date/java.sql.Time        Time            日期
                     timestamp       java.util.Date/java.sql.Timestamp   TIMESTAMP       日期
                     calendar        java.util.Calendar                  TIMESTAMP       日期
                     calendar_date   java.util.Calendar                  DATE            日期
+                    big_decimal     java.math.BigDecimal                NUMERIC
+                    big_integer     java.math.BigInteger                NUMERIC
+                    locale          java.util.Locale                    VARCHAR
+                    timezone        java.util.TimeZone                  VARCHAR
+                    currency        java.util.Currency                  VARCHAR
+                    class           java.lang.Class                     VARCHAR
                     text            java.lang.String                    CLOB
                     clob            java.sql.Clob                       CLOB
                     blob            java.sql.BLOB                       BLOB
-                    binary          byte[]                              BLOB/VARBINARY
-                    serializable    java.io.Serializable                BLOB/VARBINARY
-                    big_decimal     java.math.BigDecimal                NUMERIC
-                    class           java.lang.Class                     VARCHAR
-                    locale          java.util.Locale                    VARCHAR
-                    timezone        java.util.TimeZone                  VARCHAR
-                    currency        java.util.Currency                  VARCHAR -->
+                    binary          byte[]                              BLOB/VARCHAR -->
         <property name="title" column="TITLE" type="string" unique="true" update="false" index="news_index" length="20"/>
         <property name="author" column="AUTHOR" type="java.lang.String" index="news_index"/>
-        <property name="date" column="Date" type="time"/>
+        <property name="date" column="DATE" type="time"/>
         <!-- 映射派生属性 -->
         <property name="desc" formula="(SELECT concat(author, ': ', title) FROM NEWS n WHERE n.id = id)"/>
+        <!-- 映射大对象 -->
+        <property name="content">
+            <!-- column:
+                    sql-type: 指定 SQL 类型
+            -->
+            <column name="CONTENT" sql-type="mediumtext"/>
+        </property>
+        <!-- 映射二进制数据 -->
+        <property name="image">
+            <column name="IMAGE" sql-type="mediumblob"/>
+        </property>
     </class>
 </hibernate-mapping>

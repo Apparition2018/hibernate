@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.ljh.entity.Worker" table="WORKER">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID"/>
+            <generator class="native"/>
+        </id>
+        <property name="name" type="string">
+            <column name="NAME"/>
+        </property>
+        
+        <!-- component 映射组成关系
+                1) 有时候会通过细化持久化类的粒度，来提高代码的可重用性，简化代码。
+                    如 WORKER 表被细分成 Worker 和 Pay 两个持久化类，Pay 是 Worker 的一个组成部分，显然无法直接使用 <property> 来映射 Pay。
+                    Hibernate 使用 <component> 元素来映射组成关系。
+                2) Hibernate 把持久化类的属性分为两种
+                    - value: 没有 OID，不能被单独持久化，生命周期依赖于所属的持久化类的对象的生命周期 
+                    - entity: 有 OID，可以被单独持久化，有独立的生命周期 -->
+        <component name="pay">
+            <!-- 指定组成关系的组件的属性 -->
+            <property name="monthlyPay" column="MONTHLY_PAY"/>
+            <property name="yearPay" column="YEAR_PAY"/>
+            <property name="vocationWithPay" column="VOCATION_WITH_PAY"/>
+        </component>
+    </class>
+</hibernate-mapping>

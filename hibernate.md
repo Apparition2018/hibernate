@@ -2,6 +2,10 @@
 Hibernate 是一个 Java 领域的持久化框架，是一个 ORM 框架
 
 ---
+## 参考网站
+1. [Hibernate Reference Documentation](https://docs.jboss.org/hibernate/orm/3.5/reference/en/html/)
+2. [Hibernate 中文文档](https://hibernate.net.cn)
+---
 ## 对象的持久化
 - 狭义："持久化"仅仅指把对象永久保存到数据库中
 - 广义："持久化"包括和数据库相关的各种操作
