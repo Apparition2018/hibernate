@@ -1,7 +1,8 @@
 package com.ljh;
 
 import com.ljh.entity.*;
-import com.sun.org.apache.xpath.internal.operations.Or;
+import com.ljh.entity.one2many.Customer;
+import com.ljh.entity.one2many.Order;
 import org.hibernate.Hibernate;
 import org.junit.Test;
 

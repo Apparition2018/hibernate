@@ -1,4 +1,4 @@
-package com.ljh.entity;
+package com.ljh.entity.one2many;
 
 import lombok.Getter;
 import lombok.Setter;
