@@ -16,7 +16,7 @@
                     如 WORKER 表被细分成 Worker 和 Pay 两个持久化类，Pay 是 Worker 的一个组成部分，显然无法直接使用 <property> 来映射 Pay。
                     Hibernate 使用 <component> 元素来映射组成关系。
                 2) Hibernate 把持久化类的属性分为两种
-                    - value: 没有 OID，不能被单独持久化，生命周期依赖于所属的持久化类的对象的生命周期 
+                    - value: 没有 OID，不能被单独持久化，生命周期依赖于所属的持久化类的对象的生命周期 (本例) 
                     - entity: 有 OID，可以被单独持久化，有独立的生命周期 -->
         <component name="pay">
             <!-- 指定组成关系的组件的属性 -->

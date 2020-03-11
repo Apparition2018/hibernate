@@ -74,5 +74,7 @@
         <!-- 需要关联的 Hibernate 映射文件 .hbm.xml -->
         <mapping resource="hbm/News.hbm.xml"/>
         <mapping resource="hbm/Worker.hbm.xml"/>
+        <mapping resource="hbm/Customer.hbm.xml"/>
+        <mapping resource="hbm/Order.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

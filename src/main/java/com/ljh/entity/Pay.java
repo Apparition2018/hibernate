@@ -5,6 +5,8 @@ import lombok.Setter;
 
 /**
  * Pay
+ * 
+ * 演示映射组成关系
  *
  * @author ljh
  * created on 2020/3/9 16:04
