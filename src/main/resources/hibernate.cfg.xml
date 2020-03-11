@@ -76,5 +76,7 @@
         <mapping resource="hbm/component/Worker.hbm.xml"/>
         <mapping resource="hbm/one2many/Customer.hbm.xml"/>
         <mapping resource="hbm/one2many/Order.hbm.xml"/>
+        <mapping resource="hbm/one2one/Manager.hbm.xml"/>
+        <mapping resource="hbm/one2one/Department.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

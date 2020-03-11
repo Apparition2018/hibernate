@@ -5,6 +5,8 @@ import com.ljh.entity.component.Pay;
 import com.ljh.entity.component.Worker;
 import com.ljh.entity.one2many.Customer;
 import com.ljh.entity.one2many.Order;
+import com.ljh.entity.one2one.Department;
+import com.ljh.entity.one2one.Manager;
 import org.hibernate.Hibernate;
 import org.junit.Test;
 
@@ -266,5 +268,46 @@ public class HbmTest extends BaseTest {
         customer.getOrders().add(order2);
 
         session.save(customer);
+    }
+
+    /**
+     * 测试 一对一
+     */
+    @Test
+    public void testOne2OneSave() {
+        Department department = new Department();
+        department.setDeptName("DEPT-BB");
+
+        Manager manager = new Manager();
+        manager.setMgrName("MGR-BB");
+        
+        // 设定关联关系
+        department.setMgr(manager);
+        manager.setDept(department);
+        
+        // 保存操作
+        // 建议先保存没有外键列的那个对象，这样会减少 UPDATE 语句
+        session.save(manager);
+        session.save(department);
+    }
+    @Test
+    public void testOne2OneGet() {
+        // 1. 默认人情况下对关联属性使用懒加载
+        Department dept = session.get(Department.class, 1);
+        System.out.println(dept.getDeptName());
+
+        // 2. 若 session 已被关闭，则会发生 LazyInitializationException 异常
+//        session.close();
+//        System.out.println(dept.getMgr().getMgrName());
+        
+        // 3. 查询 Manager 对象的连接条件应该是 dept.mgr_id = mgr.mgr_id，而不是 dept.dept_id = mgr.mgr_id
+        Manager mgr = dept.getMgr();
+        System.out.println(mgr.getMgrName());
+    }
+    @Test
+    public void testOne2OneGet2() {
+        Manager mgr = session.get(Manager.class, 1);
+        System.out.println(mgr.getMgrName());
+        System.out.println(mgr.getDept().getDeptName());
     }
 }
