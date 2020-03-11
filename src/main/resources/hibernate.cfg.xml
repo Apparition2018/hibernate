@@ -73,7 +73,7 @@
 
         <!-- 需要关联的 Hibernate 映射文件 .hbm.xml -->
         <mapping resource="hbm/News.hbm.xml"/>
-        <mapping resource="hbm/Worker.hbm.xml"/>
+        <mapping resource="hbm/component/Worker.hbm.xml"/>
         <mapping resource="hbm/one2many/Customer.hbm.xml"/>
         <mapping resource="hbm/one2many/Order.hbm.xml"/>
     </session-factory>
