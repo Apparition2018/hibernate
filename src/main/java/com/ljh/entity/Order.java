@@ -6,7 +6,7 @@ import lombok.Setter;
 /**
  * Order
  * 
- * 演示关联关系
+ * 演示一对多关联关系
  *
  * @author ljh
  * created on 2020/3/10 10:26
