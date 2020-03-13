@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<hibernate-mapping package="com.ljh.entity.one2one">
+<hibernate-mapping package="com.ljh.entity.one2one.foreign">
     <class name="Manager" table="MANAGERS">
         <id name="mgrId" type="java.lang.Integer">
             <column name="MGR_ID"/>

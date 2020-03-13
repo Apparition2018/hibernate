@@ -1,4 +1,4 @@
-package com.ljh.entity.one2one;
+package com.ljh.entity.one2one.primary;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,17 +6,17 @@ import lombok.Setter;
 /**
  * Manager
  * 
- * 演示一对一关联关系
+ * 演示基于主键的一对一关联关系
  *
  * @author ljh
- * created on 2020/3/11 10:31
+ * created on 2020/3/13 17:31
  */
 @Getter
 @Setter
-public class Manager {
+public class Manager2 {
     
     private Integer mgrId;
     private String mgrName;
     
-    private Department dept;
+    private Department2 dept;
 }
