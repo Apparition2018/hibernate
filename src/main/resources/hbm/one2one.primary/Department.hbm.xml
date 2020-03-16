@@ -2,14 +2,14 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.ljh.entity.one2one.primary">
-    <class name="com.ljh.entity.one2one.primary.Department2" table="DEPARTMENT2S">
+    <!-- 基于主键的 1-1 关联：
+        1) 一端的主键生成器使用 foreign 策略，表明根'对方'的主键来生成自己的主键。
+        2) <param> 元素指定使用当前持久化类的哪个属性作为'对方'
+        3) 增加 <one-to-one> 元素映射关联属性，并增加 constrained="true" 属性，表示未当前持久化类对应的数据表的主键添加一个外键约束。  -->
+    
+    <class name="com.ljh.entity.one2one.primary.Department2" table="DEPARTMENTS2">
         <id name="deptId" type="java.lang.Integer">
             <column name="DEPT_ID"/>
-            <!-- 基于主键的 1-1 关联：
-                1) 一端的主键生成器使用 foreign 策略，表明根'对方'的主键来生成自己的主键。
-                2) <param> 元素指定使用当前持久化类的哪个属性作为'对方'
-                3) 增加 <one-to-one> 元素映射关联属性，并增加 constrained="true" 属性，表示未当前持久化类对应的数据表的主键添加一个外键约束。  -->
-            
             <!--generator:
                     foreign: 使用另一个关联对象的标识符作为自己的标识符。它通常与 <one-to-one> 主键关联一起使用。 -->
             <generator class="foreign">

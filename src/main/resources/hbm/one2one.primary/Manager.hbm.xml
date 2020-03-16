@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.ljh.entity.one2one.primary">
-    <class name="com.ljh.entity.one2one.primary.Manager2" table="MANAGER2S">
+    <class name="com.ljh.entity.one2one.primary.Manager2" table="MANAGERS2">
         <id name="mgrId" type="java.lang.Integer">
             <column name="MGR_ID"/>
             <generator class="native"/>

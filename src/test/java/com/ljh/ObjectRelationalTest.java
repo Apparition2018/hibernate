@@ -4,6 +4,8 @@ import com.ljh.entity.one2many.Customer;
 import com.ljh.entity.one2many.Order;
 import com.ljh.entity.one2one.foreign.Department;
 import com.ljh.entity.one2one.foreign.Manager;
+import com.ljh.entity.one2one.primary.Department2;
+import com.ljh.entity.one2one.primary.Manager2;
 import org.junit.Test;
 
 /**
@@ -196,9 +198,22 @@ public class ObjectRelationalTest extends BaseTest {
         System.out.println(mgr.getMgrName());
         System.out.println(mgr.getDept().getDeptName());
     }
-    
+
+    /**
+     * 测试 基于主键的一对一
+     */
     @Test
-    public void test() {
-        
+    public void testOne2OnePrimarySave() {
+        Department2 department = new Department2();
+        department.setDeptName("DEPT-BB");
+
+        Manager2 manager = new Manager2();
+        manager.setMgrName("MGR-BB");
+
+        department.setMgr(manager);
+        manager.setDept(department);
+
+        session.save(manager);
+        session.save(department);
     }
 }
