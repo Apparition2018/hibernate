@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<hibernate-mapping package="com.ljh.entity.many2many">
-    <!-- n-n 关联：必须使用中间连接表 -->
-    
-    <class name="Category" table="CATEGORY">
+<hibernate-mapping package="com.ljh.entity.many2many.ba">
+    <class name="Item2" table="ITEMS2">
         <id name="id" type="java.lang.Integer">
             <column name="ID"/>
             <generator class="native"/>
@@ -13,10 +11,10 @@
             <column name="NAME"/>
         </property>
         
-        <set name="items" table="CATEGORIES_ITEMS">
-            <key column="C_ID"/>
-            <!-- many-to-many: 映射多对多的关联关系 -->
-            <many-to-many class="Item" column="I_ID"/>
+        <set name="categories" table="CATEGORIES2_ITEMS2" inverse="true">
+            <key column="I_ID"/>
+            <many-to-many class="Category2" column="C_ID"/>
         </set>
+        
     </class>
 </hibernate-mapping>

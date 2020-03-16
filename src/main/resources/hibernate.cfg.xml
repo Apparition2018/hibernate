@@ -73,14 +73,27 @@
 
         <!-- 需要关联的 Hibernate 映射文件 .hbm.xml -->
         <mapping resource="hbm/News.hbm.xml"/>
+        
         <mapping resource="hbm/component/Worker.hbm.xml"/>
-        <mapping resource="hbm/one2many/Customer.hbm.xml"/>
-        <mapping resource="hbm/one2many/Order.hbm.xml"/>
-        <mapping resource="hbm/one2one.foreign/Manager.hbm.xml"/>
-        <mapping resource="hbm/one2one.foreign/Department.hbm.xml"/>
-        <mapping resource="hbm/one2one.primary/Manager.hbm.xml"/>
-        <mapping resource="hbm/one2one.primary/Department.hbm.xml"/>
-        <mapping resource="hbm/many2many/Category.hbm.xml"/>
-        <mapping resource="hbm/many2many/Item.hbm.xml"/>
+
+        <!-- Unidirectional associations one-to-many 单向一对多 -->
+        <mapping resource="hbm/one2many/ua/Customer.hbm.xml"/>
+        <mapping resource="hbm/one2many/ua/Order.hbm.xml"/>
+        <!-- Bidirectional associations one-to-many 双向一对多 -->
+        <mapping resource="hbm/one2many/ba/Customer.hbm.xml"/>
+        <mapping resource="hbm/one2many/ba/Order.hbm.xml"/>
+        
+        <!-- one-to-one 一对一 -->
+        <mapping resource="hbm/one2one/foreign/Manager.hbm.xml"/>
+        <mapping resource="hbm/one2one/foreign/Department.hbm.xml"/>
+        <mapping resource="hbm/one2one/primary/Manager.hbm.xml"/>
+        <mapping resource="hbm/one2one/primary/Department.hbm.xml"/>
+        
+        <!-- Unidirectional associations many-to-many 单向一对一 -->
+        <mapping resource="hbm/many2many/ua/Category.hbm.xml"/>
+        <mapping resource="hbm/many2many/ua/Item.hbm.xml"/>
+        <!-- Bidirectional associations many-to-many 双向一对一 -->
+        <mapping resource="hbm/many2many/ba/Category.hbm.xml"/>
+        <mapping resource="hbm/many2many/ba/Item.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

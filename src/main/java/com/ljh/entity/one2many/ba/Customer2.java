@@ -1,4 +1,4 @@
-package com.ljh.entity.one2many;
+package com.ljh.entity.one2many.ba;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,15 +8,15 @@ import java.util.Set;
 
 /**
  * Customer
- * <p>
- * 演示一对多关联关系
+ * 
+ * 演示双向一对多关联关系
  *
  * @author ljh
  * created on 2020/3/10 10:25
  */
 @Getter
 @Setter
-public class Customer {
+public class Customer2 {
 
     private Integer customerId;
     private String customerName;
@@ -27,5 +27,5 @@ public class Customer {
      *  1.2 Hibernate 的内置集合类封装了 JDK 中的集合类，这使得 Hibernate 能够对缓存中的集合对象进行脏检查，按照集合对象的状态来同步更新数据库
      * 2. 定义集合属性时，需要把集合进行初始化，可以防止发生空指针异常
      */
-    private Set<Order> orders = new HashSet<>();
+    private Set<Order2> orders = new HashSet<>();
 }

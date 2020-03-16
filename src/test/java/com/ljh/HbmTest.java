@@ -3,10 +3,6 @@ package com.ljh;
 import com.ljh.entity.*;
 import com.ljh.entity.component.Pay;
 import com.ljh.entity.component.Worker;
-import com.ljh.entity.one2many.Customer;
-import com.ljh.entity.one2many.Order;
-import com.ljh.entity.one2one.foreign.Department;
-import com.ljh.entity.one2one.foreign.Manager;
 import org.hibernate.Hibernate;
 import org.junit.Test;
 

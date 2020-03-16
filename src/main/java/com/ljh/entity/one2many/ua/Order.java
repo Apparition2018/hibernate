@@ -1,4 +1,4 @@
-package com.ljh.entity.one2many;
+package com.ljh.entity.one2many.ua;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,7 +6,7 @@ import lombok.Setter;
 /**
  * Order
  * 
- * 演示一对多关联关系
+ * 演示双向一对多关联关系
  *
  * @author ljh
  * created on 2020/3/10 10:26

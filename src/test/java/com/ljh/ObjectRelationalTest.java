@@ -1,12 +1,20 @@
 package com.ljh;
 
-import com.ljh.entity.one2many.Customer;
-import com.ljh.entity.one2many.Order;
+import com.ljh.entity.many2many.ba.Category2;
+import com.ljh.entity.many2many.ba.Item2;
+import com.ljh.entity.many2many.ua.Category;
+import com.ljh.entity.many2many.ua.Item;
+import com.ljh.entity.one2many.ba.Customer2;
+import com.ljh.entity.one2many.ba.Order2;
+import com.ljh.entity.one2many.ua.Customer;
+import com.ljh.entity.one2many.ua.Order;
 import com.ljh.entity.one2one.foreign.Department;
 import com.ljh.entity.one2one.foreign.Manager;
 import com.ljh.entity.one2one.primary.Department2;
 import com.ljh.entity.one2one.primary.Manager2;
 import org.junit.Test;
+
+import java.util.Set;
 
 /**
  * 对象关联
@@ -79,13 +87,13 @@ public class ObjectRelationalTest extends BaseTest {
      */
     @Test
     public void testOne2ManySave() {
-        Customer customer = new Customer();
+        Customer2 customer = new Customer2();
         customer.setCustomerName("CC");
 
-        Order order1 = new Order();
+        Order2 order1 = new Order2();
         order1.setOrderName("ORDER-5");
 
-        Order order2 = new Order();
+        Order2 order2 = new Order2();
         order2.setOrderName("ORDER-6");
 
         // 设定关联关系
@@ -112,7 +120,7 @@ public class ObjectRelationalTest extends BaseTest {
     @Test
     public void testOne2ManyGet() {
         // 1. 对 n 的一端的集合使用延迟加载
-        Customer customer = session.get(Customer.class, 2);
+        Customer2 customer = session.get(Customer2.class, 2);
         System.out.println(customer.getCustomerName());
 
         // 2. 返回的 n 的一端的集合时 Hibernate 内置的集合类型 (or.hibernate.collection.internal.PersistentSet)
@@ -126,26 +134,26 @@ public class ObjectRelationalTest extends BaseTest {
 
     /**
      * 测试 级联操作
-     * <xxx cascade="delete-orphan"/> 
+     * <xxx cascade="delete-orphan"/>
      */
     @Test
     public void testCascadeDeleteOrphan() {
-        Customer customer = session.get(Customer.class, 4);
+        Customer2 customer = session.get(Customer2.class, 4);
         customer.getOrders().clear();
     }
     /**
      * 测试 级联操作
-     * <xxx cascade="save-update"/> 
+     * <xxx cascade="save-update"/>
      */
     @Test
     public void testCascadeSaveUpdate() {
-        Customer customer = new Customer();
+        Customer2 customer = new Customer2();
         customer.setCustomerName("AA");
 
-        Order order1 = new Order();
+        Order2 order1 = new Order2();
         order1.setOrderName("ORDER-1");
 
-        Order order2 = new Order();
+        Order2 order2 = new Order2();
         order2.setOrderName("ORDER-2");
 
         order1.setCustomer(customer);
@@ -213,7 +221,89 @@ public class ObjectRelationalTest extends BaseTest {
         department.setMgr(manager);
         manager.setDept(department);
 
+        // 先插入哪一个都不会有多余的 UPDATE
         session.save(manager);
         session.save(department);
+    }
+
+    /**
+     * 测试 单向单向多对多
+     * 只在一端使用集合属性
+     */
+    @Test
+    public void testMany2ManyBaSave() {
+        Category category1 = new Category();
+        category1.setName("C-AA");
+
+        Category category2 = new Category();
+        category2.setName("C-BB");
+        
+        Item item1 = new Item();
+        item1.setName("I-AA");
+
+        Item item2 = new Item();
+        item2.setName("I-BB");
+        
+        // 设定关联关系
+        category1.getItems().add(item1);
+        category1.getItems().add(item2);
+        
+        category2.getItems().add(item1);
+        category2.getItems().add(item2);
+        
+        // 指定保存操作
+        session.save(category1);
+        session.save(category2);
+        
+        session.save(item1);
+        session.save(item2);
+    }
+    @Test
+    public void testMany2ManyBaGet() {
+        Category category = session.get(Category.class, 1);
+        System.out.println(category.getName());
+        
+        // 需要连接中间表
+        Set<Item> items = category.getItems();
+        System.out.println(items.size());
+    }
+
+    /**
+     * 测试 双向单向多对多
+     * 在两端都使用集合属性
+     */
+    @Test
+    public void testMany2ManyUaSave() {
+        Category2 category1 = new Category2();
+        category1.setName("C-AA");
+
+        Category2 category2 = new Category2();
+        category2.setName("C-BB");
+
+        Item2 item1 = new Item2();
+        item1.setName("I-AA");
+
+        Item2 item2 = new Item2();
+        item2.setName("I-BB");
+
+        // 设定关联关系
+        category1.getItems().add(item1);
+        category1.getItems().add(item2);
+
+        category2.getItems().add(item1);
+        category2.getItems().add(item2);
+        
+        item1.getCategories().add(category1);
+        item1.getCategories().add(category2);
+
+        item2.getCategories().add(category1);
+        item2.getCategories().add(category2);
+        
+        // 指定保存操作
+        session.save(category1);
+        session.save(category2);
+
+        session.save(item1);
+        session.save(item2);
     }
 }
