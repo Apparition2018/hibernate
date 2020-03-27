@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.ljh.entity.inheritance.union.subclass">
+    <class name="Person3" table="PERSONS3">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID"/>
+            <generator class="increment"/>
+        </id>
+        
+        <property name="name" type="string">
+            <column name="NAME"/>
+        </property>
+        <property name="age" type="int">
+            <column name="AGE"/>
+        </property>
+        
+        <!-- 映射子类 Student，使用 union-subclass 进行映射
+            1. 将每一个实体对象映射到一个独立的表中
+            2. 子类增加的属性可以有非空约束
+            3. 子类实例的数据仅保存在子类表中
+            4. 既不需要使用辨别者列，也无须使用 key 元素来映射共有主键
+            5. 不可使用 identity 的主键生成策略 -->
+        <union-subclass name="Student3" table="STUDENTS3">
+            <property name="school" type="string" column="SCHOOL"/>
+        </union-subclass>
+    </class>
+</hibernate-mapping>

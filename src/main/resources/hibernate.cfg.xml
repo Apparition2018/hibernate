@@ -74,8 +74,9 @@
         <!-- 需要关联的 Hibernate 映射文件 .hbm.xml -->
         <mapping resource="hbm/News.hbm.xml"/>
         
+        <!-- Component 组件 -->
         <mapping resource="hbm/component/Worker.hbm.xml"/>
-
+        
         <!-- Unidirectional associations one-to-many 单向一对多 -->
         <mapping resource="hbm/one2many/ua/Customer.hbm.xml"/>
         <mapping resource="hbm/one2many/ua/Order.hbm.xml"/>
@@ -95,5 +96,10 @@
         <!-- Bidirectional associations many-to-many 双向一对一 -->
         <mapping resource="hbm/many2many/ba/Category.hbm.xml"/>
         <mapping resource="hbm/many2many/ba/Item.hbm.xml"/>
+        
+        <!-- Inheritance 继承 -->
+        <mapping resource="hbm/inheritance/subclass/Person.hbm.xml"/>
+        <mapping resource="hbm/inheritance/joined.subclass/Person.hbm.xml"/>
+        <mapping resource="hbm/inheritance/union.subclass/Person.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

@@ -82,13 +82,18 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 >- 在对象/关系映射文件中，&lt;id&gt;元素用来设置对象标识符，&lt;generator&gt;子元素用来设定标识符生成器
 >- Hibernate 提供了标识符生成器接口：IdentifierGenerator，并提供了各种内置实现
 >---
->### 关联关系
+>### 映射关联关系
 >1. 基于主键的一对一
 >2. 基于外键的一对一
 >3. 单向一对多
 >4. 双向一对多
 >5. 单向多对多
 >6. 双向多对多
+>---
+>### 映射继承关系
+>1. subclass
+>2. joined-subclass
+>3. union-subclass
 >---
 ## Configuration
 - Configuration 负责管理 Hibernate 的配置信息：
@@ -202,4 +207,12 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 >   |Serializable|×|×|×|
 >- Oracle 支持2种事务隔离级别：Read Committed 和 Serializable，默认 Read Committed
 >- MySQL 支持4种事务隔离级别，默认 Repeatable Read
+---
+## Hibernate 检索策略
+>### 类级别的检索策略
+>- 类级别可选的检索策略
+>   - 立即加载检索
+>   - 延迟加载检索
+>- 类级别的检索策略可以通过 <class> 元素的 lazy 属性进行设置
+>-  
 ---

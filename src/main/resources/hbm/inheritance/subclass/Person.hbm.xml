@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.ljh.entity.inheritance.sublcass">
+    <class name="Person" table="PERSONS" discriminator-value="PERSON">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID"/>
+            <generator class="native"/>
+        </id>
+        
+        <!-- 辨别者列 -->
+        <discriminator column="TYPE"/>
+        
+        <property name="name" type="string">
+            <column name="NAME"/>
+        </property>
+        <property name="age" type="int">
+            <column name="AGE"/>
+        </property>
+        
+        <!-- 映射子类 Student，使用 subclass 进行映射
+            1. 使用同一张表
+            2. 需要在该表内增加一列，使用该列来区分每行记录到底是哪个类的实例，这个列被称为辨别者列 (discriminator)
+            3. 使用 class 或 subclass 的 discriminator-value 属性指定辨别者列的值
+            4. 所有子类定义的字段都不能有非空约束 -->
+        <subclass name="Student" discriminator-value="STUDENT">
+            <property name="school" type="string" column="SCHOOL"/>
+        </subclass>
+    </class>
+</hibernate-mapping>
