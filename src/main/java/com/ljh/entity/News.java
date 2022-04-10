@@ -1,9 +1,7 @@
 package com.ljh.entity;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 import java.sql.Blob;
 import java.util.Date;
@@ -14,12 +12,9 @@ import java.util.Date;
  * @author Arsenal
  * created on 2019/11/21 16:08
  */
-@ToString
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
 public class News {
-
     private Integer id;
     private String title;
     private String author;
@@ -36,5 +31,4 @@ public class News {
         this.author = author;
         this.date = date;
     }
-
 }
