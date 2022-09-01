@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<hibernate-mapping package="com.ljh.entity.one2many.ba">
+<hibernate-mapping package="com.ljh.entity.many2one.ba">
     <class name="Customer2" table="CUSTOMERS2">
         <id name="customerId" type="java.lang.Integer">
             <column name="CUSTOMER_ID"/>
@@ -10,14 +10,12 @@
         <property name="customerName" type="string">
             <column name="CUSTOMER_NAME"/>
         </property>
-        
+
         <!-- set: 映射 set 类型的属性
                 table: 连接表的名称
-                inverse: 决定双向关联的哪一方来维护表和表之间的关系
-                    1) false 为主动方，true 为被动方
-                    2) 没有设置的情况下，双方都维护
-                    3) 将 n 方设为主控方将有助于性能改善
-                    4) 将 1 方设为主控方，会额外多出 UPDATE 语句，插入数据时无法同时插入外键列，因而无法为外键列添加非空约束
+                inverse: 决定双向关联的哪一方来维护关系
+                    1) 在【一】的映射文件的 <set/> 设置 inverse="true"，表示由【多】维护关系，【一】放弃维护关系
+                    2) 相当于注解中的 mappedBy
                 cascade: 指定级联操作，开发时不建议设定该属性，建议使用手功的方式来处理
                     save-update: 当通过 session 的 save(), update(), saveOrUpdate() 保存或更新当前对象时，级联保存所有关联的新建的临时对象，并且级联更新所有关联的游离对象
                     persist: 当通过 session 的 persist() 保存当前对象时，级联保存所有关联的新建的临时对象
@@ -32,7 +30,7 @@
                     all-delete-orphan: 包含 all 和 delete-orphan
                 order-by: 在查询时对集合中的元素进行排序，order-by 中使用的是表的字段名，而不是持久化类的属性名；还可以加入 SQL 函数 -->
         <set name="orders" table="ORDERS2" inverse="true" order-by="ORDER_NAME DESC">
-            <!-- key: n 的表中的外键列的名字 -->
+            <!-- key: 外键列的名称 -->
             <key column="CUSTOMER_ID"/>
             <!-- one-to-many: 映射一对多的关联关系 -->
             <one-to-many class="Order2"/>

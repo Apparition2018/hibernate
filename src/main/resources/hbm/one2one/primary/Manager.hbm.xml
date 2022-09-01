@@ -10,8 +10,7 @@
         <property name="mgrName" type="string">
             <column name="MGR_NAME"/>
         </property>
-        
+
         <one-to-one name="dept" class="com.ljh.entity.one2one.primary.Department2"/>
-        
     </class>
 </hibernate-mapping>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<hibernate-mapping package="com.ljh.entity.one2many.ba">
+<hibernate-mapping package="com.ljh.entity.many2one.ba">
     <class name="Order2" table="ORDERS2">
         <id name="orderId" type="java.lang.Integer">
             <column name="ORDER_ID"/>
@@ -10,7 +10,7 @@
         <property name="orderName" type="string">
             <column name="ORDER_NAME"/>
         </property>
-        
+
         <!-- many-to-one: 映射多对一的关联关系
                 name: 属性名称
                 column: 外键列的名称 -->

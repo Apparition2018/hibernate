@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- hibernate-mapping:
-        package: 指定映射文档中用于非限定类名的包前缀 -->
+<!-- hibernate-mapping: https://docs.jboss.org/hibernate/orm/3.6/reference/en-US/html/mapping.html#mapping-declaration-mapping
+        package: 指定用于映射文档中非限定类名的包前缀 -->
 <hibernate-mapping package="com.ljh.entity">
-    <!-- class:
-            name: 持久化类或接口的完全限定 Java 类名。如果缺少此属性，则假定映射是针对非pojo实体的
-            dynamic-insert: 指定应在运行时生成 INSERT SQL，并且只能包含其值不为空的列。默认 false
-            dynamic-update: 指定应在运行时生成 UPDATE SQL，并且只能包含其值已更改的列。默认 false
-            select-before-update: 指定 Hibernate 不执行 SQL UPDATE，除非确定对象确实被修改了。
-                当使用 update() 将临时对象关联到新会话时，Hibernate 会执行额外的 SQL SELECT 来确定是否确实需要更新。默认 false -->
+    <!-- class: https://docs.jboss.org/hibernate/orm/3.6/reference/en-US/html/mapping.html#mapping-declaration-class
+            name: 持久化类或接口的 Java 全限定类名。如果缺少此属性，则假定映射是针对非 POJO 实体的
+            dynamic-update: 默认 false，指定 UPDATE SQL 应在运行时生成，并且只包含值已更改的列
+            dynamic-insert: 默认 false，指定 INSERT SQL 应在运行时生成，并且只包含值不为空的列
+            select-before-update: 默认 false，指定 Hibernate 不执行 UPDATE SQL，除非确定对象确实被修改了。
+                只有当一个临时状态 (transient object) 与一个新会话关联时，Hibernate 才会执行额外的 SELECT SQL 来确定是否确实需要 UPDATE
+            lazy: 默认 true，是否启用延迟获取 -->
     <class name="News" table="NEWS" dynamic-update="true">
-        <!-- id:
-                unsaved-value: 标识符属性值，指示实例是新实例化的(未保存的)，将其与在前一个会话中保存或加载的游离实例区分开来 -->
+        <!-- id: https://docs.jboss.org/hibernate/orm/3.6/reference/en-US/html/mapping.html#mapping-declaration-id
+                unsaved-value: 一个标识符属性值，指示实例是新实例化的(unsaved)，将其与在前一个会话中保存或加载的游离实例(detached instances)区分开来 -->
         <id name="id" type="java.lang.Integer" column="ID">
-            <!-- generator: 命名一个Java类，用于为持久类的实例生成惟一标识符
-                    increment: 适用于代理主键，由 Hibernate 自动以递增方式生成标识符
-                        1) increment 不依赖于底层数据库，因此适合所有的数据库系统
-                        2) 适用于只有单个 Hibernate 应用进程访问同一个数据库的场合，不要在集群中使用
-                        3) OID 必须为 long, int 或 short 类型
-                    identity: 适用于代理主键，由底层数据库以identity columns (自动递增) 生成标识符
+            <!-- generator: 指定内置标识符生成器的别名
+                    https://docs.jboss.org/hibernate/orm/3.6/reference/en-US/html/mapping.html#d0e5294
+                    assigned: 默认，需要在调用 save() 之前设置 OID 值，否则则抛出 IdentifierGenerationException
+                    identity: 适用于代理主键，由底层数据库以 identity columns (自动递增) 生成标识符
                         1) 要求底层数据库支持 identity columns，如：DB2, MySQL, MS SQL Server, Sybase 和 HypersonicSQL
                         2) OID 必须为 long, int 或 short 类型
                     sequence: 适用于代理主键，由底层数据库以 sequence (序列) 生成标识符
@@ -36,25 +35,32 @@
                     native: 适用于代理主键，根据底层数据库对自动生成标识符的支持来自动选择 identity, sequence, hilo
                         1) 适用于跨数据库平台开发
                         2) OID 必须为 long, int 或 short 类型
+                    increment: 适用于代理主键，由 Hibernate 自动以递增方式生成标识符
+                        1) increment 不依赖于底层数据库，因此适合所有的数据库系统
+                        2) 只有在没有其它进程往同一张表插入数据时才是唯一的，不要在集群中使用
+                        3) OID 必须为 long, int 或 short 类型
                     uuid: 适用于代理主键，使用128位 UUID 算法生成在 network (使用 IP) 中唯一的标识符。UUID 被编码为一个长度为32的16进制数字字符串 -->
             <generator class="native"/>
         </id>
-        <!-- property:
-                not-null: 空值约束
-                unique: 唯一约束
-                update: 是否可以修改
-                index: 指定索引名称
-                length: 长度
-                scale: 小数位数
-                formula: 设置一个 SQL 表达式，Hibernate 将根据它来计算生成派生属性的值
+        <!-- property: https://docs.jboss.org/hibernate/orm/3.6/reference/en-US/html/mapping.html#d0e6525
+                name: 属性的名称，以小写字母开头
+                column: 默认为属性名称，映射数据库表列的名称。这也可以通过嵌套的 <column> 元素指定
+                update, insert: 默认 true，指定对应的字段是否可用于 UPDATE / INSERT 语句中
+                formula: 计算属性的 SQL 表达式。计算属性没有自己的列映射
                     派生属性：并不是持久化类的所有属性都直接和表的字段匹配，持久化类的有些属性的值必须在运行时通过计算才能得出，这种属性成为派生属性
                     1) formula="(SQL)"，英文括号不能少
                     2) SQL 表达式中的列名和表名都应该和数据库对应，而不是和持久化对象的属性对应
                     3) 在 formula 属性中使用参数，形式如：where cur.id = id，其中 id 就是参数，当前持久化对象的 id 属性对应的列的 id 值将走位参数传入
-                access: 指定 Hibernate 属性访问策略
-                    1) 默认 property，使用 get/set 访问
+                access: Hibernate 用于访问属性值的策略
+                    1) property，默认，使用 get/set 访问
                     2) field，使用反射访问
                     3) 实现接口 PropertyAccessor，自定义访问策略
+                lazy: 默认 false
+                unique: 使用 DDL 为列生成唯一约束。允许它成为 property-ref 的目标
+                not-null: 使用 DDL 为列生成非空约束
+                index: 索引名称
+                length: 长度
+                scale: 小数位数
                 type: Hibernate 映射类型，如果没有设定，Hibernate 会通过反射识别出持久化类的 Java 类型，然后自动使用与之对应的默认 Hibernate 映射类型
                     1) MySQL 不支持标准 SQL 的 CLOB 类型，用 TEXT/MEDIUMTEXT/LONGTEXT 来存储长度超过 255 的长文本数据
                     2) 在持久化类中，二进制大对象可以声明为 byte[] 或 java.sql.Blob；字符串可以声明为 java.lang.String 或 java.sql.Clob
@@ -88,8 +94,8 @@
                     binary          byte[]                              BLOB/VARCHAR -->
         <property name="title" column="TITLE" type="string" unique="true" update="false" index="news_index" length="20"/>
         <property name="author" column="AUTHOR" type="java.lang.String" index="news_index"/>
-        <property name="date" column="DATE" type="time"/>
-        <!-- 映射派生属性 -->
+        <property name="date" column="DATE" type="date"/>
+        <!-- 映射计算属性 -->
         <property name="desc" formula="(SELECT concat(author, ': ', title) FROM NEWS n WHERE n.id = id)"/>
         <!-- 映射大对象 -->
         <property name="content">

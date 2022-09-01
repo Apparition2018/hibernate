@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,74 +15,64 @@ import java.util.List;
  */
 public class SessionCacheTest extends BaseTest {
 
-    /**
-     * 测试 session 缓存 (一级缓存)
-     *
-     * 由于第一次查询通过访问数据库获取的数据已缓存在缓存中，所以第二次查询直接获取缓存中的数据，并没有访问数据库
-     */
     @Test
-    public void testSessionCache() {
+    public void testCache() {
+        // 访问数据库获取 news，并缓存到 Session 缓存中
         News news = session.get(News.class, 1);
         System.out.println("news = " + news);
-
+        // 从 Session 缓存获取 news2，并没有访问数据库
         News news2 = session.get(News.class, 1);
         System.out.println("news2 = " + news2);
     }
 
     /**
-     * flush() 使数据表中的记录和 Session 缓存中的对象的状态保存一致，为了保存一致，则可能会发送对应的 SQL 语句进行修改
-     * 1. 调用 Transaction 中的 commit()，先调用 session 的 flush()，再提交事务
-     * 2. flush() 可能会发送 SQL 语句，但不会提交事务
-     * 3. 注意：在未提交事务或显式的调用 session.flush() 之前，也有可能会进行 flush() 操作
-     * 1) 执行 HQL 或 QBC 查询，会先进行 flush() 操作，以得到数据表的最新的记录
+     * flush()：按照 Session 缓存对象来同步更新数据库
+     * 1. 调用 Transaction 的 commit() 时，会先隐式调用 flush()
+     * 2. 查询时 (HQL 或 Query by Criteria)，如果缓存中的持久化对象发生改变，会先隐式调用 flush()，以保证查询结果为持久化对象的最新状态
      */
     @Test
-    public void testSessionFlush() {
+    public void testFlush() {
         News news = session.get(News.class, 1);
-        news.setAuthor("SUN");
+        news.setAuthor("LJH2");
 
 //        session.flush();
-//        System.out.println("flush");
 
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<News> criteriaQuery = criteriaBuilder.createQuery(News.class);
         criteriaQuery.from(News.class);
+        // 由于 news.setAuthor("LJH2") 改变了 news，所以执行 Criteria 查询前会隐式调用 flush()，以保证查询结果为持久化对象的最新状态
         List<News> newsList = session.createQuery(criteriaQuery).getResultList();
         System.out.println("news = " + newsList.get(0));
-
     }
 
     /**
-     * 接上面注释...
-     * 2) 若记录的 ID 是由底层数据库使用自增的方式生成的，则在调用 save() 后，就会立即发送 INSERT 语句，因为 save() 后，必须保证对象的 ID 是存在的
+     * refresh()：会发送 SELECT 语句，更新 Session 缓存
+     * 但是否能够查询到对象最新的状态，还要看当前数据库的隔离级别
      */
     @Test
-    public void testSessionFlush2() {
-        News news = new News("Java", "SUN", new Date());
-        session.save(news);
-    }
-
-    /**
-     * refresh() 会强制发送 SELECT 语句，使 Session 缓存中对象的状态和数据表中的对应的记录保持一致！
-     */
-    @Test
-    public void testSessionRefresh() {
+    public void testRefresh() {
         News news = session.get(News.class, 1);
-        System.out.println("news = " + news); // 断点，控制台打印结果后，修改数据库字段值
-
+        System.out.println("news = " + news);
+        // 断点，修改数据库字段值 Author=LJH
         session.refresh(news);
         System.out.println("news = " + news);
     }
 
     /**
-     * clear() 清理缓存
+     * evict()：移除 Session 缓存中指定对象
+     * clear()：清除 Session 所有缓存
      */
     @Test
-    public void testClear() {
-        News news1 = session.get(News.class, 1);
-        System.out.println("news1 = " + news1);
-        session.clear();
+    public void testEvictAndClear() {
+        News news = session.get(News.class, 1);
+        System.out.println("news = " + news);
+        session.evict(news);
+        // 因为上面语句移除了缓存，所以会重新发送 SELECT 语句
         News news2 = session.get(News.class, 1);
         System.out.println("news2 = " + news2);
+        session.clear();
+        // 因为上面语句清除了所有缓存，所以会重新发送 SELECT 语句
+        News news3 = session.get(News.class, 1);
+        System.out.println("news3 = " + news3);
     }
 }

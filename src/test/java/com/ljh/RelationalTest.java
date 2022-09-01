@@ -1,13 +1,15 @@
 package com.ljh;
 
+import com.ljh.entity.component.Pay;
+import com.ljh.entity.component.Worker;
 import com.ljh.entity.many2many.ba.Category2;
 import com.ljh.entity.many2many.ba.Item2;
 import com.ljh.entity.many2many.ua.Category;
 import com.ljh.entity.many2many.ua.Item;
-import com.ljh.entity.one2many.ba.Customer2;
-import com.ljh.entity.one2many.ba.Order2;
-import com.ljh.entity.one2many.ua.Customer;
-import com.ljh.entity.one2many.ua.Order;
+import com.ljh.entity.many2one.ba.Customer2;
+import com.ljh.entity.many2one.ba.Order2;
+import com.ljh.entity.many2one.ua.Customer;
+import com.ljh.entity.many2one.ua.Order;
 import com.ljh.entity.one2one.foreign.Department;
 import com.ljh.entity.one2one.foreign.Manager;
 import com.ljh.entity.one2one.primary.Department2;
@@ -17,119 +19,116 @@ import org.junit.Test;
 import java.util.Set;
 
 /**
- * 对象关联
+ * 关系
  *
  * @author ljh
  * created on 2020/3/13 17:47
  */
-public class ObjectRelationalTest extends BaseTest {
+public class RelationalTest extends BaseTest {
 
     /**
-     * 测试 单向一对多
-     * 只设置 <many-to-one/>
+     * 组成关系：<component/>
+     */
+    @Test
+    public void testComponent() {
+        Pay pay = new Pay();
+        pay.setMonthlyPay(1000);
+        pay.setYearPay(80000);
+        pay.setVocationWithPay(5);
+
+        Worker worker = new Worker();
+        worker.setName("LJH");
+        worker.setPay(pay);
+        session.save(worker);
+    }
+
+    /**
+     * 单向多对一
+     * 【多】设置 <many-to-one/>
      */
     @Test
     public void testMany2OneSave() {
         Customer customer = new Customer();
-        customer.setCustomerName("AA");
+        customer.setCustomerName("LJH");
 
-        Order order1 = new Order();
-        order1.setOrderName("ORDER-1");
-
-        Order order2 = new Order();
-        order2.setOrderName("ORDER-2");
-
-        // 设定关联关系
+        Order order1 = new Order().setOrderName("ORDER-1");
         order1.setCustomer(customer);
+
+        Order order2 = new Order().setOrderName("ORDER-2");
         order2.setCustomer(customer);
 
-        // 执行 save 操作：先插入 Customer，再插入 Order。3 条 INSERT (推荐)
-        // 先插入 1 的一端，再插入 n 的一端，只有 INSERT 语句
+        // 先插入【一】，后插入【多】，只有 INSERT 语句
         session.save(customer);
-
         session.save(order1);
         session.save(order2);
 
-        // 先插入 Order， 再插入 Customer。3 条 INSERT，2 条 UPDATE
-        // 先插入 n 的一端，再插入 1 的一端，会多出 UPDATE 语句！
-        // 因为在插入多的一端时，无法确定 1 的一端的外键值，所以只能等 1 的一端插入后，再额外发送 UPDATE 语句
+        // 先插入【多】，后插入【一】，最后会多出 UPDATE【多】的语句
+        // 因为先插入【多】时，【一】还没有插入，外键还是空的，需要在【一】插入后再 UPDATE【多】的外键
 //        session.save(order1);
 //        session.save(order2);
-//        
 //        session.save(customer);
     }
+
     @Test
     public void testMany2OneGet() {
-        // 1. 若查询 n 的一端的一个对象，则默认情况下，只查询了 n 的一端的对象，而没有查询关联 1 的那一端对象
         Order order = session.get(Order.class, 1);
         System.out.println(order.getOrderName());
-
-        // 2. 在需要使用到关联的对象时，才发送对应的 SQL 语句 (懒加载)
-        Customer customer = order.getCustomer();
-        System.out.println(customer.getCustomerName());
-
-        // 3. 在查询 Customer 对象时，由 n 的一段导航到 1 的一端时，若此时 session 已被关闭，则会发生 LazyInitializationException 异常
-
-        // 4. 获取 Order 对象时，默认情况下，其关联的 Customer 对象是一个代理对象
+        // 第一次使用到 Customer，才发送 SELECT SQL（懒加载）
+        // 如果在此之前 Session 已关闭，则会抛出 LazyInitializationException
+        System.out.println(order.getCustomer().getCustomerName());
+        System.out.println(order.getCustomer().getClass().getName());
+        // 由于是懒加载，所以是 Customer 的代理对象 com.ljh.entity.many2one.ua.Customer$HibernateProxy$qAEn6V2V
         System.out.println(order.getCustomer().getClass().getName());
     }
+
+    @Test
+    public void testMany2OneUpdate() {
+        Order order = session.get(Order.class, 1);
+        order.getCustomer().setCustomerName("LJH2");
+    }
+
     @Test
     public void testMany2OneDelete() {
-        // 在不设定级联关系的情况下，且 1 这一端的对象有 n 的对象在引用，不能直接删除 1 这一端的对象
+        // 在不设定级联关系的情况下，且【一】有数据被【多】引用，不能直接删除【一】，会抛出 PersistenceException → ConstraintViolationException
+        // 解决：先删除【多】 或 设置级联关系
         Customer customer = session.get(Customer.class, 1);
         session.delete(customer);
     }
 
     /**
-     * 测试 双向一对多
-     * 既设置 <many-to-one/>
-     * 又设置 <set><key/><one-to-many/></set>
+     * 双向多对一
+     * 【多】设置 <many-to-one/>
+     * 【一】设置 <set inverse="true"><key/><one-to-many/></set>
      */
     @Test
-    public void testOne2ManySave() {
+    public void testMany2OneSave2() {
         Customer2 customer = new Customer2();
-        customer.setCustomerName("CC");
+        customer.setCustomerName("LJH");
 
-        Order2 order1 = new Order2();
-        order1.setOrderName("ORDER-5");
-
-        Order2 order2 = new Order2();
-        order2.setOrderName("ORDER-6");
-
-        // 设定关联关系
+        Order2 order1 = new Order2().setOrderName("ORDER-1");
         order1.setCustomer(customer);
+
+        Order2 order2 = new Order2().setOrderName("ORDER-2");
         order2.setCustomer(customer);
 
         customer.getOrders().add(order1);
         customer.getOrders().add(order2);
 
-        // 执行 save 操作：先插入 Customer，再插入 Order。3 条 INSERT，2 条 UPDATE
-        // 因为 1 的一端和 n 的一端都维护关联关系，所以会多出 UPDATE 语句
-        // 可以在 1 的一端的 <set> 节点指定 inverse="true"，来使 1 的一端放弃关联关系，这样就不会多出 UPDATE 语句
         session.save(customer);
-
         session.save(order1);
         session.save(order2);
-
-        // 执行 save 操作：先插入 Customer，再插入 Order。3 条 INSERT，4 条 UPDATE
-//        session.save(order1);
-//        session.save(order2);
-//
-//        session.save(customer);
     }
-    @Test
-    public void testOne2ManyGet() {
-        // 1. 对 n 的一端的集合使用延迟加载
-        Customer2 customer = session.get(Customer2.class, 2);
-        System.out.println(customer.getCustomerName());
 
-        // 2. 返回的 n 的一端的集合时 Hibernate 内置的集合类型 (or.hibernate.collection.internal.PersistentSet)
+    @Test
+    public void testMany2OneGet2() {
+        Customer2 customer = session.get(Customer2.class, 1);
+        System.out.println(customer.getCustomerName());
+        // 第一次使用到 Orders，才发送 SELECT SQL（懒加载）
+        // 如果在此之前 Session 已关闭，则会抛出 LazyInitializationException
+        System.out.println(customer.getOrders().iterator().next().getOrderName());
+        // Hibernate 内置集合类型：org.hibernate.collection.internal.PersistentSet
         // 该类型具有延迟加载和存放代理对象的功能
         System.out.println(customer.getOrders().getClass());
-
-        // 3. 若 session 已被关闭，则会发生 LazyInitializationException 异常
-
-        // 4. 在需要使用集合中元素的时候进行初始化
     }
 
     /**
@@ -141,6 +140,7 @@ public class ObjectRelationalTest extends BaseTest {
         Customer2 customer = session.get(Customer2.class, 4);
         customer.getOrders().clear();
     }
+
     /**
      * 测试 级联操作
      * <xxx cascade="save-update"/>
@@ -185,6 +185,7 @@ public class ObjectRelationalTest extends BaseTest {
         session.save(manager);
         session.save(department);
     }
+
     @Test
     public void testOne2OneForeignGet() {
         // 1. 默认人情况下对关联属性使用懒加载
@@ -199,6 +200,7 @@ public class ObjectRelationalTest extends BaseTest {
         Manager mgr = dept.getMgr();
         System.out.println(mgr.getMgrName());
     }
+
     @Test
     public void testOne2OneForeignGet2() {
         // 在查询没有外键的实体对象时，使用左外连接查询，一并查询出其关联的对象并已经进行初始化
@@ -237,32 +239,33 @@ public class ObjectRelationalTest extends BaseTest {
 
         Category category2 = new Category();
         category2.setName("C-BB");
-        
+
         Item item1 = new Item();
         item1.setName("I-AA");
 
         Item item2 = new Item();
         item2.setName("I-BB");
-        
+
         // 设定关联关系
         category1.getItems().add(item1);
         category1.getItems().add(item2);
-        
+
         category2.getItems().add(item1);
         category2.getItems().add(item2);
-        
+
         // 指定保存操作
         session.save(category1);
         session.save(category2);
-        
+
         session.save(item1);
         session.save(item2);
     }
+
     @Test
     public void testMany2ManyBaGet() {
         Category category = session.get(Category.class, 1);
         System.out.println(category.getName());
-        
+
         // 需要连接中间表
         Set<Item> items = category.getItems();
         System.out.println(items.size());
@@ -292,13 +295,13 @@ public class ObjectRelationalTest extends BaseTest {
 
         category2.getItems().add(item1);
         category2.getItems().add(item2);
-        
+
         item1.getCategories().add(category1);
         item1.getCategories().add(category2);
 
         item2.getCategories().add(category1);
         item2.getCategories().add(category2);
-        
+
         // 指定保存操作
         session.save(category1);
         session.save(category2);

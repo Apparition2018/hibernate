@@ -1,11 +1,11 @@
-package com.ljh.entity.one2many.ua;
+package com.ljh.entity.many2one.ua;
 
 import lombok.Data;
 
 /**
  * Customer
  * <p>
- * 演示单向一对多关联关系
+ * 演示单向多对一关联关系
  *
  * @author ljh
  * created on 2020/3/10 10:25

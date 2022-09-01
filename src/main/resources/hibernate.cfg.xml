@@ -3,11 +3,11 @@
         "http://www.hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
+        <!-- property -->
         <!-- 24.2. General configuration (基本配置) -->
         <!-- Hibernate 使用的数据库方言 -->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
-        
-        
+
         <!-- 24.4. Database connection properties (数据库连接属性) -->
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">root</property>
@@ -23,7 +23,6 @@
         -->
         <property name="hibernate.connection.isolation">2</property>
 
-        
         <!-- 24.5. c3p0 properties (C3P0 属性) -->
         <property name="hibernate.c3p0.max_size">10</property>
         <property name="hibernate.c3p0.min_size">5</property>
@@ -36,13 +35,11 @@
         <!-- 缓存 Statement 对象的数量 -->
         <property name="hibernate.c3p0.max_statements">10</property>
 
-        
         <!-- 24.6. Mapping Properties (映射属性) -->
         <!-- 24.6.2. Identifier options (标识符选项) -->
         <!-- 删除对象后，使其 OID 置为 null -->
         <property name="use_identifier_rollback">true</property>
-        
-        
+
         <!-- 24.9. Batching properties (批处理属性) -->
         <!-- 设置对数据库进行批量删除、批量更新和批量插入时的批量大小，Oracle 有效 -->
         <property name="hibernate.jdbc.batch_size">30</property>
@@ -50,56 +47,54 @@
         <!-- 设置 JDBC 的 Statement 读取数据的时候每次从数据库中取出的记录条数
             实质是调用 Statement.setFetchSize()，Oracle 有效 -->
         <property name="hibernate.jdbc.fetch_size">100</property>
-        
-        
+
         <!-- 24.10. Statement logging and statistics (语句日志记录和统计信息) -->
         <!-- 24.10.1. SQL statement logging (SQL 语句日志) -->
         <!-- 执行操作时是否在控制台打印 SQL -->
         <property name="hibernate.show_sql">true</property>
         <!-- 是否对 SQL 进行格式化 -->
         <property name="hibernate.format_sql">true</property>
-        
-        
+
         <!-- 24.15. Automatic schema generation (自动模式生成) -->
         <!--
-            hbm2ddl.auto: 可实现正向工程，即由 java 代码生成数据库脚本，进而生成具体的表结构。
+            hbm2ddl.auto: 实现正向工程，即由 java 代码生成数据库脚本，进而生成具体的表结构。
                 create: 根据 .hbm.xml 文件来生成数据表，但是每次运行都会删除一次表，再重新生成
                 create-drop: 根据 .hbm.xml 文件来生成数据表，当 sessionFactory 关闭时，表会自动删除
                 update: 根据 .hbm.xml 文件来生成数据表，若文件和数据库表结构不同，将更新表结构
                 validate: 和数据库中的表进行比较，若文件中的列在数据表中不存在，则抛出异常
         -->
         <property name="hibernate.hbm2ddl.auto">update</property>
-        
 
-        <!-- 需要关联的 Hibernate 映射文件 .hbm.xml -->
+
+        <!-- mapping: 映射文件 -->
         <mapping resource="hbm/News.hbm.xml"/>
-        
+
         <!-- Component 组件 -->
         <mapping resource="hbm/component/Worker.hbm.xml"/>
-        
-        <!-- Unidirectional associations one-to-many 单向一对多 -->
-        <mapping resource="hbm/one2many/ua/Customer.hbm.xml"/>
-        <mapping resource="hbm/one2many/ua/Order.hbm.xml"/>
-        <!-- Bidirectional associations one-to-many 双向一对多 -->
-        <mapping resource="hbm/one2many/ba/Customer.hbm.xml"/>
-        <mapping resource="hbm/one2many/ba/Order.hbm.xml"/>
-        
-        <!-- one-to-one 一对一 -->
-        <mapping resource="hbm/one2one/foreign/Manager.hbm.xml"/>
-        <mapping resource="hbm/one2one/foreign/Department.hbm.xml"/>
-        <mapping resource="hbm/one2one/primary/Manager.hbm.xml"/>
-        <mapping resource="hbm/one2one/primary/Department.hbm.xml"/>
-        
-        <!-- Unidirectional associations many-to-many 单向一对一 -->
-        <mapping resource="hbm/many2many/ua/Category.hbm.xml"/>
-        <mapping resource="hbm/many2many/ua/Item.hbm.xml"/>
-        <!-- Bidirectional associations many-to-many 双向一对一 -->
-        <mapping resource="hbm/many2many/ba/Category.hbm.xml"/>
-        <mapping resource="hbm/many2many/ba/Item.hbm.xml"/>
-        
-        <!-- Inheritance 继承 -->
-        <mapping resource="hbm/inheritance/subclass/Person.hbm.xml"/>
-        <mapping resource="hbm/inheritance/joined.subclass/Person.hbm.xml"/>
-        <mapping resource="hbm/inheritance/union.subclass/Person.hbm.xml"/>
+
+        <!-- Unidirectional associations many-to-one 单向多对一 -->
+        <mapping resource="hbm/many2one/ua/Customer.hbm.xml"/>
+        <mapping resource="hbm/many2one/ua/Order.hbm.xml"/>
+        <!-- Bidirectional associations many-to-one 双向多对一 -->
+        <mapping resource="hbm/many2one/ba/Customer.hbm.xml"/>
+        <mapping resource="hbm/many2one/ba/Order.hbm.xml"/>
+
+<!--        &lt;!&ndash; one-to-one 一对一 &ndash;&gt;-->
+<!--        <mapping resource="hbm/one2one/foreign/Manager.hbm.xml"/>-->
+<!--        <mapping resource="hbm/one2one/foreign/Department.hbm.xml"/>-->
+<!--        <mapping resource="hbm/one2one/primary/Manager.hbm.xml"/>-->
+<!--        <mapping resource="hbm/one2one/primary/Department.hbm.xml"/>-->
+
+<!--        &lt;!&ndash; Unidirectional associations many-to-many 单向一对一 &ndash;&gt;-->
+<!--        <mapping resource="hbm/many2many/ua/Category.hbm.xml"/>-->
+<!--        <mapping resource="hbm/many2many/ua/Item.hbm.xml"/>-->
+<!--        &lt;!&ndash; Bidirectional associations many-to-many 双向一对一 &ndash;&gt;-->
+<!--        <mapping resource="hbm/many2many/ba/Category.hbm.xml"/>-->
+<!--        <mapping resource="hbm/many2many/ba/Item.hbm.xml"/>-->
+
+<!--        &lt;!&ndash; Inheritance 继承 &ndash;&gt;-->
+<!--        <mapping resource="hbm/inheritance/subclass/Person.hbm.xml"/>-->
+<!--        <mapping resource="hbm/inheritance/joined.subclass/Person.hbm.xml"/>-->
+<!--        <mapping resource="hbm/inheritance/union.subclass/Person.hbm.xml"/>-->
     </session-factory>
 </hibernate-configuration>

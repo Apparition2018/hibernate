@@ -5,9 +5,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Date;
 
 /**
  * HibernateTest
@@ -22,33 +22,34 @@ public class HibernateTest {
      */
     @Test
     public void test() {
-        // 1. 创建一个 SessionFactory
-        SessionFactory sessionFactory;
-        // 1.1 创建 Configuration 对象：对应 hibernate 的基本配置信息和对象关系映射信息
+        // 1 创建 Configuration，默认读取 hibernate.cfg.xml
         Configuration configuration = new Configuration().configure();
-        // 1.2
-        sessionFactory = configuration.buildSessionFactory();
 
-        // 2. 创建一个 Session
+        // 2. 创建 SessionFactory
+        //  针对单个数据库映射关系经过编译后的内存镜像，是线程安全的
+        //  一旦构建完毕，即被赋予特定的配置信息
+        //  非常消耗资源，一般情况下一个应用中只初始化一个
+        SessionFactory sessionFactory = configuration.buildSessionFactory();
+
+        // 3. 创建 Session
         Session session = sessionFactory.openSession();
 
-        // 3. 开启事务
+        // 4. 开启事务
         Transaction transaction = session.beginTransaction();
 
-        // 4. 执行操作
-//        News news = new News("Java", "ljh", new Date());
-//        session.save(news);
-
-        News news = session.get(News.class, 1);
+        // 5. 执行操作
+        News news = new News("Java", "LJH", new Date());
+        session.saveOrUpdate(news);
+        news = session.get(News.class, 1);
         System.out.println("news = " + news);
 
-        // 5. 提交事务
+        // 6. 提交事务
         transaction.commit();
 
-        // 6. 关闭 Session
+        // 7. 关闭 Session
         session.close();
 
-        // 7. 关闭 SessionFactory
+        // 8. 关闭 SessionFactory
         sessionFactory.close();
     }
 }
