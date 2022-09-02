@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.ljh.entity.many2one.ba">
-    <class name="Customer2" table="CUSTOMERS2">
+    <class name="Customer2" table="CUSTOMER2">
         <id name="customerId" type="java.lang.Integer">
             <column name="CUSTOMER_ID"/>
             <generator class="native"/>
@@ -14,22 +14,27 @@
         <!-- set: 映射 set 类型的属性
                 table: 连接表的名称
                 inverse: 决定双向关联的哪一方来维护关系
-                    1) 在【一】的映射文件的 <set/> 设置 inverse="true"，表示由【多】维护关系，【一】放弃维护关系
+                    1) 在【1】的映射文件的 <set/> 设置 inverse="true"，表示由【n】维护关系，【1】放弃维护关系
                     2) 相当于注解中的 mappedBy
                 cascade: 指定级联操作，开发时不建议设定该属性，建议使用手功的方式来处理
-                    save-update: 当通过 session 的 save(), update(), saveOrUpdate() 保存或更新当前对象时，级联保存所有关联的新建的临时对象，并且级联更新所有关联的游离对象
-                    persist: 当通过 session 的 persist() 保存当前对象时，级联保存所有关联的新建的临时对象
-                    merge: ... 保存当前对象时，级联融合所有关联的游离对象
-                    delete: ...，级联删除所有关联的对象
-                    lock: ... 把当前游离对象加入到 session 缓存中时，会把所有关联的游离对象加入到 session 缓存中
-                    replicate: ... 复制当前对象时，会级联复制所有关联的对象
-                    evict: ... 从 session 缓存中清除当前对象时，会级联清除所有关联的对象
-                    refresh: ... 刷新当前对象时，会级联刷新所有关联的对象。所谓刷新时指读取数据库中相应数据，然后去同步更新 session 缓存中的相应对象
-                    all: 包含以上
-                    delete-orphan: 删除所有和当前对象解除关联关系的对象
-                    all-delete-orphan: 包含 all 和 delete-orphan
+                    https://docs.jboss.org/hibernate/orm/3.6/reference/en-US/html/mapping.html#d0e7576
+                    1) 基本操作
+                        persist             当通过 session 的 persist() 保存当前对象时，级联保存所有关联的新建的临时对象
+                        merge               保存当前对象时，级联融合所有关联的游离对象
+                        delete              级联删除所有关联的对象
+                        save-update         当通过 session 的 save(), update(), saveOrUpdate() 保存或更新当前对象时，级联保存所有关联的新建的临时对象，并且级联更新所有关联的游离对象
+                        evict               从 session 缓存中清除当前对象时，会级联清除所有关联的对象
+                        replicate           复制当前对象时，会级联复制所有关联的对象
+                        lock                把当前游离对象加入到 session 缓存中时，会把所有关联的游离对象加入到 session 缓存中
+                        refresh             刷新当前对象时，会级联刷新所有关联的对象。所谓刷新时指读取数据库中相应数据，然后去同步更新 session 缓存中的相应对象
+                    2) 特殊值
+                        all                 persist, merge, delete, save-update, evict, replicate, lock and refresh
+                        delete-orphan       删除所有和当前对象解除关联关系的对象
+                    3) 操作组合：如 cascade="persist,merge,evict"
                 order-by: 在查询时对集合中的元素进行排序，order-by 中使用的是表的字段名，而不是持久化类的属性名；还可以加入 SQL 函数 -->
-        <set name="orders" table="ORDERS2" inverse="true" order-by="ORDER_NAME DESC">
+<!--        <set name="orders" table="ORDER2" inverse="true" cascade="delete-orphan">-->
+<!--        <set name="orders" table="ORDER2" inverse="true" cascade="save-update">-->
+        <set name="orders" table="ORDER2" inverse="true" order-by="ORDER_NAME DESC">
             <!-- key: 外键列的名称 -->
             <key column="CUSTOMER_ID"/>
             <!-- one-to-many: 映射一对多的关联关系 -->

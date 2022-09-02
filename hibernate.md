@@ -58,14 +58,14 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 2. 映射关联关系
     1. [单向多对一](./src/main/resources/hbm/many2one/ua/Order.hbm.xml)
     2. [双向多对一/双向一对多](./src/main/resources/hbm/many2one/ba/Customer.hbm.xml)
-    1. [基于主键的一对一](./src/main/resources/hbm/one2one/primary/Department.hbm.xml)
-    2. [基于外键的一对一](./src/main/resources/hbm/one2one/foreign/Department.hbm.xml)
-    5. 单向多对多
-    6. 双向多对多
+    3. [基于外键的一对一](./src/main/resources/hbm/one2one/foreign/Department.hbm.xml)
+    4. [基于主键的一对一](./src/main/resources/hbm/one2one/primary/Department.hbm.xml)
+    5. [单向多对多](./src/main/resources/hbm/many2many/ua/Teacher.hbm.xml)
+    6. [双向多对多](./src/main/resources/hbm/many2many/ba/Teacher.hbm.xml)
 3. 映射继承关系
-    1. subclass
-    2. joined-subclass
-    3. union-subclass
+    1. [subclass](./src/main/resources/hbm/inheritance/subclass/Person.hbm.xml)
+    2. [joined-subclass](./src/main/resources/hbm/inheritance/joined.subclass/Person.hbm.xml)
+    3. [union-subclass](./src/main/resources/hbm/inheritance/union.subclass/Person.hbm.xml)
 ---
 ## Session
 - 应用程序与数据库之间交互操作的一个单线程对象，是 Hibernate 的运作中心

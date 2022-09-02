@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<hibernate-mapping package="com.ljh.entity.many2many.ba">
+<hibernate-mapping package="com.ljh.entity.many2many.ua">
     <!-- n-n 关联：必须使用中间连接表
             1) 单向多对多只在一端使用集合属性，双向多对多在两端都使用集合属性
-            2) 双向多对多，其中一端必须设置 inverse="true"，否则两端都维护关联关系可能会造成主键冲突 -->
-    
-    <class name="Category2" table="CATEGORIES2">
+            2) 双向多对多其中一端必须设置 inverse="true"，否则两端都维护关联关系可能会造成主键冲突 -->
+    <class name="Teacher" table="TEACHER">
         <id name="id" type="java.lang.Integer">
             <column name="ID"/>
             <generator class="native"/>
@@ -14,13 +13,13 @@
         <property name="name" type="string">
             <column name="NAME"/>
         </property>
-        
+
         <!-- set:
                 table: 指定中间表 -->
-        <set name="items" table="CATEGORIES2_ITEMS2">
-            <key column="C_ID"/>
+        <set name="students" table="TEACHER_STUDENT">
+            <key column="T_ID"/>
             <!-- many-to-many: 映射多对多的关联关系 -->
-            <many-to-many class="Item2" column="I_ID"/>
+            <many-to-many class="Student" column="S_ID"/>
         </set>
     </class>
 </hibernate-mapping>

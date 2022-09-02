@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<hibernate-mapping package="com.ljh.entity.many2many.ua">
-    <class name="Item" table="ITEMS">
+<hibernate-mapping package="com.ljh.entity.many2many.ba">
+    <class name="Student2" table="STUDENT2">
         <id name="id" type="java.lang.Integer">
             <column name="ID"/>
             <generator class="native"/>
@@ -10,6 +10,10 @@
         <property name="name" type="string">
             <column name="NAME"/>
         </property>
-        
+
+        <set name="teachers" table="TEACHER2_STUDENT2" inverse="true">
+            <key column="T_ID"/>
+            <many-to-many class="Teacher2" column="S_ID"/>
+        </set>
     </class>
 </hibernate-mapping>

@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.ljh.entity.one2one.foreign">
-    <class name="Department" table="DEPARTMENTS">
+    <class name="Department" table="DEPARTMENT">
         <id name="deptId" type="java.lang.Integer">
             <column name="DEPT_ID"/>
             <generator class="native"/>
@@ -12,8 +12,8 @@
         </property>
 
         <!-- 基于外键的 1-1 关联：其外键可以存放在任意一方
-                在存放外键的一方设置 <many-to-one> 元素，并使用 unique="true" 属性表示为 1-1 关联
-                另外一方设置 <one-to-one> 元素，并可以使用 property-ref 属性指定使用被关联实体主键以外的字段作为关联字段 -->
+                持有外键的一方设置 <many-to-one> 元素，并使用 unique="true" 属性表示为 1-1 关联
+                没有外键的一方设置 <one-to-one> 元素，并可以使用 property-ref 属性指定使用被关联实体主键以外的字段作为关联字段 -->
         <!-- many-to-one:
                 unique: 为外键列设置唯一约束；将其作为 property-ref 的目标，使之成为 1-1 关联 -->
         <many-to-one name="mgr" class="Manager" column="MGR_ID" unique="true"/>

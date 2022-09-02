@@ -1,9 +1,10 @@
 package com.ljh.entity.many2many.ua;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
- * Item
+ * Student
  * <p>
  * 演示单向多对多关联关系
  *
@@ -11,7 +12,8 @@ import lombok.Data;
  * created on 2020/3/16 16:01
  */
 @Data
-public class Item {
+@Accessors(chain = true)
+public class Student {
     private Integer id;
     private String name;
 }

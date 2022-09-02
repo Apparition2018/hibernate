@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.ljh.entity.many2one.ua">
-    <class name="Order" table="ORDERS">
+    <class name="Order" table="ORDER">
         <id name="orderId" type="java.lang.Integer">
             <column name="ORDER_ID"/>
             <generator class="native"/>

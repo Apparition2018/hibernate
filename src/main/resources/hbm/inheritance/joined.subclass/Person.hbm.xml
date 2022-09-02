@@ -2,27 +2,27 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.ljh.entity.inheritance.joined.subclass">
-    <class name="Person2" table="PERSONS2">
+    <class name="Person2" table="PERSON2">
         <id name="id" type="java.lang.Integer">
             <column name="ID"/>
             <generator class="native"/>
         </id>
-        
+
         <property name="name" type="string">
             <column name="NAME"/>
         </property>
         <property name="age" type="int">
             <column name="AGE"/>
         </property>
-        
-        <!-- 映射子类 Student，使用 joined-subclass 进行映射
+
+        <!-- joined-subclass: 映射继承关系
             1. 每个子类一张表
             2. 子类实例由父类表和子类表共同存储
             3. 需为每个子类使用 key 元素映射共有主键
             4. 子类增加的属性可以添加非空约束 -->
-        <joined-subclass name="Student2" table="STUDENTS2">
-            <key column="STUDENT_ID"/>
-            <property name="school" type="string" column="SCHOOL"/>
+        <joined-subclass name="Staff2" table="STAFF2">
+            <key column="STAFF_ID"/>
+            <property name="company" type="string" column="COMPANY"/>
         </joined-subclass>
     </class>
 </hibernate-mapping>

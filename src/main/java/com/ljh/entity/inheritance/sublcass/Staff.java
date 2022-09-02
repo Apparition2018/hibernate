@@ -2,9 +2,10 @@ package com.ljh.entity.inheritance.sublcass;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
- * Student
+ * Staff
  * <p>
  * 演示 subclass 继承关系
  *
@@ -12,7 +13,8 @@ import lombok.EqualsAndHashCode;
  * created on 2020/3/26 11:30
  */
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class Student extends Person {
-    private String school;
+public class Staff extends Person {
+    private String company;
 }

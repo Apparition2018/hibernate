@@ -1,6 +1,8 @@
 package com.ljh.entity.one2one.primary;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * Department
@@ -10,7 +12,9 @@ import lombok.Data;
  * @author ljh
  * created on 2020/3/13 17:32
  */
-@Data
+@Getter
+@Setter
+@Accessors(chain = true)
 public class Department2 {
     private Integer deptId;
     private String deptName;

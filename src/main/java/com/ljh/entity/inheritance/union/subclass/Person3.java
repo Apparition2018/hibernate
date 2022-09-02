@@ -1,6 +1,7 @@
 package com.ljh.entity.inheritance.union.subclass;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * Person3
@@ -11,6 +12,7 @@ import lombok.Data;
  * created on 2020/3/27 14:21
  */
 @Data
+@Accessors(chain = true)
 public class Person3 {
     private Integer id;
     private String name;

@@ -1,6 +1,8 @@
 package com.ljh.entity.one2one.foreign;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * Manager
@@ -10,7 +12,9 @@ import lombok.Data;
  * @author ljh
  * created on 2020/3/11 10:31
  */
-@Data
+@Getter
+@Setter
+@Accessors(chain = true)
 public class Manager {
     private Integer mgrId;
     private String mgrName;

@@ -79,22 +79,22 @@
         <mapping resource="hbm/many2one/ba/Customer.hbm.xml"/>
         <mapping resource="hbm/many2one/ba/Order.hbm.xml"/>
 
-<!--        &lt;!&ndash; one-to-one 一对一 &ndash;&gt;-->
-<!--        <mapping resource="hbm/one2one/foreign/Manager.hbm.xml"/>-->
-<!--        <mapping resource="hbm/one2one/foreign/Department.hbm.xml"/>-->
-<!--        <mapping resource="hbm/one2one/primary/Manager.hbm.xml"/>-->
-<!--        <mapping resource="hbm/one2one/primary/Department.hbm.xml"/>-->
+        <!-- one-to-one 一对一 -->
+        <mapping resource="hbm/one2one/foreign/Manager.hbm.xml"/>
+        <mapping resource="hbm/one2one/foreign/Department.hbm.xml"/>
+        <mapping resource="hbm/one2one/primary/Manager.hbm.xml"/>
+        <mapping resource="hbm/one2one/primary/Department.hbm.xml"/>
 
-<!--        &lt;!&ndash; Unidirectional associations many-to-many 单向一对一 &ndash;&gt;-->
-<!--        <mapping resource="hbm/many2many/ua/Category.hbm.xml"/>-->
-<!--        <mapping resource="hbm/many2many/ua/Item.hbm.xml"/>-->
-<!--        &lt;!&ndash; Bidirectional associations many-to-many 双向一对一 &ndash;&gt;-->
-<!--        <mapping resource="hbm/many2many/ba/Category.hbm.xml"/>-->
-<!--        <mapping resource="hbm/many2many/ba/Item.hbm.xml"/>-->
+        <!-- Unidirectional associations many-to-many 单向一对一 -->
+        <mapping resource="hbm/many2many/ua/Teacher.hbm.xml"/>
+        <mapping resource="hbm/many2many/ua/Student.hbm.xml"/>
+        <!-- Bidirectional associations many-to-many 双向一对一 -->
+        <mapping resource="hbm/many2many/ba/Teacher.hbm.xml"/>
+        <mapping resource="hbm/many2many/ba/Student.hbm.xml"/>
 
-<!--        &lt;!&ndash; Inheritance 继承 &ndash;&gt;-->
-<!--        <mapping resource="hbm/inheritance/subclass/Person.hbm.xml"/>-->
-<!--        <mapping resource="hbm/inheritance/joined.subclass/Person.hbm.xml"/>-->
-<!--        <mapping resource="hbm/inheritance/union.subclass/Person.hbm.xml"/>-->
+        <!-- Inheritance 继承 -->
+        <mapping resource="hbm/inheritance/subclass/Person.hbm.xml"/>
+        <mapping resource="hbm/inheritance/joined.subclass/Person.hbm.xml"/>
+        <mapping resource="hbm/inheritance/union.subclass/Person.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
