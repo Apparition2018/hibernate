@@ -51,7 +51,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 ### 映射对象标识符
 - Hibernate 使用对象标识符(OID)来建立内存中的对象和数据库中记录的对应关系，对象的 OID 和数据表的主键对应。Hibernate 通过标识符生成器来为主键赋值
 - Hibernate 推荐在数据表中使用代理主键，即不具备业务含义的字段，代理主键通常为整数类型，因为整数类型比字符串类型要节省更多的数据库空间
-- 在对象/关系映射文件中，&lt;id&gt;元素用来设置对象标识符，&lt;generator&gt;子元素用来设定标识符生成器
+- 在对象/关系映射文件中，<id&gt;元素用来设置对象标识符，<generator&gt;子元素用来设定标识符生成器
 - Hibernate 提供了标识符生成器接口：IdentifierGenerator，并提供了各种内置实现
 ### 映射关系
 1. [映射组成关系](./src/main/resources/hbm/component/Worker.hbm.xml)
@@ -120,11 +120,52 @@ ORM (Object/Relation Mapping): 对象/关系 映射
     - isOpen(): 检查 Session 是否仍然打开
     - doWork(Work work): 通过 JDBC 的 Connection 执行 JDBC 操作
 ---
-## Hibernate 检索策略
-### 类级别的检索策略
-- 类级别可选的检索策略
-    - 立即加载检索
-    - 延迟加载检索
-- 类级别的检索策略可以通过 <class> 元素的 lazy 属性进行设置
-- 
+## [Hibernate 检索策略](./src/test/java/com/ljh/QueryStrategyTest.java)
+1. 类级别的检索策略，<class/&gt;
+    - lazy：是否延迟检索
+        - false：立即检索
+        - true：延迟检索
+            - 调用 load() 时返回目标对象的代理对象，仅存储 OID
+            - 第一次访问非 OID 属性时，才发送 SELECT 语句
+2. 一对多和多对多的检索策略，<set/&gt;
+    - lazy：是否延迟检索
+        - true：延迟检索
+            - 调用集合的 iterator(), size(), isEmpty(), contains() 等方法会初始化集合
+            - 调用 Hibernate.initialize() 显式初始化
+        - extra：增强延迟检索
+            - 调用集合的 iterator() 会初始化集合
+            - 调用集合的 size(), contains(), iesEmpty()，不会初始化集合，仅通过特定 SELECT 语句查询必要的信息，
+                如：size() 会发送 SELECT count(OID) 语句
+    - fetch：
+        - select：
+            - 没有设置 batch-size：等值查询，`select ... from O where C_ID=?`
+            - 设置了 batch-size：in 查询，`select ... from O where C_ID in (?,?...)`
+        - subselect：忽略 batch-size 属性
+            - 子查询，`select ... from O where C_ID in (select C_ID from C)`
+        - join：忽略 lazy 属性；HQL 忽略 fetch="join"
+            - 迫切左外连接查询，`select ... from C c left outer join O o on c.C_ID=o.C_ID where c.C_ID=?`
+   - batch-size：批量检索的数量，采用 in 查询
+3. 多对一和一对一的检索策略
+    - <many-to-one lazy/>：是否延迟检索
+    - <many-to-one fetch/>：参考 <set fetch/&gt;
+    - <class batch-size/&gt;：批量检索的数量，采用 in 查询
+---
+## [Hibernate 检索方式](./src/test/java/com/ljh/QueryWayTest.java)
+1. 导航对象图：根据已经加载的对象导航到其他对象
+2. OID：对象的 OID
+3. HQL：Hibernate Query Language，面向对象的查询语句
+    1. 通过 Session 创建 Query 对象
+        1. createQuery(queryString)
+        2. getNamedQuery(queryName)：queryName 对应 .hbm.xml 文件中 <query/> 的 name 属性值
+    2. 动态绑定参数：setParameter()
+        - 依赖于 JDBC API 中的 PreparedStatement 的预定义 SQL 语句功能
+        - 方式：
+            1. 按照参数名字绑定：:name
+            2. 按照参数位置绑定：?n
+    3. 调用 Query 相关方法
+    - 检索策略
+        - 如果 HQL 中没有显式指定检索策略，将使用 .hbm.xml 中配置的检索策略
+        - HQL 忽略 .hbm.xml 中配置的迫切左外连接(fetch="join")
+4. QBC：Query By Criteria，封装了基于字符串形式的查询语句，提供了更加面向对象的查询接口
+5. 本地 SQL
 ---

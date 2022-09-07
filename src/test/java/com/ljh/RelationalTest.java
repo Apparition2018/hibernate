@@ -88,7 +88,7 @@ public class RelationalTest extends BaseTest {
         public void testMany2OneGet() {
             Order order = session.get(Order.class, 1);
             System.out.println(order.getOrderName());
-            // 第一次使用到关联对象 customer，才发送 SELECT SQL（懒加载）
+            // 第一次使用到关联对象 customer，才发送 SELECT 语句（懒加载）
             // 如果在此之前 Session 已关闭，则会抛出 LazyInitializationException
             System.out.println(order.getCustomer().getCustomerName());
             System.out.println(order.getCustomer().getClass().getName());
@@ -138,7 +138,7 @@ public class RelationalTest extends BaseTest {
         public void testMany2OneGetAndOrderBy() {
             Customer2 customer = session.get(Customer2.class, 1);
             System.out.println(customer.getCustomerName());
-            // 第一次使用到关联对象 orders，才发送 SELECT SQL（懒加载）
+            // 第一次使用到关联对象 orders，才发送 SELECT 语句（懒加载）
             // 如果在此之前 Session 已关闭，则会抛出 LazyInitializationException
             System.out.println(customer.getOrders().iterator().next().getOrderName());
             // Hibernate 内置集合类型：org.hibernate.collection.internal.PersistentSet
@@ -192,7 +192,7 @@ public class RelationalTest extends BaseTest {
             department.setMgr(manager);
             manager.setDept(department);
 
-            // 先保存没有外键列的对象，减少 UPDATE SQL
+            // 先保存没有外键列的对象，减少 UPDATE 语句
             session.save(manager);
             session.save(department);
         }
@@ -201,7 +201,7 @@ public class RelationalTest extends BaseTest {
         public void testOne2OneForeignGet() {
             Department dept = session.get(Department.class, 1);
             System.out.println(dept.getDeptName());
-            // 第一次使用到关联对象 mgr，才发送 SELECT SQL（懒加载）
+            // 第一次使用到关联对象 mgr，才发送 SELECT 语句（懒加载）
             // 如果在此之前 Session 已关闭，则会抛出 LazyInitializationException
             System.out.println(dept.getMgr().getMgrName());
         }
@@ -256,7 +256,7 @@ public class RelationalTest extends BaseTest {
         @Test
         public void testMany2ManyBaGet() {
             Teacher teacher = session.get(Teacher.class, 1);
-            // 第一次使用到关联对象 students，才发送 SELECT SQL（懒加载），SELECT ... from TEACHER_STUDENT ts inner join STUDENT s
+            // 第一次使用到关联对象 students，才发送 SELECT 语句（懒加载），SELECT ... from TEACHER_STUDENT ts inner join STUDENT s
             System.out.println(teacher.getStudents().size());
         }
 

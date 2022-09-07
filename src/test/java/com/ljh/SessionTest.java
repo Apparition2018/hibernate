@@ -53,7 +53,7 @@ public class SessionTest extends BaseTest {
      * 2. 获取不到值返回 null
      * <p>
      * load()
-     * 1. lazy="true"时，使用延迟加载，不立即发送 SELECT 语句，而是得到一个代理对象，该代理对象只保存了 OID 值，直到第一次使用到对象的时候才会发送 SELECT 语句
+     * 1. lazy="true"时，使用延迟加载，不立即发送 SELECT 语句，而是得到一个代理对象，该代理对象只保存了 OID 值，直到第一次访问非 OID 属性时，才会发送 SELECT 语句
      * 2. 获取不到值抛出异常
      * 3. 在第一次使用对象之前，如果 Session 已经关闭，则抛出 LazyInitializationException
      */
@@ -99,7 +99,7 @@ public class SessionTest extends BaseTest {
             // 上面 news.setId(300) 修改持久化对象 OID 值，UPDATE 时，会抛出 PersistenceException → HibernateException
             transaction.commit();
         } catch (PersistenceException e) {
-            System.err.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
         session.close();
 

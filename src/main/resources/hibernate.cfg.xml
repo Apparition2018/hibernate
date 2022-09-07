@@ -96,5 +96,13 @@
         <mapping resource="hbm/inheritance/subclass/Person.hbm.xml"/>
         <mapping resource="hbm/inheritance/joined.subclass/Person.hbm.xml"/>
         <mapping resource="hbm/inheritance/union.subclass/Person.hbm.xml"/>
+
+        <!-- Query strategies 检索策略 -->
+        <mapping resource="hbm/query.strategy/Customer.hbm.xml"/>
+        <mapping resource="hbm/query.strategy/Order.hbm.xml"/>
+
+        <!-- Query way 查询方式 -->
+        <mapping resource="hbm/query.way/Department.hbm.xml"/>
+        <mapping resource="hbm/query.way/Employee.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

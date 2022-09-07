@@ -1,6 +1,8 @@
-package com.ljh.entity.strategy;
+package com.ljh.entity.query.strategy;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,12 +10,14 @@ import java.util.Set;
 /**
  * Customer
  * <p>
- * 演示双向一对多检索策略
+ * 演示检索策略
  *
  * @author ljh
  * created on 2020/3/27 15:32
  */
-@Data
+@Getter
+@Setter
+@Accessors(chain = true)
 public class Customer3 {
     private Integer customerId;
     private String customerName;

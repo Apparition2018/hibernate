@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<hibernate-mapping package="com.ljh.entity.strategy">
-    <class name="Order3" table="ORDER2">
+<hibernate-mapping package="com.ljh.entity.query.strategy">
+    <class name="Order3" table="ORDER3">
         <id name="orderId" type="java.lang.Integer">
             <column name="ORDER_ID"/>
             <generator class="native"/>
@@ -11,6 +11,8 @@
             <column name="ORDER_NAME"/>
         </property>
 
-        <many-to-one name="customer" class="Customer3" column="CUSTOMER_ID"/>
+<!--        <many-to-one name="customer" class="Customer3" column="CUSTOMER_ID" lazy="false"/>-->
+<!--        <many-to-one name="customer" class="Customer3" column="CUSTOMER_ID" fetch="join"/>-->
+        <many-to-one name="customer" class="Customer3" column="CUSTOMER_ID" lazy="proxy"/>
     </class>
 </hibernate-mapping>

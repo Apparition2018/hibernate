@@ -20,7 +20,7 @@ import java.util.Date;
 public class HbmTest extends BaseTest {
 
     /**
-     * 测试 <class dynamic-update="true"/>
+     * <class dynamic-update="true"/>
      */
     @Test
     public void testClassDynamicUpdate() {
@@ -31,7 +31,7 @@ public class HbmTest extends BaseTest {
     }
 
     /**
-     * 测试 <property update="false/>
+     * <property update="false/>
      */
     @Test
     public void testPropertyUpdate() {
@@ -41,7 +41,7 @@ public class HbmTest extends BaseTest {
     }
 
     /**
-     * 测试 <property formula="..."/>
+     * <property formula="..."/>
      */
     @Test
     public void testPropertyFormula() {
@@ -69,7 +69,7 @@ public class HbmTest extends BaseTest {
     }
 
     /**
-     * 测试 <column sql="mediumblob"/>
+     * <column sql="mediumblob"/>
      */
     @Test
     public void testColumnBlob() throws IOException {
