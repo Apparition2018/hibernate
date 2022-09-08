@@ -3,7 +3,7 @@
 ---
 ## Reference
 1. [Hibernate. Everything data.](https://hibernate.org/)
-2. [Hibernate ORM User Guide](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html)
+2. [Hibernate ORM User Guide](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html)
 3. [Hibernate 中文文档](https://hibernate.net.cn)
 4. [尚硅谷佟刚Hibernate框架教程_哔哩哔哩](https://www.bilibili.com/video/BV1KW411u7GJ)
 ---
@@ -25,7 +25,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 3. [创建对象/关系映射文件](./src/main/resources/hbm/News.hbm.xml)
 4. [通过 Hibernate API 编写访问数据库的代码](./src/test/java/com/ljh/HibernateTest.java)
 ---
-## [Hibernate 配置文件](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#configurations)
+## [配置文件](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#configurations)
 - 用于配置数据库连接和 Hibernate 运行时所需的各种属性
 - 每个 Hibernate 配置文件对应一个 Configuration 对象
 - Hibernate 配置文件有两种格式：
@@ -45,9 +45,9 @@ ORM (Object/Relation Mapping): 对象/关系 映射
         - 集合：set | list | map | array
             - one-to-many
             - many-to-many
-        - 子类：subclass | joined-subclass
+        - 子类：subclass | joined-subclass | union-subclass
         - 其它：component | any | ...
-    - 查询语句：query
+    - 查询语句：query | sql-query
 ### 映射对象标识符
 - Hibernate 使用对象标识符(OID)来建立内存中的对象和数据库中记录的对应关系，对象的 OID 和数据表的主键对应。Hibernate 通过标识符生成器来为主键赋值
 - Hibernate 推荐在数据表中使用代理主键，即不具备业务含义的字段，代理主键通常为整数类型，因为整数类型比字符串类型要节省更多的数据库空间
@@ -71,7 +71,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 - 应用程序与数据库之间交互操作的一个单线程对象，是 Hibernate 的运作中心
 
 ### [Session 缓存](./src/test/java/com/ljh/SessionCacheTest.java)
-- Session 缓存是 Hibernate 的一级缓存
+- Session 缓存是 Hibernate 的一级缓存，属于事务范围的缓存，默认开启
 - Session 缓存中的对象成为持久化对象
 #### 操作 Session 缓存
 1. flush()：按照 Session 缓存中的对象来同步更新数据库
@@ -120,7 +120,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
     - isOpen(): 检查 Session 是否仍然打开
     - doWork(Work work): 通过 JDBC 的 Connection 执行 JDBC 操作
 ---
-## [Hibernate 检索策略](./src/test/java/com/ljh/QueryStrategyTest.java)
+## [检索策略](./src/test/java/com/ljh/QueryStrategyTest.java)
 1. 类级别的检索策略，<class/&gt;
     - lazy：是否延迟检索
         - false：立即检索
@@ -150,7 +150,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
     - <many-to-one fetch/>：参考 <set fetch/&gt;
     - <class batch-size/&gt;：批量检索的数量，采用 in 查询
 ---
-## [Hibernate 检索方式](./src/test/java/com/ljh/QueryWayTest.java)
+## [检索方式](./src/test/java/com/ljh/QueryWayTest.java)
 1. 导航对象图：根据已经加载的对象导航到其他对象
 2. OID：对象的 OID
 3. [HQL](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#hql)：Hibernate Query Language，以对象模型为中心的非类型安全查询
@@ -172,4 +172,54 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 5. 本地 SQL 查询
     1. [New Native Queries](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#sql)
     2. [Legacy Native Queries](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#appendix-legacy-native-queries)
+---
+## [缓存](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#caching)
+### 二级缓存
+- 二级缓存是 SessionFactory 级别的，属于进程范围的缓存
+- SessionFactory 缓存分为两类：
+    1. 内置缓存：Hibernate 自带，只读，不可卸载；通常在 Hibernate 的初始化阶段，缓存 hbm.xml 文件内容
+    2. 外置缓存：即 Hibernate 二级缓存，缓存数据库数据，物理介质可以是内存或硬盘
+- 不适合放入二级缓存的数据
+    1. 经常被修改的数据
+    2. 不允许出现并发问题的数据
+    3. 与其它应用程序共享的数据
+- 四种缓存并发策略
+
+| Strategy             |              | Isolation Level  |
+|:---------------------|:-------------|:-----------------|
+| NONSTRICT_READ_WRITE | read-through | Read Uncommitted |
+| READ_WRITE           | write-though | Read Committed   |
+| TRANSACTIONAL        | write-though | Repeatable Read  |
+| READ_ONLY            |              | Serializable     |
+- 配置步骤
+    1. hibernate.cfg.xml
+    ```xml
+    <hibernate-configuration>
+        <property name="hibernate.cache.region.factory_class">ehcache</property>
+        <!-- 是否开启二级缓存 -->
+        <property name="hibernate.cache.use_second_level_cache">true</property>
+        
+        <!-- class-cache: 类级别二级缓存
+            如果不在这里配置，可以在 .hbm.xml 的 <class/> 配置 <cache/> -->
+        <class-cache class="com.ljh.entity.query.strategy.Customer3" usage="read-write"/>
+        <class-cache class="com.ljh.entity.query.strategy.Order3" usage="read-write"/>
+        <!-- collection-cache: 集合级别二级缓存
+            如果不在这里配置，可以在 .hbm.xml 的 <class/><set/> 配置 <cache/>-->
+        <collection-cache collection="com.ljh.entity.query.strategy.Customer3.orders" usage="read-write"/>
+    </hibernate-configuration>
+    ```
+    2. [ehcache.xml](./src/main/resources/ehcache.xml)（没有配置，则默认加载 ehcache-failsafe.xml）
+### 查询缓存
+- 使用步骤
+    1. 配置二级缓存
+    2. hibernate.cfg.xml
+    ```xml
+    <hibernate-configuration>
+        <!-- 是否启用查询缓存。每个查询仍需要 query.setCacheable(true); -->
+        <property name="hibernate.cache.use_query_cache">true</property>
+    </hibernate-configuration>
+    ```
+    3. 使用方式
+        1. Jakarta Persistence：`query.setHint("org.hibernate.cacheable", true);`
+        2. Hibernate native API：`query.setCacheable(true);`
 ---

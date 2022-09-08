@@ -33,4 +33,11 @@ public class BaseTest {
         session.close();
         sessionFactory.close();
     }
+
+    protected void closeAndOpenNewSession() {
+        transaction.commit();
+        session.close();
+        session = sessionFactory.openSession();
+        transaction = session.beginTransaction();
+    }
 }

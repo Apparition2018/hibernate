@@ -4,18 +4,18 @@
 <hibernate-configuration>
     <session-factory>
         <!-- property -->
-        <!-- 24.2. General configuration (基本配置) -->
-        <!-- Hibernate 使用的数据库方言 -->
+        <!-- 26.2. General configuration (基本配置) -->
+        <!-- 数据库方言 -->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
 
-        <!-- 24.4. Database connection properties (数据库连接属性) -->
+        <!-- 26.4. Database connection properties (数据库连接属性) -->
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">root</property>
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <!-- localhost:3306 是默认的，所以可以省略 -->
         <property name="hibernate.connection.url">jdbc:mysql:///hibernate?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=GMT%2B8</property>
         <!--
-            设置 Hibernate 的事务隔离级别：
+            事务隔离级别：
                 1   Read Uncommitted
                 2   Read Committed
                 4   Repeatable Read
@@ -23,7 +23,7 @@
         -->
         <property name="hibernate.connection.isolation">2</property>
 
-        <!-- 24.5. c3p0 properties (C3P0 属性) -->
+        <!-- 26.5. c3p0 properties (C3P0 属性) -->
         <property name="hibernate.c3p0.max_size">10</property>
         <property name="hibernate.c3p0.min_size">5</property>
         <!-- 当数据库连接池中的连接耗尽时，同一时刻可获取多少个数据库连接 -->
@@ -35,27 +35,37 @@
         <!-- 缓存 Statement 对象的数量 -->
         <property name="hibernate.c3p0.max_statements">10</property>
 
-        <!-- 24.6. Mapping Properties (映射属性) -->
-        <!-- 24.6.2. Identifier options (标识符选项) -->
+        <!-- 26.6. Mapping Properties (映射属性) -->
+        <!-- 26.6.2. Identifier options (标识符选项) -->
         <!-- 删除对象后，使其 OID 置为 null -->
-        <property name="use_identifier_rollback">true</property>
+        <property name="hibernate.use_identifier_rollback">true</property>
 
-        <!-- 24.9. Batching properties (批处理属性) -->
+        <!-- 26.9. Batching properties (批处理属性) -->
         <!-- 设置对数据库进行批量删除、批量更新和批量插入时的批量大小，Oracle 有效 -->
         <property name="hibernate.jdbc.batch_size">30</property>
-        <!-- 24.9.1. Fetching properties (获取属性) -->
+        <!-- 26.9.1. Fetching properties (获取属性) -->
         <!-- 设置 JDBC 的 Statement 读取数据的时候每次从数据库中取出的记录条数
             实质是调用 Statement.setFetchSize()，Oracle 有效 -->
         <property name="hibernate.jdbc.fetch_size">100</property>
 
-        <!-- 24.10. Statement logging and statistics (语句日志记录和统计信息) -->
-        <!-- 24.10.1. SQL statement logging (SQL 语句日志) -->
-        <!-- 执行操作时是否在控制台打印 SQL -->
+        <!-- 26.10. Statement logging and statistics (语句日志记录和统计信息) -->
+        <!-- 26.10.1. SQL statement logging (SQL 语句日志) -->
+        <!-- 是否在控制台打印 SQL -->
         <property name="hibernate.show_sql">true</property>
-        <!-- 是否对 SQL 进行格式化 -->
+        <!-- 是否格式化打印的 SQL -->
         <property name="hibernate.format_sql">true</property>
 
-        <!-- 24.15. Automatic schema generation (自动模式生成) -->
+        <!-- 26.11. Cache Properties (缓存属性) -->
+        <!-- cache.region.factory_class: 类完全限定名 -->
+<!--        <property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.internal.SingletonEhcacheRegionFactory</property>-->
+        <!-- cache.region.factory_class: 别名 -->
+        <property name="hibernate.cache.region.factory_class">ehcache</property>
+        <!-- 是否启用二级缓存 -->
+        <property name="hibernate.cache.use_second_level_cache">false</property>
+        <!-- 是否启用查询缓存。每个查询仍需要 query.setCacheable(true); -->
+        <property name="hibernate.cache.use_query_cache">true</property>
+
+        <!-- 26.15. Automatic schema generation (自动模式生成) -->
         <!--
             hbm2ddl.auto: 实现正向工程，即由 java 代码生成数据库脚本，进而生成具体的表结构。
                 create: 根据 .hbm.xml 文件来生成数据表，但是每次运行都会删除一次表，再重新生成
@@ -104,5 +114,13 @@
         <!-- Query way 查询方式 -->
         <mapping resource="hbm/query.way/Department.hbm.xml"/>
         <mapping resource="hbm/query.way/Employee.hbm.xml"/>
+
+        <!-- class-cache: 类级别二级缓存
+            如果不在这里配置，可以在 .hbm.xml 的 <class/> 配置 <cache/> -->
+        <class-cache class="com.ljh.entity.query.strategy.Customer3" usage="read-write"/>
+        <class-cache class="com.ljh.entity.query.strategy.Order3" usage="read-write"/>
+        <!-- collection-cache: 集合级别二级缓存
+            如果不在这里配置，可以在 .hbm.xml 的 <class/><set/> 配置 <cache/>-->
+        <collection-cache collection="com.ljh.entity.query.strategy.Customer3.orders" usage="read-write"/>
     </session-factory>
 </hibernate-configuration>

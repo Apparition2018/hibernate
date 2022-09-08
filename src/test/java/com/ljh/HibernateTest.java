@@ -7,8 +7,6 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.junit.Test;
 
-import java.util.Date;
-
 /**
  * HibernateTest
  *
@@ -38,9 +36,9 @@ public class HibernateTest {
         Transaction transaction = session.beginTransaction();
 
         // 5. 执行操作
-        News news = new News("Java", "LJH", new Date());
-        session.saveOrUpdate(news);
-        news = session.get(News.class, 1);
+//        News news = new News("Java", "LJH", new Date());
+//        session.saveOrUpdate(news);
+        News news = session.get(News.class, 1);
         System.out.println("news = " + news);
 
         // 6. 提交事务

@@ -68,10 +68,9 @@ public class SessionTest extends BaseTest {
         System.out.println(news.getClass().getName());
         // 这里会被认为是第一次使用到对象，发送 SELECT 语句
         System.out.println("news = " + news);
-        transaction.commit();
-        session.close();
 
-        session = sessionFactory.openSession();
+        this.closeAndOpenNewSession();
+
         news = session.load(News.class, 1);
         session.close();
         // 第一次使用到懒加载对象，但 Session 已关闭，所以抛出 LazyInitializationException
@@ -95,17 +94,14 @@ public class SessionTest extends BaseTest {
         news.setId(300);
         news.setAuthor("LJH2");
         try {
-            // 对象在 Session 缓存中，是持久化对象，所以 flush() 会发送 UPDATE 语句
+            // 持久化对象在 Session 缓存中，所以 session.commit() 隐式调用 flush() 时，会发送 UPDATE 语句
             // 上面 news.setId(300) 修改持久化对象 OID 值，UPDATE 时，会抛出 PersistenceException → HibernateException
-            transaction.commit();
+            this.closeAndOpenNewSession();
         } catch (PersistenceException e) {
             System.out.println(e.getMessage());
         }
-        session.close();
 
         /* 更新游离对象 */
-        session = sessionFactory.openSession();
-        transaction = session.beginTransaction();
         news.setAuthor("LJH3");
         // 对象不在 Session 缓存中，是游离对象，所以 flush() 不发送 UPDATE 语句
         transaction.commit();

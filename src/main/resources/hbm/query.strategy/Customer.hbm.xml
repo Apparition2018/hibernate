@@ -3,6 +3,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.ljh.entity.query.strategy">
     <class name="Customer3" table="CUSTOMER3" batch-size="5">
+        <cache usage="read-write"/>
         <id name="customerId" type="java.lang.Integer">
             <column name="CUSTOMER_ID"/>
             <generator class="native"/>
@@ -15,6 +16,7 @@
         <set name="orders" table="ORDER3" inverse="true" lazy="true" batch-size="5" fetch="select">
 <!--        <set name="orders" table="ORDER3" inverse="true" lazy="true" fetch="subselect">-->
 <!--        <set name="orders" table="ORDER3" inverse="true" lazy="true" fetch="join">-->
+            <cache usage="read-write"/>
             <key column="CUSTOMER_ID"/>
             <one-to-many class="Order3"/>
         </set>
