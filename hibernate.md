@@ -153,7 +153,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 ## [Hibernate 检索方式](./src/test/java/com/ljh/QueryWayTest.java)
 1. 导航对象图：根据已经加载的对象导航到其他对象
 2. OID：对象的 OID
-3. HQL：Hibernate Query Language，面向对象的查询语句
+3. [HQL](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#hql)：Hibernate Query Language，以对象模型为中心的非类型安全查询
     1. 通过 Session 创建 Query 对象
         1. createQuery(queryString)
         2. getNamedQuery(queryName)：queryName 对应 .hbm.xml 文件中 <query/> 的 name 属性值
@@ -162,10 +162,14 @@ ORM (Object/Relation Mapping): 对象/关系 映射
         - 方式：
             1. 按照参数名字绑定：:name
             2. 按照参数位置绑定：?n
-    3. 调用 Query 相关方法
+    3. 调用 Query 相关方法：如 list() 等
     - 检索策略
         - 如果 HQL 中没有显式指定检索策略，将使用 .hbm.xml 中配置的检索策略
         - HQL 忽略 .hbm.xml 中配置的迫切左外连接(fetch="join")
-4. QBC：Query By Criteria，封装了基于字符串形式的查询语句，提供了更加面向对象的查询接口
-5. 本地 SQL
+4. QBC：Query By Criteria，类型安全的查询
+    1. [New Criteria Queries](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#criteria)
+    2. [Legacy Criteria Queries](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#appendix-legacy-criteria)
+5. 本地 SQL 查询
+    1. [New Native Queries](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#sql)
+    2. [Legacy Native Queries](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#appendix-legacy-native-queries)
 ---

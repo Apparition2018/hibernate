@@ -13,7 +13,7 @@
         <many-to-one name="dept" class="Department3" column="DEPT_ID"/>
     </class>
 
-    <query name="midSalEmps">
-        <![CDATA[FROM Employee3 e WHERE e.salary > :minSal AND e.salary < :maxSal]]>
+    <query name="rangeSalEmps">
+        <![CDATA[FROM Employee3 e WHERE e.salary > :sal1 AND e.salary < :sal2]]>
     </query>
 </hibernate-mapping>
