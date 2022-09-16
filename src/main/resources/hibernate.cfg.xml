@@ -7,6 +7,9 @@
         <!-- 26.2. General configuration (基本配置) -->
         <!-- 数据库方言 -->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+        <!-- scoping of the current Session：jta, thread, managed current_session_context_class
+            如果未设置 CurrentSessionContext 但配置了 JTA，则默认为 JTASessionContext -->
+        <property name="hibernate.current_session_context_class">thread</property>
 
         <!-- 26.4. Database connection properties (数据库连接属性) -->
         <property name="hibernate.connection.username">root</property>

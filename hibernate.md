@@ -97,7 +97,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 | 游离状态 (Detached)  |  √   |       ×       |  maybe   |
 <img src="https://static.oschina.net/uploads/space/2017/0816/212113_Lbhn_3375733.png" width="500" alt="对象的状态转换"/>
 
-### [Session 方法](./src/test/java/com/ljh/SessionTest.java)
+### [Session 方法](./src/test/java/com/ljh/SessionMethodTest.java)
 - 获取
     - get(): 立即加载；获取不到值返回 null
     - load(): 当 lazy="true" 时，延迟加载；获取不到值抛出异常
@@ -119,6 +119,11 @@ ORM (Object/Relation Mapping): 对象/关系 映射
     - close(): 通过释放 JDBC 连接并进行清理来结束 Session；持久化 → 游离
     - isOpen(): 检查 Session 是否仍然打开
     - doWork(Work work): 通过 JDBC 的 Connection 执行 JDBC 操作
+### [管理 Session](./src/test/java/com/ljh/SessionContextTest.java)
+- 三种管理 Session 的方法：`<property name="hibernate.current_session_context_class"/></property>`
+    1. Session 对象的生命周期与本地线程绑定：thread
+    2. Session 对象的生命周期与 JTA 事务绑定：jta
+    3. Hibernate 委托程序管理 Session 对象的生命周期：managed
 ---
 ## [检索策略](./src/test/java/com/ljh/QueryStrategyTest.java)
 1. 类级别的检索策略，<class/&gt;
@@ -195,17 +200,19 @@ ORM (Object/Relation Mapping): 对象/关系 映射
     1. hibernate.cfg.xml
     ```xml
     <hibernate-configuration>
-        <property name="hibernate.cache.region.factory_class">ehcache</property>
-        <!-- 是否开启二级缓存 -->
-        <property name="hibernate.cache.use_second_level_cache">true</property>
-        
-        <!-- class-cache: 类级别二级缓存
-            如果不在这里配置，可以在 .hbm.xml 的 <class/> 配置 <cache/> -->
-        <class-cache class="com.ljh.entity.query.strategy.Customer3" usage="read-write"/>
-        <class-cache class="com.ljh.entity.query.strategy.Order3" usage="read-write"/>
-        <!-- collection-cache: 集合级别二级缓存
-            如果不在这里配置，可以在 .hbm.xml 的 <class/><set/> 配置 <cache/>-->
-        <collection-cache collection="com.ljh.entity.query.strategy.Customer3.orders" usage="read-write"/>
+        <session-factory>
+            <property name="hibernate.cache.region.factory_class">ehcache</property>
+            <!-- 是否开启二级缓存 -->
+            <property name="hibernate.cache.use_second_level_cache">true</property>
+            
+            <!-- class-cache: 类级别二级缓存
+                如果不在这里配置，可以在 .hbm.xml 的 <class/> 配置 <cache/> -->
+            <class-cache class="com.ljh.entity.query.strategy.Customer3" usage="read-write"/>
+            <class-cache class="com.ljh.entity.query.strategy.Order3" usage="read-write"/>
+            <!-- collection-cache: 集合级别二级缓存
+                如果不在这里配置，可以在 .hbm.xml 的 <class/><set/> 配置 <cache/>-->
+            <collection-cache collection="com.ljh.entity.query.strategy.Customer3.orders" usage="read-write"/>
+        </session-factory>
     </hibernate-configuration>
     ```
     2. [ehcache.xml](./src/main/resources/ehcache.xml)（没有配置，则默认加载 ehcache-failsafe.xml）
@@ -222,4 +229,51 @@ ORM (Object/Relation Mapping): 对象/关系 映射
     3. 使用方式
         1. Jakarta Persistence：`query.setHint("org.hibernate.cacheable", true);`
         2. Hibernate native API：`query.setCacheable(true);`
+---
+## [批量操作](./src/test/java/com/ljh/BatchOperationTest.java)
+1. Session
+    - 应即使从缓存中清空已经处理完毕并且不会再访问的对象。即在处理完一个对象或小批量对象后，立即 flush()，然后 clear()
+    ```
+    News news = null;
+    for (int i = 0; i < 1000000; i++) {
+        news = new News().setTitle("--" + i);
+        session.save(news);
+        if ((i + 1) % 20 == 0) {
+            session.flush();
+            session.clear();
+        }
+    }
+    ```
+    - 在 .cfg.xml 中设置 JDBC 单次批量处理的数目，应保证每次向数据库发送的批量 SQL 语句数目与 batch_size 属性一致 ???
+    - 若对象的主键 generator 为 identity，则 Hibernate 无法在 JDBC 层进行批量插入操作
+    - 建议关闭二级缓存
+    - 可滚动的结果 org.hibernate.ScrollableResults：不包含任何对象，只包含用于在线定位记录的游标。只有当程序遍历访问 ScrollableResults 对象的特定元素时，才会到数据库中加载相应的对象
+    ```
+    ScrollableResults sr = session.createQuery("FROM News").scroll();
+    int count = 0;
+    while (sr.next()) {
+        News news = (News) sr.get(0);
+        news.setTitle(news.getTitle()) + "*");
+        if ((count++ + 1) % 100 == 0) {
+            session.flush();
+            session.clear();
+        }
+    }
+    ```
+2. HQL：支持 `INSERT INTO ... SELECT ...`，不支持 `INSERT INTO ... VALUES ...`
+3. StatelessSession：与 Session 对比有以下区别
+    - 没有缓存，通过 StatelessSession 来加载、保存或更新后的对象处于游离状态
+    - 不与 Hibernate 二级缓存交互
+    - 调用 save()、update()、delete() 后，立即发送相应 SQL 语句，而不是计划发送 SQL 语句
+    - 不会对关联的对象进行任何级联操作
+    - 通过同一 StatelessSession 加载两个 OID 相同的对象，两对象内存地址不同
+    - StatelessSession 所做操作可被 Interceptor 捕获到，但是会被 Hibernate 的事件处理系统忽略掉
+4. JDBC API（推荐）
+```
+session.doWork(new Work() {
+    @Override
+    public void execute(Connection conn) throws SQLException {
+    }
+}
+```
 ---

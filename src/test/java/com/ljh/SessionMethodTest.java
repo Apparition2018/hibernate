@@ -12,7 +12,7 @@ import java.util.Date;
  * @author ljh
  * created on 2019/11/25 15:38
  */
-public class SessionTest extends BaseTest {
+public class SessionMethodTest extends BaseTest {
 
     /**
      * save()
