@@ -51,7 +51,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 ### 映射对象标识符
 - Hibernate 使用对象标识符(OID)来建立内存中的对象和数据库中记录的对应关系，对象的 OID 和数据表的主键对应。Hibernate 通过标识符生成器来为主键赋值
 - Hibernate 推荐在数据表中使用代理主键，即不具备业务含义的字段，代理主键通常为整数类型，因为整数类型比字符串类型要节省更多的数据库空间
-- 在对象/关系映射文件中，<id&gt;元素用来设置对象标识符，<generator&gt;子元素用来设定标识符生成器
+- 在 hbm.xml 中，`<id>`元素用来设置对象标识符，`<generator>`子元素用来设定标识符生成器
 - Hibernate 提供了标识符生成器接口：IdentifierGenerator，并提供了各种内置实现
 ### 映射关系
 1. [映射组成关系](./src/main/resources/hbm/component/Worker.hbm.xml)
@@ -126,13 +126,13 @@ ORM (Object/Relation Mapping): 对象/关系 映射
     3. Hibernate 委托程序管理 Session 对象的生命周期：managed
 ---
 ## [检索策略](./src/test/java/com/ljh/QueryStrategyTest.java)
-1. 类级别的检索策略，<class/&gt;
+1. 类级别的检索策略，`<class/>`
     - lazy：是否延迟检索
         - false：立即检索
         - true：延迟检索
             - 调用 load() 时返回目标对象的代理对象，仅存储 OID
             - 第一次访问非 OID 属性时，才发送 SELECT 语句
-2. 一对多和多对多的检索策略，<set/&gt;
+2. 一对多和多对多的检索策略，`<set/>`
     - lazy：是否延迟检索
         - true：延迟检索
             - 调用集合的 iterator(), size(), isEmpty(), contains() 等方法会初始化集合
@@ -151,9 +151,9 @@ ORM (Object/Relation Mapping): 对象/关系 映射
             - 迫切左外连接查询，`select ... from C c left outer join O o on c.C_ID=o.C_ID where c.C_ID=?`
    - batch-size：批量检索的数量，采用 in 查询
 3. 多对一和一对一的检索策略
-    - <many-to-one lazy/>：是否延迟检索
-    - <many-to-one fetch/>：参考 <set fetch/&gt;
-    - <class batch-size/&gt;：批量检索的数量，采用 in 查询
+    - `<many-to-one lazy/>`：是否延迟检索
+    - `<many-to-one fetch/>`：参考 `<set fetch/>`
+    - `<class batch-size/`>`：批量检索的数量，采用 in 查询
 ---
 ## [检索方式](./src/test/java/com/ljh/QueryWayTest.java)
 1. 导航对象图：根据已经加载的对象导航到其他对象
@@ -161,7 +161,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 3. [HQL](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#hql)：Hibernate Query Language，以对象模型为中心的非类型安全查询
     1. 通过 Session 创建 Query 对象
         1. createQuery(queryString)
-        2. getNamedQuery(queryName)：queryName 对应 .hbm.xml 文件中 <query/> 的 name 属性值
+        2. getNamedQuery(queryName)：queryName 对应 hbm.xml 文件的 `<query name/>`
     2. 动态绑定参数：setParameter()
         - 依赖于 JDBC API 中的 PreparedStatement 的预定义 SQL 语句功能
         - 方式：
@@ -169,8 +169,8 @@ ORM (Object/Relation Mapping): 对象/关系 映射
             2. 按照参数位置绑定：?n
     3. 调用 Query 相关方法：如 list() 等
     - 检索策略
-        - 如果 HQL 中没有显式指定检索策略，将使用 .hbm.xml 中配置的检索策略
-        - HQL 忽略 .hbm.xml 中配置的迫切左外连接(fetch="join")
+        - 如果 HQL 中没有显式指定检索策略，将使用 hbm.xml 中配置的检索策略
+        - HQL 忽略 hbm.xml 中配置的迫切左外连接(fetch="join")
 4. QBC：Query By Criteria，类型安全的查询
     1. [New Criteria Queries](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#criteria)
     2. [Legacy Criteria Queries](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#appendix-legacy-criteria)
@@ -206,11 +206,11 @@ ORM (Object/Relation Mapping): 对象/关系 映射
             <property name="hibernate.cache.use_second_level_cache">true</property>
             
             <!-- class-cache: 类级别二级缓存
-                如果不在这里配置，可以在 .hbm.xml 的 <class/> 配置 <cache/> -->
+                如果不在这里配置，可以在 hbm.xml 的 <class/> 配置 <cache/> -->
             <class-cache class="com.ljh.entity.query.strategy.Customer3" usage="read-write"/>
             <class-cache class="com.ljh.entity.query.strategy.Order3" usage="read-write"/>
             <!-- collection-cache: 集合级别二级缓存
-                如果不在这里配置，可以在 .hbm.xml 的 <class/><set/> 配置 <cache/>-->
+                如果不在这里配置，可以在 hbm.xml 的 <class/><set/> 配置 <cache/>-->
             <collection-cache collection="com.ljh.entity.query.strategy.Customer3.orders" usage="read-write"/>
         </session-factory>
     </hibernate-configuration>
@@ -222,8 +222,10 @@ ORM (Object/Relation Mapping): 对象/关系 映射
     2. hibernate.cfg.xml
     ```xml
     <hibernate-configuration>
-        <!-- 是否启用查询缓存。每个查询仍需要 query.setCacheable(true); -->
-        <property name="hibernate.cache.use_query_cache">true</property>
+        <session-factory>
+            <!-- 是否启用查询缓存。每个查询仍需要 query.setCacheable(true); -->
+            <property name="hibernate.cache.use_query_cache">true</property>
+        </session-factory>
     </hibernate-configuration>
     ```
     3. 使用方式
@@ -245,7 +247,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
     }
     ```
     - 在 .cfg.xml 中设置 JDBC 单次批量处理的数目，应保证每次向数据库发送的批量 SQL 语句数目与 batch_size 属性一致 ???
-    - 若对象的主键 generator 为 identity，则 Hibernate 无法在 JDBC 层进行批量插入操作
+    - 若对象的主键 generator 为 identity，则 Hibernate 无法在 JDBC 层进行批量插入操作 ???
     - 建议关闭二级缓存
     - 可滚动的结果 org.hibernate.ScrollableResults：不包含任何对象，只包含用于在线定位记录的游标。只有当程序遍历访问 ScrollableResults 对象的特定元素时，才会到数据库中加载相应的对象
     ```

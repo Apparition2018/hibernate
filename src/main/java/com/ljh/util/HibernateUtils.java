@@ -15,6 +15,7 @@ public class HibernateUtils {
     private HibernateUtils() {
     }
 
+    // 和 Spring 整合时，可以通过依赖注入来控制 SessionFactory 为单例：https://www.baeldung.com/persistence-layer-with-spring-and-hibernate
     private volatile static SessionFactory sessionFactory;
 
     public static SessionFactory getSessionFactory() {
