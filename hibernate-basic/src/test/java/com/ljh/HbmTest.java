@@ -12,7 +12,7 @@ import java.sql.Blob;
 import java.util.Date;
 
 /**
- * hbm.xml 文件配置
+ * .hbm.xml 文件配置
  *
  * @author ljh
  * created on 2020/1/13 17:33

@@ -71,9 +71,9 @@
         <!-- 26.15. Automatic schema generation (自动模式生成) -->
         <!--
             hbm2ddl.auto: 实现正向工程，即由 java 代码生成数据库脚本，进而生成具体的表结构。
-                create: 根据 hbm.xml 文件来生成数据表，但是每次运行都会删除一次表，再重新生成
-                create-drop: 根据 hbm.xml 文件来生成数据表，当 sessionFactory 关闭时，表会自动删除
-                update: 根据 hbm.xml 文件来生成数据表，若文件和数据库表结构不同，将更新表结构
+                create: 根据 .hbm.xml 文件来生成数据表，但是每次运行都会删除一次表，再重新生成
+                create-drop: 根据 .hbm.xml 文件来生成数据表，当 sessionFactory 关闭时，表会自动删除
+                update: 根据 .hbm.xml 文件来生成数据表，若文件和数据库表结构不同，将更新表结构
                 validate: 和数据库中的表进行比较，若文件中的列在数据表中不存在，则抛出异常
         -->
         <property name="hibernate.hbm2ddl.auto">update</property>
@@ -119,11 +119,11 @@
         <mapping resource="hbm/query.way/Employee.hbm.xml"/>
 
         <!-- class-cache: 类级别二级缓存
-            如果不在这里配置，可以在 hbm.xml 的 <class/> 配置 <cache/> -->
+            如果不在这里配置，可以在 .hbm.xml 的 <class/> 配置 <cache/> -->
         <class-cache class="com.ljh.entity.query.strategy.Customer3" usage="read-write"/>
         <class-cache class="com.ljh.entity.query.strategy.Order3" usage="read-write"/>
         <!-- collection-cache: 集合级别二级缓存
-            如果不在这里配置，可以在 hbm.xml 的 <class/><set/> 配置 <cache/>-->
+            如果不在这里配置，可以在 .hbm.xml 的 <class/><set/> 配置 <cache/>-->
         <collection-cache collection="com.ljh.entity.query.strategy.Customer3.orders" usage="read-write"/>
     </session-factory>
 </hibernate-configuration>

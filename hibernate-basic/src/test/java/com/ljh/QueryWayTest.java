@@ -111,7 +111,7 @@ public class QueryWayTest extends BaseTest {
     }
 
     /**
-     * HQL 普通连接：根据 hbm.xml 决定检索策略
+     * HQL 普通连接：根据 .hbm.xml 决定检索策略
      * 左外连接(LEFT JOIN)
      * 内连接（INNER JOIN)
      */
@@ -279,7 +279,7 @@ public class QueryWayTest extends BaseTest {
     @Test
     public void testNamedQuery() {
         /* 旧版 Named SQL */
-        // queryName 对应 hbm.xml 文件中 <query/>|<sql-query/> 的 name 属性值
+        // queryName 对应 .hbm.xml 文件中 <query/>|<sql-query/> 的 name 属性值
         // <query>      →   HQL
         // <sql-query>  →   SQL
         Query<Employee3> query = session.getNamedQuery("rangeSalEmps");

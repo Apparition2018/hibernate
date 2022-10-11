@@ -33,7 +33,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
     - hibernate.cfg.xml
 ---
 ## [对象/关系映射文件](https://docs.jboss.org/hibernate/orm/3.6/reference/en-US/html/mapping.html)
-- hbm.xml：Hibernate Mapping
+- .hbm.xml：Hibernate Mapping
 - 通过映射文件，Hibernate 可以理解类与数据表之间的对应关系，类属性与数据表列之间的对应关系
 - 在运行时 Hibernate 将根据这个映射文件来生成各种 SQL 语句
 ### 映射文件结构
@@ -51,7 +51,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 ### 映射对象标识符
 - Hibernate 使用对象标识符(OID)来建立内存中的对象和数据库中记录的对应关系，对象的 OID 和数据表的主键对应。Hibernate 通过标识符生成器来为主键赋值
 - Hibernate 推荐在数据表中使用代理主键，即不具备业务含义的字段，代理主键通常为整数类型，因为整数类型比字符串类型要节省更多的数据库空间
-- 在 hbm.xml 中，`<id>`元素用来设置对象标识符，`<generator>`子元素用来设定标识符生成器
+- 在 .hbm.xml 中，`<id>`元素用来设置对象标识符，`<generator>`子元素用来设定标识符生成器
 - Hibernate 提供了标识符生成器接口：IdentifierGenerator，并提供了各种内置实现
 ### 映射关系
 1. [映射组成关系](./src/main/resources/hbm/component/Worker.hbm.xml)
@@ -161,7 +161,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 3. [HQL](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#hql)：Hibernate Query Language，以对象模型为中心的非类型安全查询
     1. 通过 Session 创建 Query 对象
         1. createQuery(queryString)
-        2. getNamedQuery(queryName)：queryName 对应 hbm.xml 文件的 `<query name/>`
+        2. getNamedQuery(queryName)：queryName 对应 .hbm.xml 文件的 `<query name/>`
     2. 动态绑定参数：setParameter()
         - 依赖于 JDBC API 中的 PreparedStatement 的预定义 SQL 语句功能
         - 方式：
@@ -169,8 +169,8 @@ ORM (Object/Relation Mapping): 对象/关系 映射
             2. 按照参数位置绑定：?n
     3. 调用 Query 相关方法：如 list() 等
     - 检索策略
-        - 如果 HQL 中没有显式指定检索策略，将使用 hbm.xml 中配置的检索策略
-        - HQL 忽略 hbm.xml 中配置的迫切左外连接(fetch="join")
+        - 如果 HQL 中没有显式指定检索策略，将使用 .hbm.xml 中配置的检索策略
+        - HQL 忽略 .hbm.xml 中配置的迫切左外连接(fetch="join")
 4. QBC：Query By Criteria，类型安全的查询
     1. [New Criteria Queries](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#criteria)
     2. [Legacy Criteria Queries](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#appendix-legacy-criteria)
@@ -182,7 +182,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 ### 二级缓存
 - 二级缓存是 SessionFactory 级别的，属于进程范围的缓存
 - SessionFactory 缓存分为两类：
-    1. 内置缓存：Hibernate 自带，只读，不可卸载；通常在 Hibernate 的初始化阶段，缓存 hbm.xml 文件内容
+    1. 内置缓存：Hibernate 自带，只读，不可卸载；通常在 Hibernate 的初始化阶段，缓存 .hbm.xml 文件内容
     2. 外置缓存：即 Hibernate 二级缓存，缓存数据库数据，物理介质可以是内存或硬盘
 - 不适合放入二级缓存的数据
     1. 经常被修改的数据
@@ -206,11 +206,11 @@ ORM (Object/Relation Mapping): 对象/关系 映射
             <property name="hibernate.cache.use_second_level_cache">true</property>
             
             <!-- class-cache: 类级别二级缓存
-                如果不在这里配置，可以在 hbm.xml 的 <class/> 配置 <cache/> -->
+                如果不在这里配置，可以在 .hbm.xml 的 <class/> 配置 <cache/> -->
             <class-cache class="com.ljh.entity.query.strategy.Customer3" usage="read-write"/>
             <class-cache class="com.ljh.entity.query.strategy.Order3" usage="read-write"/>
             <!-- collection-cache: 集合级别二级缓存
-                如果不在这里配置，可以在 hbm.xml 的 <class/><set/> 配置 <cache/>-->
+                如果不在这里配置，可以在 .hbm.xml 的 <class/><set/> 配置 <cache/>-->
             <collection-cache collection="com.ljh.entity.query.strategy.Customer3.orders" usage="read-write"/>
         </session-factory>
     </hibernate-configuration>

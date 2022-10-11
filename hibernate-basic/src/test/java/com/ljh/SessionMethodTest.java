@@ -83,7 +83,7 @@ public class SessionMethodTest extends BaseTest {
      * -    更新持久化对象会先发送 SELECT 语句来确定是否确实需要 UPDATE
      * -    持久化对象的 OID 是不能被修改，否则抛出 PersistenceException → HibernateException
      * 2. 更新一个游离对象，需要显式调用 update()
-     * -    更新游离对象都会发送 UPDATE 语句，除非在 hbm.xml 文件的 class 节点设置 select-before-update=true
+     * -    更新游离对象都会发送 UPDATE 语句，除非在 .hbm.xml 文件的 class 节点设置 select-before-update=true
      * -    更新游离对象时，如果 Session 缓存中已经存在相同 OID 的持久化对象，会抛出 NonUniqueObjectException
      * 3. 更新对象的 OID 在数据库中不存在时，抛出 StaleStateException
      */
