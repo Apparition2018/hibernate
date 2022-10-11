@@ -20,10 +20,10 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 - ORM 采用元数据来描述对象-关系映射细节，元数据通常采用 XML 格式，并且存放在专门的对象-关系映射文件中
 ---
 ## Hibernate 开发步骤
-1. [创建 Hibernate 配置文件](./src/main/resources/hibernate.cfg.xml)
-2. [创建持久化类](./src/main/java/com/ljh/entity/News.java)
-3. [创建对象/关系映射文件](./src/main/resources/hbm/News.hbm.xml)
-4. [通过 Hibernate API 编写访问数据库的代码](./src/test/java/com/ljh/HibernateTest.java)
+1. [创建 Hibernate 配置文件](hibernate-basic/src/main/resources/hibernate.cfg.xml)
+2. [创建持久化类](hibernate-basic/src/main/java/com/ljh/entity/News.java)
+3. [创建对象/关系映射文件](hibernate-basic/src/main/resources/hbm/News.hbm.xml)
+4. [通过 Hibernate API 编写访问数据库的代码](hibernate-basic/src/test/java/com/ljh/HibernateTest.java)
 ---
 ## [配置文件](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#configurations)
 - 用于配置数据库连接和 Hibernate 运行时所需的各种属性
@@ -54,23 +54,23 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 - 在 .hbm.xml 中，`<id>`元素用来设置对象标识符，`<generator>`子元素用来设定标识符生成器
 - Hibernate 提供了标识符生成器接口：IdentifierGenerator，并提供了各种内置实现
 ### 映射关系
-1. [映射组成关系](./src/main/resources/hbm/component/Worker.hbm.xml)
+1. [映射组成关系](hibernate-basic/src/main/resources/hbm/component/Worker.hbm.xml)
 2. 映射关联关系
-    1. [单向多对一](./src/main/resources/hbm/many2one/ua/Order.hbm.xml)
-    2. [双向多对一/双向一对多](./src/main/resources/hbm/many2one/ba/Customer.hbm.xml)
-    3. [基于外键的一对一](./src/main/resources/hbm/one2one/foreign/Department.hbm.xml)
-    4. [基于主键的一对一](./src/main/resources/hbm/one2one/primary/Department.hbm.xml)
-    5. [单向多对多](./src/main/resources/hbm/many2many/ua/Teacher.hbm.xml)
-    6. [双向多对多](./src/main/resources/hbm/many2many/ba/Teacher.hbm.xml)
+    1. [单向多对一](hibernate-basic/src/main/resources/hbm/many2one/ua/Order.hbm.xml)
+    2. [双向多对一/双向一对多](hibernate-basic/src/main/resources/hbm/many2one/ba/Customer.hbm.xml)
+    3. [基于外键的一对一](hibernate-basic/src/main/resources/hbm/one2one/foreign/Department.hbm.xml)
+    4. [基于主键的一对一](hibernate-basic/src/main/resources/hbm/one2one/primary/Department.hbm.xml)
+    5. [单向多对多](hibernate-basic/src/main/resources/hbm/many2many/ua/Teacher.hbm.xml)
+    6. [双向多对多](hibernate-basic/src/main/resources/hbm/many2many/ba/Teacher.hbm.xml)
 3. 映射继承关系
-    1. [subclass](./src/main/resources/hbm/inheritance/subclass/Person.hbm.xml)
-    2. [joined-subclass](./src/main/resources/hbm/inheritance/joined.subclass/Person.hbm.xml)
-    3. [union-subclass](./src/main/resources/hbm/inheritance/union.subclass/Person.hbm.xml)
+    1. [subclass](hibernate-basic/src/main/resources/hbm/inheritance/subclass/Person.hbm.xml)
+    2. [joined-subclass](hibernate-basic/src/main/resources/hbm/inheritance/joined.subclass/Person.hbm.xml)
+    3. [union-subclass](hibernate-basic/src/main/resources/hbm/inheritance/union.subclass/Person.hbm.xml)
 ---
 ## Session
 - 应用程序与数据库之间交互操作的一个单线程对象，是 Hibernate 的运作中心
 
-### [Session 缓存](./src/test/java/com/ljh/SessionCacheTest.java)
+### [Session 缓存](hibernate-basic/src/test/java/com/ljh/SessionCacheTest.java)
 - Session 缓存是 Hibernate 的一级缓存，属于事务范围的缓存，默认开启
 - Session 缓存中的对象成为持久化对象
 #### 操作 Session 缓存
@@ -97,7 +97,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 | 游离状态 (Detached)  |  √   |       ×       |  maybe   |
 <img src="https://static.oschina.net/uploads/space/2017/0816/212113_Lbhn_3375733.png" width="500" alt="对象的状态转换"/>
 
-### [Session 方法](./src/test/java/com/ljh/SessionMethodTest.java)
+### [Session 方法](hibernate-basic/src/test/java/com/ljh/SessionMethodTest.java)
 - 获取
     - get(): 立即加载；获取不到值返回 null
     - load(): 当 lazy="true" 时，延迟加载；获取不到值抛出异常
@@ -119,13 +119,13 @@ ORM (Object/Relation Mapping): 对象/关系 映射
     - close(): 通过释放 JDBC 连接并进行清理来结束 Session；持久化 → 游离
     - isOpen(): 检查 Session 是否仍然打开
     - doWork(Work work): 通过 JDBC 的 Connection 执行 JDBC 操作
-### [管理 Session](./src/test/java/com/ljh/SessionContextTest.java)
+### [管理 Session](hibernate-basic/src/test/java/com/ljh/SessionContextTest.java)
 - 三种管理 Session 的方法：`<property name="hibernate.current_session_context_class"/></property>`
     1. Session 对象的生命周期与本地线程绑定：thread
     2. Session 对象的生命周期与 JTA 事务绑定：jta
     3. Hibernate 委托程序管理 Session 对象的生命周期：managed
 ---
-## [检索策略](./src/test/java/com/ljh/QueryStrategyTest.java)
+## [检索策略](hibernate-basic/src/test/java/com/ljh/QueryStrategyTest.java)
 1. 类级别的检索策略，`<class/>`
     - lazy：是否延迟检索
         - false：立即检索
@@ -155,7 +155,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
     - `<many-to-one fetch/>`：参考 `<set fetch/>`
     - `<class batch-size/`>`：批量检索的数量，采用 in 查询
 ---
-## [检索方式](./src/test/java/com/ljh/QueryWayTest.java)
+## [检索方式](hibernate-basic/src/test/java/com/ljh/QueryWayTest.java)
 1. 导航对象图：根据已经加载的对象导航到其他对象
 2. OID：对象的 OID
 3. [HQL](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#hql)：Hibernate Query Language，以对象模型为中心的非类型安全查询
@@ -215,7 +215,7 @@ ORM (Object/Relation Mapping): 对象/关系 映射
         </session-factory>
     </hibernate-configuration>
     ```
-    2. [ehcache.xml](./src/main/resources/ehcache.xml)（没有配置，则默认加载 ehcache-failsafe.xml）
+    2. [ehcache.xml](hibernate-basic/src/main/resources/ehcache.xml)（没有配置，则默认加载 ehcache-failsafe.xml）
 ### 查询缓存
 - 使用步骤
     1. 配置二级缓存
@@ -278,4 +278,7 @@ session.doWork(new Work() {
     }
 }
 ```
+---
+## Spring Hibernate
+
 ---

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.ljh.entity">
+    <class name="Book" table="S_BOOK">
+        <id name="id" type="java.lang.Integer" column="ID">
+            <generator class="native"/>
+        </id>
+        <property name="bookName" type="java.lang.String" column="BOOK_NAME"/>
+        <property name="isbn" type="java.lang.String" column="ISBN"/>
+        <property name="price" type="int" column="PRICE"/>
+        <property name="stock" type="int" column="STOCK"/>
+    </class>
+</hibernate-mapping>

@@ -31,7 +31,7 @@ public class QueryWayTest extends BaseTest {
     public void testHql() {
         // 1. 创建 Query 对象
         String hql = "FROM Employee3 e WHERE e.salary > :sal AND e.email LIKE ?2 AND e.dept = ?3 ORDER BY e.salary";
-        Query<Employee3> query = session.createQuery(hql);
+        Query<Emp`loyee3> query = session.createQuery(hql);
 
         // 2. 绑定参数
         query

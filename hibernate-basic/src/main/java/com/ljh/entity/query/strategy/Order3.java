@@ -16,7 +16,6 @@ import java.util.Objects;
  */
 @Getter
 @Setter
-
 @Accessors(chain = true)
 public class Order3 {
     private Integer orderId;
