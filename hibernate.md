@@ -19,11 +19,11 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 - ORM 的思想：将关系数据库中表中的记录映射成为对象，以对象的形式展现，程序员可以把对数据库的操作转化为对对象的操作
 - ORM 采用元数据来描述对象-关系映射细节，元数据通常采用 XML 格式，并且存放在专门的对象-关系映射文件中
 ---
-## Hibernate 开发步骤
+## Hibernate 开发基本步骤
 1. [创建 Hibernate 配置文件](hibernate-basic/src/main/resources/hibernate.cfg.xml)
 2. [创建持久化类](hibernate-basic/src/main/java/com/ljh/entity/News.java)
 3. [创建对象/关系映射文件](hibernate-basic/src/main/resources/hbm/News.hbm.xml)
-4. [通过 Hibernate API 编写访问数据库的代码](hibernate-basic/src/test/java/com/ljh/HibernateTest.java)
+4. [使用 Hibernate API 访问数据库](hibernate-basic/src/test/java/com/ljh/HibernateTest.java)
 ---
 ## [配置文件](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#configurations)
 - 用于配置数据库连接和 Hibernate 运行时所需的各种属性
@@ -280,5 +280,38 @@ session.doWork(new Work() {
 ```
 ---
 ## Spring Hibernate
-
+1. 由 Spring IOC 容器来管理 SessionFactory
+```xml
+<beans>
+    <bean id="dataSource" class="">
+        <!-- <property/> -->
+    </bean>
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mappingLocations" value="classpath:hbm/*.hbm.xml"/>
+        <property name="hibernateProperties">
+            <!-- <value/> -->
+        </property>
+    </bean>
+</beans>
+```
+2. 让 Hibernate 使用上 Spring 的声明式事务
+```xml
+<beans>
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="purchase" propagation="REQUIRES_NEW"/>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="txPointcut" expression="execution(* com.ljh.service.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+    </aop:config>
+</beans>
+```
 ---
