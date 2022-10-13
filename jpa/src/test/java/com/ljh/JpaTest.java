@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.Date;
 
 /**
  * JpaTest
@@ -30,9 +31,12 @@ public class JpaTest {
         transaction.begin();
         // 4. 执行操作
         Customer customer = new Customer();
-        customer.setAge(30);
-        customer.setEmail("ljh@163.com");
         customer.setLastName("LJH");
+        customer.setEmail("ljh@163.com");
+        customer.setAge(30);
+        customer.setGender(Customer.GenderEnum.MALE);
+        customer.setBirth(new Date());
+        customer.setCreateTime(new Date());
         entityManager.persist(customer);
         // 5. 提交事务
         transaction.commit();
