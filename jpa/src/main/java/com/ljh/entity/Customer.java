@@ -2,6 +2,7 @@ package com.ljh.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,8 +15,9 @@ import java.util.Date;
  */
 @Getter
 @Setter
-@Table(name = "jpa_customer")
+@ToString
 @Entity
+@Table(name = "jpa_customer")
 public class Customer {
 
     @TableGenerator(

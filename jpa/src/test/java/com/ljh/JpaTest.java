@@ -8,6 +8,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * JpaTest
@@ -23,7 +25,9 @@ public class JpaTest {
     @Test
     public void test() {
         // 1. 创建 EntityManagerFactory
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("jpa");
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("hibernate.show_sql", false);
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("jpa", properties);
         // 2. 创建 EntityManager
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         // 3. 开启事务
