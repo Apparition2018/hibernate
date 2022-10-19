@@ -62,7 +62,7 @@ public class RelationalTest extends BaseTest {
          * 【n】设置 <many-to-one/>
          */
         @Test
-        public void testMany2OneSave() {
+        public void testManyToOneSave() {
             Customer customer = new Customer();
             customer.setCustomerName("LJH");
 
@@ -85,7 +85,7 @@ public class RelationalTest extends BaseTest {
         }
 
         @Test
-        public void testMany2OneGet() {
+        public void testManyToOneGet() {
             Order order = session.get(Order.class, 1);
             System.out.println(order.getOrderName());
             // 第一次使用到关联对象 customer，才发送 SELECT 语句（懒加载）
@@ -97,13 +97,13 @@ public class RelationalTest extends BaseTest {
         }
 
         @Test
-        public void testMany2OneUpdate() {
+        public void testManyToOneUpdate() {
             Order order = session.get(Order.class, 1);
             order.getCustomer().setCustomerName("LJH2");
         }
 
         @Test
-        public void testMany2OneDelete() {
+        public void testManyToOneDelete() {
             // 在不设定级联关系的情况下，且【1】有数据被【n】引用，不能直接删除【1】，会抛出 PersistenceException → ConstraintViolationException
             // 解决：先删除【n】 或 设置级联关系
             Customer customer = session.get(Customer.class, 1);
@@ -116,7 +116,7 @@ public class RelationalTest extends BaseTest {
          * 【1】设置 <set inverse="true"><key/><one-to-many/></set>
          */
         @Test
-        public void testMany2OneSave2() {
+        public void testManyToOneSave2() {
             Customer2 customer = new Customer2();
             customer.setCustomerName("LJH");
 
@@ -135,7 +135,7 @@ public class RelationalTest extends BaseTest {
         }
 
         @Test
-        public void testMany2OneGetAndOrderBy() {
+        public void testManyToOneGetAndOrderBy() {
             Customer2 customer = session.get(Customer2.class, 1);
             System.out.println(customer.getCustomerName());
             // 第一次使用到关联对象 orders，才发送 SELECT 语句（懒加载）
@@ -186,7 +186,7 @@ public class RelationalTest extends BaseTest {
          * 没有外键的一方 <one-to-one property-ref="mgr"/>
          */
         @Test
-        public void testOne2OneForeignSave() {
+        public void testOneToOneForeignSave() {
             Department department = new Department().setDeptName("DEPT-A");
             Manager manager = new Manager().setMgrName("MGR-A");
             department.setMgr(manager);
@@ -198,7 +198,7 @@ public class RelationalTest extends BaseTest {
         }
 
         @Test
-        public void testOne2OneForeignGet() {
+        public void testOneToOneForeignGet() {
             Department dept = session.get(Department.class, 1);
             System.out.println(dept.getDeptName());
             // 第一次使用到关联对象 mgr，才发送 SELECT 语句（懒加载）
@@ -207,7 +207,7 @@ public class RelationalTest extends BaseTest {
         }
 
         @Test
-        public void testOne2OneForeignGet2() {
+        public void testOneToOneForeignGet2() {
             Manager mgr = session.get(Manager.class, 1);
             // mgr 没有持有外键，所以使用到关联对象的时候，无法使用懒加载
             // 而是在查询 mgr 时，就使用左关联一并查询出关联对象了
@@ -220,7 +220,7 @@ public class RelationalTest extends BaseTest {
          * 另一端  <one-to-one/>
          */
         @Test
-        public void testOne2OnePrimarySave() {
+        public void testOneToOnePrimarySave() {
             Department2 department = new Department2().setDeptName("DEPT-B");
             Manager2 manager = new Manager2().setMgrName("MGR-B");
             department.setMgr(manager);
@@ -236,7 +236,7 @@ public class RelationalTest extends BaseTest {
          * 一端 <set><many-to-many></many-to-many></set>
          */
         @Test
-        public void testMany2ManyBaSave() {
+        public void testManyToManyBaSave() {
             Teacher teacher1 = new Teacher().setName("Jack");
             Teacher teacher2 = new Teacher().setName("Rose");
             Student student1 = new Student().setName("Tom");
@@ -254,7 +254,7 @@ public class RelationalTest extends BaseTest {
         }
 
         @Test
-        public void testMany2ManyBaGet() {
+        public void testManyToManyBaGet() {
             Teacher teacher = session.get(Teacher.class, 1);
             // 第一次使用到关联对象 students，才发送 SELECT 语句（懒加载），SELECT ... from TEACHER_STUDENT ts inner join STUDENT s
             System.out.println(teacher.getStudents().size());
@@ -266,7 +266,7 @@ public class RelationalTest extends BaseTest {
          * 一端 <set><many-to-many></many-to-many inverse="true"></set>
          */
         @Test
-        public void testMany2ManyUaSave() {
+        public void testManyToManyUaSave() {
             Teacher2 teacher1 = new Teacher2().setName("Jack");
             Teacher2 teacher2 = new Teacher2().setName("Rose");
             Student2 student1 = new Student2().setName("Tom");

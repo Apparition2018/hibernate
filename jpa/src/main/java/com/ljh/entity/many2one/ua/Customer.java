@@ -1,4 +1,4 @@
-package com.ljh.entity;
+package com.ljh.entity.many2one.ua;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +9,7 @@ import java.util.Date;
 
 /**
  * Customer
+ * 演示单向多对一关联关系
  *
  * @author ljh
  * created on 2022/10/12 16:34
@@ -34,7 +35,7 @@ public class Customer {
             allocationSize = 1
     )
     // GenerationType.TABLE：使用表来生成并记录主键
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "customerGen")
     @Id
     private Integer id;
     @Column(name = "last_name", length = 50, nullable = false)
@@ -51,8 +52,6 @@ public class Customer {
     private Date birth;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
-    @Version
-    private int version;
 
     @Transient
     public String getInfo() {

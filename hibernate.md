@@ -81,19 +81,19 @@ ORM (Object/Relation Mapping): 对象/关系 映射
         3. 查询时 (HQL 或 Query by Criteria)，如果缓存中的持久化对象发生改变，会先隐式调用 flush()，以保证查询结果为持久化对象的最新状态
     - Session 的 setFlushMode() 可以设置 flush 模式
 
-|     清理缓存的模式      | 各种查询方法 | Transaction 的 commit() | Session 的 flush() |
-|:----------------:|:------:|:----------------------:|:-----------------:|
-|  FlushMode.AUTO  |   清理   |           清理           |        清理         |
+| 清理缓存的模式          | 各种查询方法 | Transaction 的 commit() | Session 的 flush() |
+|:-----------------|:------:|:----------------------:|:-----------------:|
+| FlushMode.AUTO   |   清理   |           清理           |        清理         |
 | FlushMode.COMMIT |  不清理   |           清理           |        清理         |
 | FlushMode.NEVER  |  不清理   |          不清理           |        清理         |
 2. refresh()：会发送 SELECT 语句，并根据当前事务隔离级别，更新 Session 缓存
 3. clear()：清理缓存
 ### 对象的状态
-|        状态        | OID  | 在 Session 缓存中 | 数据库有对应记录 |
-|:----------------:|:----:|:-------------:|:--------:|
+| 状态               | OID  | 在 Session 缓存中 | 数据库有对应记录 |
+|:-----------------|:----:|:-------------:|:--------:|
 | 临时状态 (Transient) | null |       ×       |    ×     |
 | 持久化状态 (Persist)  |  √   |       √       |    √     |
-|  删除状态 (Removed)  |  √   |       ×       |    ×     |
+| 删除状态 (Removed)   |  √   |       ×       |    ×     |
 | 游离状态 (Detached)  |  √   |       ×       |  maybe   |
 <img src="https://static.oschina.net/uploads/space/2017/0816/212113_Lbhn_3375733.png" width="500" alt="对象的状态转换"/>
 

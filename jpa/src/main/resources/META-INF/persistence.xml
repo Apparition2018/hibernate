@@ -11,7 +11,8 @@
             2. 若项目中只有一个实现提供者时，可以不配置 -->
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <!-- 实体类 -->
-        <class>com.ljh.entity.Customer</class>
+        <class>com.ljh.entity.many2one.ua.Customer</class>
+        <class>com.ljh.entity.many2one.ua.Order</class>
         <properties>
             <!-- 数据库基本信息 -->
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

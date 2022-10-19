@@ -1,6 +1,6 @@
 package com.ljh;
 
-import com.ljh.entity.Customer;
+import com.ljh.entity.many2one.ua.Customer;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;

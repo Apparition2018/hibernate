@@ -69,6 +69,10 @@ public class SessionMethodTest extends BaseTest {
         // 这里会被认为是第一次使用到对象，发送 SELECT 语句
         System.out.println("news = " + news);
 
+        news = session.load(News.class, -1);
+        // org.hibernate.ObjectNotFoundException: No row with the given identifier exists: [com.ljh.entity.News#-1]
+        System.out.println(news);
+
         this.closeAndOpenNewSession();
 
         news = session.load(News.class, 1);
@@ -85,7 +89,7 @@ public class SessionMethodTest extends BaseTest {
      * 2. 更新一个游离对象，需要显式调用 update()
      * -    更新游离对象都会发送 UPDATE 语句，除非在 .hbm.xml 文件的 class 节点设置 select-before-update=true
      * -    更新游离对象时，如果 Session 缓存中已经存在相同 OID 的持久化对象，会抛出 NonUniqueObjectException
-     * 3. 更新对象的 OID 在数据库中不存在时，抛出 StaleStateException
+     * 3. 更新对象的 OID 在数据库中不存在，抛出 StaleStateException
      */
     @Test
     public void testUpdate() {
@@ -110,7 +114,7 @@ public class SessionMethodTest extends BaseTest {
         session.beginTransaction();
         // 从数据库获取 OID 为 1 的对象
         News news2 = session.get(News.class, 1);
-        // 更新 OID 为 1 的游离对象，抛出 NonUniqueObjectException
+        // 更新 OID 为 1 的游离对象，因为 Session 中已存在相同 OID 的持久化对象，所以抛出 NonUniqueObjectException
         session.update(news);
     }
 
@@ -133,13 +137,14 @@ public class SessionMethodTest extends BaseTest {
     /**
      * delete()
      * 1. 删除一个游离对象或持久化对象
-     * 2. 删除对象的 OID 在数据库不存在时，抛出 StaleStateException
+     * 2. 删除对象的 OID 在数据库不存在，抛出 StaleStateException
      * 3. 可以通过设置 hibernate 配置文件 hibernate.use_identifier_rollback 为 true，使删除对象后，把其 OID 置为 null
      */
     @Test
     public void testDelete() {
-        News news = new News().setId(5);
+        News news = new News().setId(-1);
         session.delete(news);
+        // 到事务提交时，抛出 org.hibernate.StaleStateException: Batch update returned unexpected row count from update [0];
     }
 
     /**
