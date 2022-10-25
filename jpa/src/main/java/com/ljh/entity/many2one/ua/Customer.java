@@ -1,6 +1,7 @@
 package com.ljh.entity.many2one.ua;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -17,8 +18,10 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 @Entity
 @Table(name = "jpa_customer")
+@NamedQuery(name = "queryById", query = "FROM Customer c WHERE c.id = ?1")
 public class Customer {
 
     @TableGenerator(
@@ -53,18 +56,13 @@ public class Customer {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
-    @Transient
-    public String getInfo() {
-        return "lastName: " + lastName + ", email: " + email;
+    public Customer(String lastName, int age) {
+        this.lastName = lastName;
+        this.age = age;
     }
 
     @Getter
     public enum GenderEnum {
         MALE, FEMALE
-    }
-
-    public static void main(String[] args) {
-        System.err.println(GenderEnum.MALE.ordinal());
-        System.err.println(GenderEnum.MALE.name());
     }
 }

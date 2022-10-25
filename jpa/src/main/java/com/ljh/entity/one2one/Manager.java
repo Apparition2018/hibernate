@@ -23,7 +23,6 @@ public class Manager {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer id;
-    @Column(name = "mgr_name")
     private String mgrName;
     // 没有外键的一方使用（不维护关系），使用 mappedBy
     @OneToOne(mappedBy = "mgr", fetch = FetchType.LAZY)

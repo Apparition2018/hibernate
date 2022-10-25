@@ -25,7 +25,7 @@ public class CachingTest extends BaseTest {
         Customer3 customer = session.get(Customer3.class, 1);
         System.out.println(customer);
 
-        this.closeAndOpenNewSession();
+        this.closeThenOpenNewSession();
 
         // 第二次查询，从二级缓存获取，不发送 SELECT 语句
         customer = session.get(Customer3.class, 1);
@@ -45,7 +45,7 @@ public class CachingTest extends BaseTest {
         // 第一次访问 orders，发送 SELECT 语句
         System.out.println(customer.getOrders().size());
 
-        this.closeAndOpenNewSession();
+        this.closeThenOpenNewSession();
 
         // 第二次查询 Customer3，从二级缓存获取，不发送 SELECT 语句
         customer = session.get(Customer3.class, 1);

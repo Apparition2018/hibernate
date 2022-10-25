@@ -18,6 +18,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Accessors(chain = true)
+@Cacheable
 @Entity
 @Table(name = "jpa_customer3")
 public class Customer3 {
@@ -25,7 +26,6 @@ public class Customer3 {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer id;
-    @Column(name = "last_name")
     private String lastName;
     private String email;
     // mappedBy：表示放弃维护关系，由另一方来维护关系；注：使用了 mappedBy，不能再使用 @JoinColumn

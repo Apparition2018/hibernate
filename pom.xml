@@ -18,6 +18,8 @@
         <module>jpa</module>
         <module>hibernate-basic</module>
         <module>spring-hibernate</module>
+        <module>spring-jpa</module>
+        <module>spring-data-jpa</module>
     </modules>
 
     <properties>
@@ -25,6 +27,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <spring-data-jpa.version>2.7.3</spring-data-jpa.version>
     </properties>
 
     <dependencies>

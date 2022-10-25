@@ -78,9 +78,7 @@ public class QueryWayTest extends BaseTest {
         String hql = "SELECT new Employee3(e.salary, e.email, e.dept) FROM Employee3 e WHERE e.dept = :dept";
         Query<Employee3> query = session.createQuery(hql);
         List<Employee3> emps = query.setParameter("dept", new Department3().setId(80)).list();
-        for (Employee3 emp : emps) {
-            System.out.printf("%s，%s，%s，%s%n", emp.getId(), emp.getEmail(), emp.getSalary(), emp.getDept());
-        }
+        emps.forEach(emp -> System.out.printf("%s，%s，%s，%s%n", emp.getId(), emp.getEmail(), emp.getSalary(), emp.getDept()));
     }
 
     /**
@@ -262,19 +260,20 @@ public class QueryWayTest extends BaseTest {
     }
 
     /**
-     * Native SQL
+     * Native Query
      */
     @Test
-    public void testNativeSQL() {
+    public void testNativeQuery() {
         String sql = "select * from EMPLOYEE3 order by SALARY, EMAIL limit ?1, ?2";
-        session.createNativeQuery(sql)
+        List<Employee3> emps = session.createNativeQuery(sql, Employee3.class)
                 .setParameter(1, 0)
                 .setParameter(2, 10)
                 .list();
+        System.out.println(emps.size());
     }
 
     /**
-     * Named SQL
+     * Named Query
      */
     @Test
     public void testNamedQuery() {

@@ -13,6 +13,14 @@
         <!-- 实体类 -->
         <class>com.ljh.entity.many2one.ua.Customer</class>
         <class>com.ljh.entity.many2one.ua.Order</class>
+        <!-- 二级缓存模式
+            ALL                 所有实体类都被缓存
+            NONE                所有实体类都不被缓存
+            ENABLE_SELECTIVE    @Cacheable 标识的实体都被缓存
+            DISABLE_SELECTIVE   @Cacheable(false) 标识的实体都不被缓存，其它的被缓存
+            UNSPECIFIED         默认值，JPA 产品默认值将被使用 ???
+        -->
+        <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
         <properties>
             <!-- 数据库基本信息 -->
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
@@ -25,6 +33,15 @@
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <!-- 生成的数据表的列的映射策略
+                hibernate4: key="hibernate.ejb.naming_strategy" value="ImprovedNamingStrategy"
+                hibernate5: key="hibernate.physical_naming_strategy" value="CamelCaseToUnderscoresNamingStrategy" -->
+            <property name="hibernate.physical_naming_strategy" value="org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy"/>
+
+            <!-- 二级缓存相关 -->
+            <property name="hibernate.cache.region.factory_class" value="ehcache"/>
+            <property name="hibernate.cache.use_second_level_cache" value="true"/>
+            <property name="hibernate.cache.use_query_cache" value="true"/>
         </properties>
     </persistence-unit>
 </persistence>

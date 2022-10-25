@@ -23,7 +23,6 @@ public class Department {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer id;
-    @Column(name = "dept_name")
     private String deptName;
     // @OneToOne 默认 FetchType.EAGER
     @OneToOne(fetch = FetchType.LAZY)

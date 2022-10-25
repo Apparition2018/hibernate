@@ -19,8 +19,7 @@
         <property name="jdbcUrl" value="${jdbc.jdbcUrl}"/>
         <property name="user" value="${jdbc.user}"/>
         <property name="password" value="${jdbc.password}"/>
-        <property name="initialPoolSize" value="${jdbc.initialPoolSize}"/>
-        <property name="maxPoolSize" value="${jdbc.maxPoolSize}"/>
+        <!-- 配置其他属性 -->
     </bean>
 
     <!-- Hibernate SessionFactory：通过 Spring 提供的 LocalSessionFactoryBean 进行配置 -->

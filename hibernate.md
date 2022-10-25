@@ -5,7 +5,7 @@
 1. [Hibernate. Everything data.](https://hibernate.org/)
 2. [Hibernate ORM User Guide](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html)
 3. [Hibernate 中文文档](https://hibernate.net.cn)
-4. [尚硅谷佟刚Hibernate框架教程_哔哩哔哩](https://www.bilibili.com/video/BV1KW411u7GJ)
+4. [尚硅谷佟刚Hibernate框架全套教程_哔哩哔哩](https://www.bilibili.com/video/BV1KW411u7GJ)
 ---
 ## ORM
 ORM (Object/Relation Mapping): 对象/关系 映射
@@ -158,16 +158,16 @@ ORM (Object/Relation Mapping): 对象/关系 映射
 ## [检索方式](hibernate-basic/src/test/java/com/ljh/QueryWayTest.java)
 1. 导航对象图：根据已经加载的对象导航到其他对象
 2. OID：对象的 OID
-3. [HQL](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#hql)：Hibernate Query Language，以对象模型为中心的非类型安全查询
+3. [HQL](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#hql)：Hibernate Query Language，以对象模型为中心的非类型安全查询语言
     1. 通过 Session 创建 Query 对象
-        1. createQuery(queryString)
-        2. getNamedQuery(queryName)：queryName 对应 .hbm.xml 文件的 `<query name/>`
-    2. 动态绑定参数：setParameter()
-        - 依赖于 JDBC API 中的 PreparedStatement 的预定义 SQL 语句功能
-        - 方式：
-            1. 按照参数名字绑定：:name
-            2. 按照参数位置绑定：?n
-    3. 调用 Query 相关方法：如 list() 等
+        1. session.createQuery(queryString)
+        2. session.getNamedQuery(queryName)
+            - queryName 对应 .hbm.xml 文件的 `<query name/>`
+        3. session.createNativeQuery(sqlString, resultClass)
+    2. 动态绑定参数 query.setParameter()：依赖于 JDBC 的预编译 SQL PreparedStatement
+        1. 按照参数名字绑定：:name
+        2. 按照参数位置绑定：?n
+    3. 调用 org.hibernate.query.Query API
     - 检索策略
         - 如果 HQL 中没有显式指定检索策略，将使用 .hbm.xml 中配置的检索策略
         - HQL 忽略 .hbm.xml 中配置的迫切左外连接(fetch="join")
@@ -313,5 +313,16 @@ session.doWork(new Work() {
         <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
     </aop:config>
 </beans>
+```
+3. [Dao 注入 SessionFactory](spring-hibernate/src/main/java/com/ljh/dao/impl/BookShopDaoImpl.java)
+```java
+@Repository
+public class DaoImpl implements Dao {
+    @Autowired
+    private SessionFactory sessionFactory;
+    private Session getSession() {
+        return sessionFactory.getCurrentSession();        
+    }
+}
 ```
 ---

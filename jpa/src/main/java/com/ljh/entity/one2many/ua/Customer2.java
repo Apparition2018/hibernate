@@ -23,7 +23,6 @@ public class Customer2 {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer id;
-    @Column(name = "last_name")
     private String lastName;
     private String email;
     // 不持有外键，所以 @OneToMany 默认 fetch = FetchType.LAZY

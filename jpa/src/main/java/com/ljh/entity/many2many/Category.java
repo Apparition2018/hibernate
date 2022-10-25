@@ -25,7 +25,6 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer id;
-    @Column(name = "category_name")
     private String categoryName;
     @ManyToMany(mappedBy = "categories")
     private Set<Item> items = new HashSet<>();

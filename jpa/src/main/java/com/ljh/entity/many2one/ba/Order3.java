@@ -23,7 +23,6 @@ public class Order3 {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer id;
-    @Column(name = "order_name")
     private String orderName;
     @ManyToOne
     @JoinColumn(name = "customer_id")

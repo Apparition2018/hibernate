@@ -73,7 +73,7 @@ public class SessionMethodTest extends BaseTest {
         // org.hibernate.ObjectNotFoundException: No row with the given identifier exists: [com.ljh.entity.News#-1]
         System.out.println(news);
 
-        this.closeAndOpenNewSession();
+        this.closeThenOpenNewSession();
 
         news = session.load(News.class, 1);
         session.close();
@@ -100,7 +100,7 @@ public class SessionMethodTest extends BaseTest {
         try {
             // 持久化对象在 Session 缓存中，所以 session.commit() 隐式调用 flush() 时，会发送 UPDATE 语句
             // 上面 news.setId(300) 修改持久化对象 OID 值，UPDATE 时，会抛出 PersistenceException → HibernateException
-            this.closeAndOpenNewSession();
+            this.closeThenOpenNewSession();
         } catch (PersistenceException e) {
             System.out.println(e.getMessage());
         }

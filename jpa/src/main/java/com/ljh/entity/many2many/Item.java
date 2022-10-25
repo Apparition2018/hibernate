@@ -25,7 +25,6 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer id;
-    @Column(name = "item_name")
     private String itemName;
     // 中间表
     @JoinTable(name = "jpa_item_category",

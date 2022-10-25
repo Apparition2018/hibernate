@@ -29,7 +29,6 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "orderGen")
     @Id
     private Integer id;
-    @Column(name = "order_name")
     private String orderName;
     // fetch = FetchType.EAGER：左关联查询出关联对象
     // fetch = FetchType.LAZY：使用时根据外键查询出关联对象

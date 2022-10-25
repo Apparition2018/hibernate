@@ -34,4 +34,12 @@ public class BaseTest {
         entityManager.close();
         entityManagerFactory.close();
     }
+
+    protected void closeThenOpenNewEntityManager() {
+        transaction.commit();
+        entityManager.close();
+        entityManager = entityManagerFactory.createEntityManager();
+        transaction = entityManager.getTransaction();
+        transaction.begin();
+    }
 }
