@@ -15,11 +15,13 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>jpa</module>
         <module>hibernate-basic</module>
         <module>spring-hibernate</module>
+        <module>jpa</module>
         <module>spring-jpa</module>
         <module>spring-data-jpa</module>
+        <!-- Spring + SpringMVC + Spring-Data-JPA -->
+        <module>ssj</module>
     </modules>
 
     <properties>

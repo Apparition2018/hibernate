@@ -1,4 +1,4 @@
-package com.ljh.repositories.custom.dao;
+package com.ljh.repository.custom.dao;
 
 /**
  * PersonDao

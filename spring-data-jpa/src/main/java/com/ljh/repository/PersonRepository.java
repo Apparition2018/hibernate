@@ -1,7 +1,7 @@
-package com.ljh.repositories;
+package com.ljh.repository;
 
 import com.ljh.entity.Person;
-import com.ljh.repositories.custom.dao.PersonDao;
+import com.ljh.repository.custom.dao.PersonDao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;

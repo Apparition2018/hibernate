@@ -1,9 +1,10 @@
 package com.ljh;
 
 import com.ljh.entity.Person;
-import com.ljh.repositories.PersonRepository;
+import com.ljh.repository.PersonRepository;
 import com.ljh.service.PersonService;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -33,9 +34,16 @@ import java.util.List;
 @Slf4j
 public class SpringDataTest {
 
-    private final ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
-    private final PersonRepository personRepository = ctx.getBean(PersonRepository.class);
-    private final PersonService personService = ctx.getBean(PersonService.class);
+    private ApplicationContext ctx;
+    private PersonRepository personRepository;
+    private PersonService personService;
+
+    @Before
+    public void init() {
+        ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        personRepository = ctx.getBean(PersonRepository.class);
+        personService = ctx.getBean(PersonService.class);
+    }
 
     /**
      * 测试数据源配置是否成功

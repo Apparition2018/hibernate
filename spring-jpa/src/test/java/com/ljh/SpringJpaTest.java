@@ -18,18 +18,18 @@ import java.sql.SQLException;
  */
 public class SpringJpaTest {
 
-    private ApplicationContext applicationContext;
+    private ApplicationContext ctx;
     private PersonService personService;
 
     @Before
     public void init() {
-        applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-        personService = applicationContext.getBean(PersonService.class);
+        ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        personService = ctx.getBean(PersonService.class);
     }
 
     @Test
     public void testDataSource() throws SQLException {
-        DataSource dataSource = applicationContext.getBean(DataSource.class);
+        DataSource dataSource = ctx.getBean(DataSource.class);
         System.out.println(dataSource.getConnection());
     }
 

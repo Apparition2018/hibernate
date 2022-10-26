@@ -1,7 +1,7 @@
 package com.ljh.service;
 
 import com.ljh.entity.Person;
-import com.ljh.repositories.PersonRepository;
+import com.ljh.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,7 +1,7 @@
-package com.ljh.repositories.custom;
+package com.ljh.repository.custom;
 
 import com.ljh.entity.Person;
-import com.ljh.repositories.custom.dao.PersonDao;
+import com.ljh.repository.custom.dao.PersonDao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

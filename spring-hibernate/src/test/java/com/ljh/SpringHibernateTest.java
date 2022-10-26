@@ -19,21 +19,20 @@ import java.util.Arrays;
  */
 public class SpringHibernateTest {
 
-    private ApplicationContext applicationContext;
+    private ApplicationContext ctx;
     private BookShopService bookShopService;
-
     private Cashier cashier;
 
     @Before
     public void init() {
-        applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-        bookShopService = applicationContext.getBean(BookShopService.class);
-        cashier = applicationContext.getBean(Cashier.class);
+        ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        bookShopService = ctx.getBean(BookShopService.class);
+        cashier = ctx.getBean(Cashier.class);
     }
 
     @Test
     public void testDataSource() throws SQLException {
-        DataSource dataSource = applicationContext.getBean(DataSource.class);
+        DataSource dataSource = ctx.getBean(DataSource.class);
         System.out.println(dataSource.getConnection());
     }
 

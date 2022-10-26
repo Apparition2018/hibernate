@@ -17,7 +17,7 @@ JpaRepository                   继承 PagingAndSortingRepository       JPA
 MongoRepository                 继承 PagingAndSortingRepository       Mongo
 ```
 ### Spring Data JPA 开发步骤
-1. 自定义存储接口 [XxxRepository](./src/main/java/com/ljh/repositories/PersonRepository.java)
+1. 自定义存储接口 [XxxRepository](./src/main/java/com/ljh/repository/PersonRepository.java)
     - 继承 JpaRepository 和 JpsSpecificationExecutor
 2. [定义查询方法](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods.details)
     1. 方法名称派生查询：find…By, exists…By
@@ -42,11 +42,11 @@ MongoRepository                 继承 PagingAndSortingRepository       Mongo
     - XML：`<jpa:repositories base-package entity-manager-factory-ref/>`
 ### 为 Repository 添加自定义方法
 1. 单个 Repository
-    1. [定义一个接口](./src/main/java/com/ljh/repositories/custom/dao/PersonDao.java)：声明要添加的自定义方法
-    2. [提供该接口的实现类](./src/main/java/com/ljh/repositories/PersonRepository.java)：类名结尾为 impl，并实现接口方法
+    1. [定义一个接口](./src/main/java/com/ljh/repository/custom/dao/PersonDao.java)：声明要添加的自定义方法
+    2. [提供该接口的实现类](./src/main/java/com/ljh/repository/PersonRepository.java)：类名结尾为 impl，并实现接口方法
         - 默认情况下，SpringData 会在 base-package 中查找 "xxxImpl" 作为实现类，
           也可以通过 repository-impl-postfix 声明后缀
-    3. [声明 Repository 接口](./src/main/java/com/ljh/repositories/PersonRepository.java)，并实现 1. 接口
+    3. [声明 Repository 接口](./src/main/java/com/ljh/repository/PersonRepository.java)，并实现 1. 接口
 2. [所有 Repository](https://blog.csdn.net/saafdgvsdg/article/details/80603581)
 ---
 ## [Introduction](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.introduction)
