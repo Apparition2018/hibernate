@@ -72,4 +72,10 @@ public class SsjTest {
         employeeRepository.save(emp6);
         employeeRepository.save(emp7);
     }
+
+    @Test
+    public void testSecondLevelCache() {
+        System.out.println(departmentRepository.getAll().size());
+        System.out.println(departmentRepository.getAll().size());
+    }
 }

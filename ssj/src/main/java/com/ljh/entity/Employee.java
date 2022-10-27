@@ -3,6 +3,7 @@ package com.ljh.entity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -16,8 +17,8 @@ import java.util.Date;
 @Getter
 @Setter
 @Accessors(chain = true)
-@Table(name = "ssj_employee")
 @Entity
+@Table(name = "ssj_employee")
 public class Employee {
 
     @Id
@@ -25,6 +26,7 @@ public class Employee {
     private Integer id;
     private String lastName;
     private String email;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Temporal(TemporalType.DATE)
     private Date birth;
     @Temporal(TemporalType.TIMESTAMP)

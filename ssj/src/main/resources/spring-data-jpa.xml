@@ -33,9 +33,17 @@
                 <prop key="hibernate.format_sql">true</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.physical_naming_strategy">org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy</prop>
-                <prop key="hibernate.cache.region.factory_class">ehcache</prop>
+                <!-- JCache: https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#caching-provider-jcache -->
+                <prop key="hibernate.cache.region.factory_class">jcache</prop>
                 <prop key="hibernate.cache.use_second_level_cache">true</prop>
-                <prop key="hibernate.cache.use_query_cache">true"</prop>
+                <prop key="hibernate.cache.use_query_cache">true</prop>
+                <prop key="hibernate.javax.cache.provider">org.ehcache.jsr107.EhcacheCachingProvider</prop>
+                <prop key="hibernate.javax.cache.uri">ehcache.xml</prop>
+                <!-- 未显式配置缓存策略：
+                    fail
+                    create-warn     创建，记录警告
+                    create          创建，不记录警告 -->
+                <prop key="hibernate.javax.cache.missing_cache_strategy">create</prop>
             </props>
         </property>
         <property name="sharedCacheMode" value="ENABLE_SELECTIVE"/>

@@ -40,7 +40,7 @@
                     <fmt:formatDate value="${emp.createTime}" pattern="yyyy-MM-dd hh:mm:ss"/>
                 </td>
                 <td>${emp.dept.deptName}</td>
-                <td><a href="">Edit</a></td>
+                <td><a href="${pageContext.request.contextPath}/emp/${emp.id}">Edit</a></td>
                 <td><a href="">Delete</a></td>
             </tr>
         </c:forEach>

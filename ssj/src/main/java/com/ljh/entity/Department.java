@@ -3,6 +3,7 @@ package com.ljh.entity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
@@ -15,8 +16,10 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Accessors(chain = true)
-@Table(name = "ssj_department")
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
+@Table(name = "ssj_department")
 public class Department {
 
     @Id

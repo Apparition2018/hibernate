@@ -10,4 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * created on 2022/10/26 15:02
  */
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
+    Employee getByLastName(String lastName);
 }

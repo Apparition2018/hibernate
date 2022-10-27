@@ -14,5 +14,8 @@
 </head>
 <body>
 <a href="emps">List All Employees</a>
+<br/>
+<br/>
+<a href="emp">Add New Employee</a>
 </body>
 </html>

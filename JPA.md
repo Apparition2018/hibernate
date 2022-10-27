@@ -80,6 +80,8 @@
 </persistence>
 ```
 2. [ehcache.xml](jpa/src/main/resources/ehcache.xml)
+3. 实体类标记 `@Cacheable`
+4. `query.setHint(QueryHints.HINT_CACHEABLE, true)`
 ---
 ## [JPQL](https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#hql)
 - Java Persistence Query Language

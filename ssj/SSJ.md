@@ -1,5 +1,5 @@
 # [SSJ](https://www.bilibili.com/video/BV18W411g7on)
-- Spring + SpringMVC + Spring-Data-JPA
+- Spring + SpringMVC + Spring-Data-JPA + JSP
 ---
 ## Spring
 1. [web.xml](web/WEB-INF/web.xml) 配置 <context-param/> 和 ContextLoaderListener
@@ -55,7 +55,37 @@
    3. OpenEntityManagerInViewFilter：允许 Session 与一次完整的请求过程对应的线程相绑定
 ---
 ## Spring-Data-JPA
-- @see spring-data-jpa 的 [applicationContext.xml](../spring-data-jpa/src/main/resources/applicationContext.xml)
+- [spring-data-jpa.xml](src/main/resources/spring-data-jpa.xml)
+---
+## 二级缓存
+1. [pom.xml](pom.xml)
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-jcache</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.ehcache</groupId>
+        <artifactId>ehcache</artifactId>
+    </dependency>
+</dependencies>
+```
+2. [spring-data-jpa.xml](src/main/resources/spring-data-jpa.xml)
+```xml
+<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <property name="jpaProperties">
+        <props>
+            <prop key="hibernate.cache.region.factory_class">jcache</prop>
+            <prop key="hibernate.cache.use_second_level_cache">true</prop>
+            <prop key="hibernate.cache.use_query_cache">true</prop>
+            <prop key="hibernate.javax.cache.missing_cache_strategy">create</prop>
+        </props>
+    </property>
+</bean>
+```
+3. [实体类标记](src/main/java/com/ljh/entity/Department.java) `@Cacheable` 和 `@Cache(usage)`
+4. [Repository](src/main/java/com/ljh/repository/DepartmentRepository.java) 方法使用 `@QueryHints`
 ---
 ## [JSTL](https://www.runoob.com/jsp/jsp-jstl.html)
 1. [pom.xml](pom.xml) 引包
@@ -65,7 +95,7 @@
     <artifactId>jakarta.servlet.jsp.jstl</artifactId>
 </dependency>
 ```
-2. [spring-servlet.xml](src/main/resources/spring-servlet.xml) 配置试图解析器
+2. [spring-servlet.xml](src/main/resources/spring-servlet.xml) 配置视图解析器
 ```xml
 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
     <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
@@ -92,18 +122,17 @@
          var        当前迭代项的名称
          varStatus  迭代状态的名称 -->
     <c:forEach items="${list}" var="i" varStatus="s">
-        <div>
-            <span>i</span> - <span>s.index</span> - <span>s.count</span>
-        </div>
+        <span>i</span> - <span>s.index</span> - <span>s.count</span>
     </c:forEach>
+   
+    <!-- var        存储值的变量
+         value      变量存储的值 -->
+    <c:set value="1" var="x"/>
     ```
     - fmt 标签
     ```html
     <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
     
-    <c:forEach iteams="表示要遍历的集合或数组" var="指定绑定名，容器每次从集合取一个对象，然后绑定到 pageContext 上"
-               varStatus="指定绑定名，绑定值是一个由容器创建的对象，该对象封装了当前迭代的状态">
-        ...${e.name}...${s.index}...${s.count}...
-    </c:forEach>
+    <fmt:formatDate value="${createTime}" pattern="yyyy-MM-dd hh:mm:ss"/>
     ```
 ---

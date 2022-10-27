@@ -7,6 +7,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.util.Optional;
+
 /**
  * EmployeeService
  *
@@ -23,8 +26,26 @@ public class EmployeeService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Employee> getPage(int pageNo, int pageSize) {
+    public Page<Employee> page(int pageNo, int pageSize) {
         PageRequest pageable = PageRequest.of(pageNo - 1, pageSize);
         return employeeRepository.findAll(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Employee getByLastName(String lastName) {
+        return employeeRepository.getByLastName(lastName);
+    }
+
+    @Transactional
+    public void save(Employee employee) {
+        if (employee.getId() == null) {
+            employee.setCreateTime(new Date());
+        }
+        employeeRepository.saveAndFlush(employee);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Employee> get(Integer id) {
+        return employeeRepository.findById(id);
     }
 }
