@@ -11,8 +11,12 @@
 <html>
 <head>
     <title>List</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <body>
+<form action="" method="POST" id="_form">
+    <input type="hidden" id="_method" name="_method"/>
+</form>
 <c:if test="${page == null || page.numberOfElements == 0}">
     没有任何记录.
 </c:if>
@@ -41,7 +45,10 @@
                 </td>
                 <td>${emp.dept.deptName}</td>
                 <td><a href="${pageContext.request.contextPath}/emp/${emp.id}">Edit</a></td>
-                <td><a href="">Delete</a></td>
+                <td>
+                    <a href="${pageContext.request.contextPath}/emp/${emp.id}" class="delete">Delete</a>
+                    <input type="hidden" value="${emp.lastName}"/>
+                </td>
             </tr>
         </c:forEach>
         <tr>
@@ -49,11 +56,32 @@
                 共 ${page.totalElements} 条记录
                 共 ${page.totalPages} 页
                 当前 ${page.number + 1} 页
-                <a href="?pageNo=${page.number + 1 - 1}">上一页</a>
-                <a href="?pageNo=${page.number + 1 + 1}">下一页</a>
+                <c:if test="${page.number + 1 != 1}">
+                    <a href="?pageNo=${page.number + 1 - 1}">上一页</a>
+                </c:if>
+                <c:if test="${page.number + 1 != page.totalPages}">
+                    <a href="?pageNo=${page.number + 1 + 1}">下一页</a>
+                </c:if>
             </td>
         </tr>
     </table>
 </c:if>
+<script>
+    $(function () {
+        $(".delete").click(function() {
+            let label = $(this).next(":hidden").val();
+            let flag = confirm("确定要删除" + label+ "的信息吗？");
+            if (flag) {
+                let url = $(this).attr("href");
+
+                <!-- GET 请求转为 DELETE 请求 -->
+                $("#_form").attr("action", url);
+                $("#_method").val("DELETE");
+                $("#_form").submit();
+            }
+            return false;
+        })
+    })
+</script>
 </body>
 </html>

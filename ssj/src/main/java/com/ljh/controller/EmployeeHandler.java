@@ -76,18 +76,24 @@ public class EmployeeHandler {
 
     @GetMapping("/emp/{id}")
     public String input(@PathVariable("id") Integer id, Map<String, Object> map) {
-        Employee employee = employeeService.get(id).orElse(null);
+        Employee employee = employeeService.get(id).orElseThrow(null);
         map.put("employee", employee);
         map.put("depts", departmentService.getAll());
         return "emp/input";
     }
 
-    // @ModelAttribute 用在方法上时，每个方法执行前都会被执行
     @ModelAttribute
     public void getEmployee(@RequestParam(value = "id", required = false) Integer id, Map<String, Object> map) {
         if (id != null) {
-            Employee employee = employeeService.get(id).orElse(null);
+            Employee employee = employeeService.get(id).orElseThrow(null);
+            employee.setDept(null);
             map.put("employee", employee);
         }
+    }
+
+    @DeleteMapping(value = "/emp/{id}")
+    public String delete(@PathVariable("id") Integer id) {
+        employeeService.delete(id);
+        return "redirect:/emps";
     }
 }

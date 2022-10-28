@@ -48,4 +48,9 @@ public class EmployeeService {
     public Optional<Employee> get(Integer id) {
         return employeeRepository.findById(id);
     }
+
+    @Transactional
+    public void delete(Integer id) {
+        employeeRepository.deleteById(id);
+    }
 }

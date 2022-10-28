@@ -50,9 +50,14 @@
 ---
 ## Servlet
 - [web.xml](web/WEB-INF/web.xml) 配置 Filter
-   1. CharacterEncodingFilter
-   2. HiddenHttpMethodFilter：使 form 表单支持 PUT/DELETE 请求
-   3. OpenEntityManagerInViewFilter：允许 Session 与一次完整的请求过程对应的线程相绑定
+    1. CharacterEncodingFilter
+    2. HiddenHttpMethodFilter：使 form 表单提交的 POST 请求转化为其它请求 (GET, POST, HEAD, OPTIONS, PUT, DELETE, TRACE)
+    ```html
+    <form action="" method="POST">
+        <input type="hidden" name="_method" value="PUT"/>
+    </form>
+    ```
+    3. OpenEntityManagerInViewFilter：允许 Session 与一次完整的请求过程对应的线程相绑定
 ---
 ## Spring-Data-JPA
 - [spring-data-jpa.xml](src/main/resources/spring-data-jpa.xml)
@@ -135,4 +140,9 @@
     
     <fmt:formatDate value="${createTime}" pattern="yyyy-MM-dd hh:mm:ss"/>
     ```
+---
+## 其它
+1. SpringMVC 的 form:form 标签：@see [input.jsp](web/WEB-INF/views/emp/input.jsp)
+2. SpringMVC 的 `@ModelAttribute`：使用在方法上时，Controller 的每个方法执行前此方法都会被执行
+3. `<a href=""/>` GET 请求转为其它请求：@see [list.jsp](web/WEB-INF/views/emp/list.jsp) line 73
 ---
