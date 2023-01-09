@@ -18,21 +18,26 @@
 ## JPA 注解
 - [基本注解](jpa/src/main/java/com/ljh/entity/many2one/ua/Customer.java)
 
-| annotation       | position | desc                                    |
-|:-----------------|:---------|:----------------------------------------|
-| @Entity          | class    | 表示类是一个实体，映射到与类名相同的数据库表                  |
-| @Table           | class    | 与 @Entity 配合使用，使实体映射到与 name 属性相同名称的数据库表 |
-| @SecondaryTable  | class    | 一个实体可以映射多个表，定义单个表的名字、主键等属性              |
-| @SecondaryTables | class    | 一个实体可以映射多个表，包裹 @SecondaryTable          |
-| @Id              | property | 表示属性映射为数据库表的主键                          |
-| @GeneratedValue  | property | 指定主键的生成策略                               |
-| @Basic           | property | 表示属性映射为数据库表字段（默认使用）                     |
-| @Column          | property | 表示属性映射为与 name 属性相同的数据库表字段               |
-| @Transient       | property | 表示属性不是数据库字段                             |
-| @Temporal        | property | 指定 Date/Calendar 属性映射到数据表的类型            |
-| @Lob             | property | 表示属性映射为数据库表大对象字段                        |
-| @Version         | property | 表示属性映射为数据库表乐观锁字段                        |
-| @Enumerated      | property | 指定枚举属性映射方式                              |
+| annotation           | position | desc                              |
+|:---------------------|:---------|:----------------------------------|
+| @Entity              | class    | 指定类是一个实体                          |
+| @Table               | class    | 为实体指定主表                           |
+| @SecondaryTable      | class    | 为实体指定副表                           |
+| @SecondaryTables     | class    | 为实体指定多个副表                         |
+| @Embeddable          | class    | 指定类为可嵌入类                          |
+| @Inheritance         | class    | 指定继承策略                            |
+| @DiscriminatorColumn | class    | 指定 SINGLE_TABLE 和 JOINED 继承策略的标识列 |
+| @DiscriminatorValue  | class    | 指定 @DiscriminatorColumn 列的值       |
+| @Id                  | property | 指定实体主键                            |
+| @GeneratedValue      | property | 指定主键值的生成策略                        |
+| @Basic               | property | 指定属性映射的数据库字段（默认使用）                |
+| @Column              | property | 指定属性映射的数据库字段                      |
+| @Embedded            | property | 指定属性为可嵌入类实例                       |
+| @Transient           | property | 表示属性不是持久化字段                       |
+| @Temporal            | property | 指定 Date/Calendar 属性映射的到数据类型       |
+| @Lob                 | property | 表示属性映射的数据库大对象字段                   |
+| @Version             | property | 表示属性为乐观锁字段                        |
+| @Enumerated          | property | 指定属性为枚举类型                         |
 ---
 ## EntityManager  VS Session
 | EntityManager  | 描述             | Session        | 行为是否相同                        |
@@ -135,7 +140,6 @@
 </beans>
 ```
 3. [Dao 注入 EntityManager](spring-jpa/src/main/java/com/ljh/dao/PersonDao.java)
-
 ```java
 @Repository
 public class DaoImpl implements Dao {
