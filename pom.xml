@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.7</version>
+        <version>2.7.8</version>
         <relativePath/>
     </parent>
     <groupId>com.ljh</groupId>
@@ -23,10 +23,6 @@
         <!-- Spring + SpringMVC + Spring-Data-JPA -->
         <module>ssj</module>
     </modules>
-
-    <properties>
-        <spring-data-jpa.version>2.7.6</spring-data-jpa.version>
-    </properties>
 
     <dependencies>
         <dependency>
