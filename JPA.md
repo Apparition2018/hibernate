@@ -18,26 +18,26 @@
 ## JPA 注解
 - [基本注解](jpa/src/main/java/com/ljh/entity/many2one/ua/Customer.java)
 
-| annotation           | position | desc                              |
-|:---------------------|:---------|:----------------------------------|
-| @Entity              | class    | 指定类是一个实体                          |
-| @Table               | class    | 为实体指定主表                           |
-| @SecondaryTable      | class    | 为实体指定副表                           |
-| @SecondaryTables     | class    | 为实体指定多个副表                         |
-| @Embeddable          | class    | 指定类为可嵌入类                          |
-| @Inheritance         | class    | 指定继承策略                            |
-| @DiscriminatorColumn | class    | 指定 SINGLE_TABLE 和 JOINED 继承策略的标识列 |
-| @DiscriminatorValue  | class    | 指定 @DiscriminatorColumn 列的值       |
-| @Id                  | property | 指定实体主键                            |
-| @GeneratedValue      | property | 指定主键值的生成策略                        |
-| @Basic               | property | 指定属性映射的数据库字段（默认使用）                |
-| @Column              | property | 指定属性映射的数据库字段                      |
-| @Embedded            | property | 指定属性为可嵌入类实例                       |
-| @Transient           | property | 表示属性不是持久化字段                       |
-| @Temporal            | property | 指定 Date/Calendar 属性映射的到数据类型       |
-| @Lob                 | property | 表示属性映射的数据库大对象字段                   |
-| @Version             | property | 表示属性为乐观锁字段                        |
-| @Enumerated          | property | 指定属性为枚举类型                         |
+| annotation           | position | desc                                         |
+|:---------------------|:---------|:---------------------------------------------|
+| @Entity              | class    | 指定类是一个实体                                     |
+| @Table               | class    | 为实体指定主表                                      |
+| @SecondaryTable      | class    | 为实体指定副表                                      |
+| @SecondaryTables     | class    | 为实体指定多个副表                                    |
+| @Embeddable          | class    | 指定类为可嵌入类                                     |
+| @Inheritance         | class    | 指定继承策略：SINGLE_TABLE, TABLE_PER_CLASS, JOINED |
+| @DiscriminatorColumn | class    | 指定 SINGLE_TABLE 和 JOINED 继承策略的标识列            |
+| @DiscriminatorValue  | class    | 指定 @DiscriminatorColumn 列的值                  |
+| @Id                  | property | 指定实体主键                                       |
+| @GeneratedValue      | property | 指定主键值的生成策略                                   |
+| @Basic               | property | 指定属性映射的数据库字段（默认使用）                           |
+| @Column              | property | 指定属性映射的数据库字段                                 |
+| @Embedded            | property | 指定属性为可嵌入类实例                                  |
+| @Transient           | property | 表示属性不是持久化字段                                  |
+| @Temporal            | property | 指定 Date/Calendar 属性映射的到数据类型                  |
+| @Lob                 | property | 表示属性映射的数据库大对象字段                              |
+| @Version             | property | 表示属性为乐观锁字段                                   |
+| @Enumerated          | property | 指定属性为枚举类型                                    |
 ---
 ## EntityManager  VS Session
 | EntityManager  | 描述             | Session        | 行为是否相同                        |
