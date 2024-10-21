@@ -54,7 +54,6 @@ public class EntityManagerTest extends BaseTest {
         customer.setAge(15);
         customer.setGender(Customer.GenderEnum.MALE);
         customer.setBirth(new Date());
-        customer.setCreateTime(new Date());
 
         entityManager.persist(customer);
         entityManager.flush();
@@ -86,7 +85,6 @@ public class EntityManagerTest extends BaseTest {
         customer.setAge(18);
         customer.setGender(Customer.GenderEnum.MALE);
         customer.setBirth(new Date());
-        customer.setCreateTime(new Date());
 
         Customer customer2 = entityManager.merge(customer);
         System.out.println(customer.getId());   // null
@@ -105,7 +103,6 @@ public class EntityManagerTest extends BaseTest {
         customer.setAge(18);
         customer.setGender(Customer.GenderEnum.MALE);
         customer.setBirth(new Date());
-        customer.setCreateTime(new Date());
 
         customer.setId(-1);
         Customer customer2 = entityManager.merge(customer);
@@ -125,7 +122,6 @@ public class EntityManagerTest extends BaseTest {
         customer.setAge(18);
         customer.setGender(Customer.GenderEnum.MALE);
         customer.setBirth(new Date());
-        customer.setCreateTime(new Date());
 
         customer.setId(4);
         Customer customer2 = entityManager.merge(customer);
@@ -144,7 +140,6 @@ public class EntityManagerTest extends BaseTest {
         customer.setAge(18);
         customer.setGender(Customer.GenderEnum.MALE);
         customer.setBirth(new Date());
-        customer.setCreateTime(new Date());
 
         customer.setId(4);
         Customer customer2 = entityManager.find(Customer.class, 4);

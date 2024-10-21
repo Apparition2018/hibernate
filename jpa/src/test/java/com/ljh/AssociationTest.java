@@ -34,7 +34,6 @@ public class AssociationTest extends BaseTest {
         customer.setAge(18);
         customer.setGender(Customer.GenderEnum.MALE);
         customer.setBirth(new Date());
-        customer.setCreateTime(new Date());
 
         Order order = new Order().setOrderName("O-FF-1");
         Order order2 = new Order().setOrderName("O-FF-2");

@@ -40,7 +40,6 @@ public class JpaTest {
         customer.setAge(30);
         customer.setGender(Customer.GenderEnum.MALE);
         customer.setBirth(new Date());
-        customer.setCreateTime(new Date());
         entityManager.persist(customer);
         // 5. 提交事务
         transaction.commit();

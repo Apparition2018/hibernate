@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -54,6 +55,7 @@ public class Customer {
     @Temporal(TemporalType.DATE)
     private Date birth;
     @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
     private Date createTime;
 
     public Customer(String lastName, int age) {
